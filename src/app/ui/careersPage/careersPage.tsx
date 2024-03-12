@@ -5,6 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 import Divider from '@mui/material/Divider';
+import WorkIcon from '@mui/icons-material/Work';
 
 import Footer from '../landingPage/components/FooterSection';
 import ThemeSwitch from '../landingPage/Mui Components/ThemeSwitch';
@@ -64,7 +65,7 @@ export default function CareersPage(){
     return(
         <main className="p-4 md:p-8">
 
-            <div className="my-6 flex justify-between items-center">
+            <div className="mt-6 mb-12 flex justify-between items-center">
                 <Link href='/'>
                     <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} `}>
                         Home
@@ -76,8 +77,13 @@ export default function CareersPage(){
             
            
                  
-          
-            <h1 className='text-3xl font-black mb-4'>Ultrawave Careers</h1>
+            <div  className='flex space-x-4 items-center mb-4 dark:text-white'>
+
+             <WorkIcon/>
+             <h1 className="text-3xl font-black">Ultrawave Careers</h1>
+
+            </div>
+            
             <p className="max-w-screen-sm mb-6 text-lg">We greatly appreciate the opportunity to work with skilled and hardworking engineers to build top-notch applications. However, please be aware that we are not currently looking to grow our team.</p>
 
             <div className='flex flex-col space-y-6 md:space-y-0 md:flex-row md:space-x-6 mb-6'>

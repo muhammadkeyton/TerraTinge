@@ -15,15 +15,41 @@ import { lobster_Two } from "@/app/ui/fonts";
 //PCPT is a short word for partners,careers,privacy policy and terms and conditions
 type PCPTType = {
     icon:any,
-    text:string
+    text:string,
+    link:string
 }
 
-function PCPT({icon,text}:PCPTType){
+
+const PcptLinks = [
+    {
+        'text':'Partnership',
+        'link':'Partnership',
+        'icon': <Diversity1Icon/>
+    },
+
+    {
+        'text':'Careers',
+        'link':'Careers',
+        'icon':<WorkIcon/>
+    },
+    {
+        'text':'Privacy Policy',
+        'link':'Privacy',
+        'icon':<PolicyIcon/>
+    },
+    {
+        'text':'Terms and Conditions',
+        'link':'Terms',
+        'icon': <GavelIcon/>
+    }
+]
+
+function PCPT({icon,text,link}:PCPTType){
     return(
     <div className="flex items-center space-x-4">
         {icon}
         <Link
-        href={`/${text}`}
+        href={link}
         >
           {text}
         </Link>
@@ -45,10 +71,13 @@ export default function Footer(){
             <div className="flex  flex-col space-y-4">
                 
 
-                <PCPT text="Partnership" icon={<Diversity1Icon/>}/>
-                <PCPT text="Careers" icon={<WorkIcon/>}/>
-                <PCPT text="Privacy Policy" icon={<PolicyIcon/>}/>
-                <PCPT text="Terms and Conditions" icon={<GavelIcon/>}/>
+                {
+                    PcptLinks.map((data,index)=>{
+                        return (<PCPT key={index} text={data.text} icon={data.icon} link={data.link}/>)
+                    })
+                }
+
+                
                 
                 
             </div>
@@ -65,7 +94,7 @@ export default function Footer(){
                  <IconButton className="p-3">
                  <FaTiktok className="text-4xl text-black dark:text-white"/>
                  </IconButton>
-                 <p>TikTok</p>
+                 <p>Our TikTok</p>
                  </div>
                  
                  <div>
@@ -78,7 +107,7 @@ export default function Footer(){
                     alt='instagram logo'
                     />
                  </IconButton>
-                 <p className={`${lobster_Two.className}`}>Instagram</p>
+                 <p className={`${lobster_Two.className}`}>Our Instagram</p>
                  </div>
                  
                 
