@@ -23,6 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.className}  antialiased transition-colors duration-200 bg-white dark:bg-black`}>
+       <div className="max-w-screen-2xl mx-auto px-4">
+
       
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           
@@ -32,6 +34,8 @@ export default function RootLayout({
  
          
         </AppRouterCacheProvider>
+
+        </div>
         
         
       

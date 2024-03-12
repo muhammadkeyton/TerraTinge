@@ -88,8 +88,8 @@ function CustomAccordian({icon,question,answer,expanded,handleChange,panel}:Cust
           
           <h4 className="font-semibold dark:text-white">{question}</h4>
         </AccordionSummary>
-        <AccordionDetails>
-          <p className="font-normal text-gray-700 dark:text-gray-300" >
+        <AccordionDetails onClick={handleChange(panel)}>
+          <p className="cursor-pointer font-normal text-gray-700 dark:text-gray-300" >
             {answer}
           </p>
         </AccordionDetails>
@@ -109,9 +109,7 @@ export default function Faqs() {
     setExpanded(isExpanded ? panel : false);
   };
 
-  function closeOnBodyClick(){
-    setExpanded(!expanded)
-  }
+  
 
   return (
  <div id='section2' className="xl:mx-24 mt-20 mb-40">

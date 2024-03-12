@@ -14,6 +14,7 @@ function GifImage({gif,altText}:{gif:string,altText:string}){
         
 
         <Image
+        priority={gif === '/submit.gif'?true:false}
         unoptimized
         src={gif}
         width={250}

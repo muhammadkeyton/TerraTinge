@@ -5,11 +5,12 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import GavelIcon from '@mui/icons-material/Gavel';
 import IconButton from '@mui/material/IconButton';
 import Image from 'next/image';
+import Link from 'next/link'
 
 import { lobster_Two } from "@/app/ui/fonts";
 
 
-import instagram from '/instagram.png';
+
 
 //PCPT is a short word for partners,careers,privacy policy and terms and conditions
 type PCPTType = {
@@ -21,7 +22,12 @@ function PCPT({icon,text}:PCPTType){
     return(
     <div className="flex items-center space-x-4">
         {icon}
-        <a href="">{text}</a>
+        <Link
+        href={`/${text}`}
+        >
+          {text}
+        </Link>
+        
     </div>
     )
 }

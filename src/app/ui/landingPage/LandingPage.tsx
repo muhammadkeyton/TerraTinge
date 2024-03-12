@@ -1,10 +1,10 @@
-'use client';
+
 
 import Divider from '@mui/material/Divider';
 
 
 
-import ThemeSwitch from './Mui Components/ThemeSwitch';
+
 import NavBar from "./components/NavbarSection";
 import HeroSection from "./components/HeroSection";
 import WhyUs from "./components/WhyusSection";
@@ -19,7 +19,7 @@ export default function LandingPage(){
     return(
 
    
-        <div className='max-w-screen-2xl mx-auto px-4'>
+        <div>
             <NavBar />
             <HeroSection/>
             <ContentLineBreak/>
