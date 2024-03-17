@@ -1,5 +1,4 @@
 
-
 import Button from '@mui/material/Button';
 
 
@@ -12,6 +11,9 @@ interface AppPropType{
   icon: any,
   type: string
 }
+
+
+
 
 function AppType({icon,type}:AppPropType){
   return(
@@ -33,7 +35,10 @@ function AppType({icon,type}:AppPropType){
 export default function HeroSection(){
     return (
     
-    <div id='hero' className='flex flex-col  space-y-12 md:space-x-4 md:space-y-0 md:flex-row lg:flex-row pt-28 mb-32 justify-around '>
+    <div 
+    id='hero' 
+    className='flex flex-col  space-y-12 md:space-x-4 md:space-y-0 md:flex-row lg:flex-row pt-28 mb-32 justify-around '
+    >
 
       
 

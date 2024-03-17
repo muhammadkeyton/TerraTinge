@@ -1,5 +1,4 @@
 
-
 import Divider from '@mui/material/Divider';
 
 
@@ -12,23 +11,33 @@ import AppDevelopment from './components/AppDevelopment';
 import Faqs from './components/FaqsSection';
 import Footer from './components/FooterSection';
 
+import { PageWrapper } from '../pageAnimater';
+
 function ContentLineBreak(){
     return  (<Divider className="dark:bg-slate-300" />)
 }
+
+
+
+
 export default function LandingPage(){
     return(
 
    
         <div>
             <NavBar />
-            <HeroSection/>
-            <ContentLineBreak/>
-            <WhyUs />
-            <ContentLineBreak/>
-            <AppDevelopment/>
-            <ContentLineBreak/>
-            <Faqs/>
-            <ContentLineBreak/>
+            <PageWrapper>
+                <HeroSection/>
+                <ContentLineBreak/>
+                <WhyUs />
+                <ContentLineBreak/>
+                <AppDevelopment/>
+                <ContentLineBreak/>
+                <Faqs/>
+                <ContentLineBreak/>
+            </PageWrapper>
+
+            
             <Footer/> 
         </div>
    

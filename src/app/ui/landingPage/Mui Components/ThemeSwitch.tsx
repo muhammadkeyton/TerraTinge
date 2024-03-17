@@ -23,6 +23,7 @@ export default function ThemeSwitch() {
   }, []);
   
   // While the component is not mounted, render null
+
   if (!mounted)  return  <MaterialUISwitch  checked={false}/>;
 
 

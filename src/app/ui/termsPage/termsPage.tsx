@@ -8,6 +8,8 @@ import Divider from '@mui/material/Divider';
 import { montserrat } from "../fonts";
 import Footer from "../landingPage/components/FooterSection";
 
+import { PageWrapper } from '../pageAnimater';
+
 const TermsData = [
     {
       "heading": "Terms of Agreement",
@@ -40,7 +42,7 @@ function Term({heading,text,i}:{heading:string,text:string,i:number}){
     return (
         <>
           <h2 className="text-xl font-semibold mb-4">{`${i}. ${heading}`}</h2>
-          <p className='text-lg max-w-screen-lg  mb-6 '>{text}</p>
+          <p className='text-lg max-w-screen-md  mb-6 '>{text}</p>
         </>
         
 
@@ -50,7 +52,8 @@ function Term({heading,text,i}:{heading:string,text:string,i:number}){
 
 export default function TermsPage(){
     return (
-    <main className="p-4 md:p-8">
+    <PageWrapper>
+    <main className='md:p-8'>
 
         <div className="mt-6 mb-12 flex justify-between items-center">
                 <Link href='/'>
@@ -61,28 +64,35 @@ export default function TermsPage(){
 
                 <ThemeSwitch/>
         </div>
+        
 
-        <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
+        <div className="flex flex-col justify-center items-center">
 
-             <GavelIcon/>
-             <h1 className="text-2xl font-black ">Ultrawave Terms and Conditions</h1>
+            <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
-        </div>
+                <GavelIcon/>
+                <h1 className="text-2xl font-black ">Ultrawave Terms and Conditions</h1>
 
-        <div className='mb-6'>
+            </div>
+
+            <div className='mb-6'>
                 {
                     TermsData.map((data,index)=>{
                         return <Term key={index} heading={data.heading} text={data.text} i={index + 1}/>
                     })
                 }
 
-        </div>
-            
-            <Divider className="dark:bg-slate-300" />
+            </div>
 
-            <Footer/>
+        </div>
+       
+            
+        <Divider className="dark:bg-slate-300" />
+
+        <Footer/>
 
 
     </main>
+    </PageWrapper>
     )
 }

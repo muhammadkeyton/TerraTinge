@@ -71,7 +71,7 @@ function NavBar(props:Props) {
             offset={-100}
             duration={500}
             >  
-             <Button  className={`normal-case p-2 text-sm text-slate-800 dark:text-white`}>
+             <Button  className={`${montserrat.className} normal-case p-2 text-sm text-slate-800 dark:text-white`}>
                   {item}
               </Button>
             </NavScroll>
@@ -85,7 +85,7 @@ function NavBar(props:Props) {
       
      
      
-      <Button variant="contained" startIcon={<PersonIcon  />} className='text-base bg-slate-800 dark:bg-slate-500 text-white hover:bg-slate-700 w-36 h-10 font-app rounded-full normal-case'>Login</Button>
+      <Button variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base bg-slate-800 dark:bg-slate-500 text-white hover:bg-slate-700 w-36 h-10 font-app rounded-full normal-case`}>Login</Button>
       
     
       

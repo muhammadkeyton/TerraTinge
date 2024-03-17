@@ -13,6 +13,9 @@ import ThemeSwitch from '../landingPage/Mui Components/ThemeSwitch';
 import { montserrat } from '@/app/ui/fonts';
 
 
+import { PageWrapper } from '../pageAnimater';
+
+
 
 
 interface CareerValueCardProp{
@@ -63,7 +66,8 @@ function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
 
 export default function CareersPage(){
     return(
-        <main className="p-4 md:p-8">
+    <PageWrapper>
+        <main className="md:p-8">
 
             <div className="mt-6 mb-12 flex justify-between items-center">
                 <Link href='/'>
@@ -106,5 +110,6 @@ export default function CareersPage(){
 
 
         </main>
+        </PageWrapper>
     )
 }

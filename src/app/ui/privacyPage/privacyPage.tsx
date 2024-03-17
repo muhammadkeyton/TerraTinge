@@ -8,6 +8,8 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import Footer from "../landingPage/components/FooterSection";
 import { montserrat } from "../fonts";
 
+import { PageWrapper } from '../pageAnimater';
+
 
 
 const PrivacyPolicyData = [
@@ -41,7 +43,7 @@ function Privacy({heading,text,i}:{heading:string,text:string,i:number}){
     return (
         <>
           <h2 className="text-xl font-semibold mb-4">{`${i}. ${heading}`}</h2>
-          <p className='text-lg max-w-screen-lg  mb-6 '>{text}</p>
+          <p className='text-lg max-w-screen-md  mb-6 '>{text}</p>
         </>
         
 
@@ -50,7 +52,8 @@ function Privacy({heading,text,i}:{heading:string,text:string,i:number}){
 }
 export default function PrivacyPage(){
     return (
-        <main className="p-4 md:p-8">
+      <PageWrapper>
+        <main className="md:p-8">
             <div className="mt-6 mb-12 flex justify-between items-center">
                 <Link href='/'>
                     <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} `}>
@@ -61,21 +64,33 @@ export default function PrivacyPage(){
                 <ThemeSwitch/>
             </div>
 
-            <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
-             <PolicyIcon/>
-             <h1 className="text-2xl font-black ">Ultrawave Privacy Policy</h1>
+            <div className="flex flex-col justify-center items-center">
 
-            </div>
+                <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
-            <div className='mb-6'>
+                <PolicyIcon/>
+                <h1 className="text-2xl font-black ">Ultrawave Privacy Policy</h1>
+
+                </div>
+
+                <div className='mb-6'>
                 {
                     PrivacyPolicyData.map((data,index)=>{
                         return <Privacy key={index} heading={data.heading} text={data.text} i={index + 1}/>
                     })
                 }
 
+                </div>
+
+
+
             </div>
+
+          
+
+
+
             
             <Divider className="dark:bg-slate-300" />
 
@@ -83,5 +98,6 @@ export default function PrivacyPage(){
 
 
         </main>
+        </PageWrapper>
     )
 }
