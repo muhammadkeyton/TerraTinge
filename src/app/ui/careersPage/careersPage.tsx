@@ -1,19 +1,17 @@
 
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Button from '@mui/material/Button';
-import Link from 'next/link';
 import Divider from '@mui/material/Divider';
 import WorkIcon from '@mui/icons-material/Work';
 
 import Footer from '../landingPage/components/FooterSection';
-import ThemeSwitch from '../landingPage/Mui Components/ThemeSwitch';
 
-import { montserrat } from '@/app/ui/fonts';
 
 
 import { PageWrapper } from '../pageAnimater';
+
+
+import NavBar from '../reusableComponents/navbar';
 
 
 
@@ -66,22 +64,16 @@ function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
 
 export default function CareersPage(){
     return(
-    <PageWrapper>
-        <main className="md:p-8">
+    
+        <main className=" lg:px-28">
 
-            <div className="mt-6 mb-12 flex justify-between items-center">
-                <Link href='/'>
-                    <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} `}>
-                        Home
-                    </Button>
-                </Link>
+            
 
-                <ThemeSwitch/>
-            </div>
+            <NavBar/>
             
            
-                 
-            <div  className='flex space-x-4 items-center mb-4 dark:text-white'>
+            <PageWrapper>  
+            <div  className='flex space-x-4 items-center mt-24 mb-4 dark:text-white'>
 
              <WorkIcon/>
              <h1 className="text-3xl font-black">Ultrawave Careers</h1>
@@ -103,6 +95,7 @@ export default function CareersPage(){
 
 
             </div>
+            </PageWrapper> 
             <Divider className="dark:bg-slate-300" />
 
             <Footer/>
@@ -110,6 +103,6 @@ export default function CareersPage(){
 
 
         </main>
-        </PageWrapper>
+       
     )
 }

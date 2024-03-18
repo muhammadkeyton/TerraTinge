@@ -1,14 +1,10 @@
 
-import Link from "next/link";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Button from '@mui/material/Button';
-import ThemeSwitch from "../landingPage/Mui Components/ThemeSwitch";
 import GavelIcon from '@mui/icons-material/Gavel';
 import Divider from '@mui/material/Divider';
-import { montserrat } from "../fonts";
 import Footer from "../landingPage/components/FooterSection";
 
 import { PageWrapper } from '../pageAnimater';
+import NavBar from "../reusableComponents/navbar";
 
 const TermsData = [
     {
@@ -52,21 +48,13 @@ function Term({heading,text,i}:{heading:string,text:string,i:number}){
 
 export default function TermsPage(){
     return (
-    <PageWrapper>
+   
     <main className='md:p-8'>
 
-        <div className="mt-6 mb-12 flex justify-between items-center">
-                <Link href='/'>
-                    <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} `}>
-                        Home
-                    </Button>
-                </Link>
+      <NavBar/>
 
-                <ThemeSwitch/>
-        </div>
-        
-
-        <div className="flex flex-col justify-center items-center">
+       <PageWrapper>
+        <div className="flex flex-col justify-center mt-24 items-center">
 
             <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
@@ -85,6 +73,7 @@ export default function TermsPage(){
             </div>
 
         </div>
+        </PageWrapper>
        
             
         <Divider className="dark:bg-slate-300" />
@@ -93,6 +82,6 @@ export default function TermsPage(){
 
 
     </main>
-    </PageWrapper>
+    
     )
 }

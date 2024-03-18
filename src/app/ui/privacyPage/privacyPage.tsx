@@ -1,16 +1,13 @@
-import Link from "next/link";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Button from '@mui/material/Button';
-import ThemeSwitch from "../landingPage/Mui Components/ThemeSwitch";
+
 import Divider from '@mui/material/Divider';
 import PolicyIcon from '@mui/icons-material/Policy';
 
 import Footer from "../landingPage/components/FooterSection";
-import { montserrat } from "../fonts";
+
 
 import { PageWrapper } from '../pageAnimater';
 
-
+import NavBar from "../reusableComponents/navbar";
 
 const PrivacyPolicyData = [
     {
@@ -52,20 +49,13 @@ function Privacy({heading,text,i}:{heading:string,text:string,i:number}){
 }
 export default function PrivacyPage(){
     return (
-      <PageWrapper>
+      
         <main className="md:p-8">
-            <div className="mt-6 mb-12 flex justify-between items-center">
-                <Link href='/'>
-                    <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} `}>
-                        Home
-                    </Button>
-                </Link>
+            
+            <NavBar/>
 
-                <ThemeSwitch/>
-            </div>
-
-
-            <div className="flex flex-col justify-center items-center">
+            <PageWrapper>
+            <div className="flex flex-col justify-center mt-24 items-center">
 
                 <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
@@ -86,6 +76,7 @@ export default function PrivacyPage(){
 
 
             </div>
+            </PageWrapper>
 
           
 
@@ -98,6 +89,6 @@ export default function PrivacyPage(){
 
 
         </main>
-        </PageWrapper>
+       
     )
 }
