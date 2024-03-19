@@ -73,14 +73,14 @@ export default function CareersPage(){
             
            
             <PageWrapper>  
-            <div  className='flex space-x-4 items-center mt-24 mb-4 dark:text-white'>
+            <div  className='flex space-x-4 items-center mt-24 mb-8 dark:text-white'>
 
              <WorkIcon/>
              <h1 className="text-3xl font-black">Ultrawave Careers</h1>
 
             </div>
             
-            <p className="max-w-screen-sm mb-6 text-lg">We greatly appreciate the opportunity to work with skilled and hardworking engineers to build top-notch applications. However, please be aware that we are not currently looking to grow our team.</p>
+            
 
             <div className='flex flex-col space-y-6 md:space-y-0 md:flex-row md:space-x-6 mb-6'>
 
@@ -95,6 +95,7 @@ export default function CareersPage(){
 
 
             </div>
+            <p className="max-w-screen-sm mb-6 text-lg">We greatly appreciate the opportunity to work with skilled and hardworking engineers to build top-notch applications. <span className='font-medium text-xl'> However please be aware that,we are not currently looking to grow our team.</span></p>
             </PageWrapper> 
             <Divider className="dark:bg-slate-300" />
 
