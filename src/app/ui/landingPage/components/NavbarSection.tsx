@@ -82,10 +82,8 @@ function NavBar(props:Props) {
         ))}
       </div>
       <Divider className="dark:bg-white"/>
-      
-     
-     
-      <Button variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base bg-slate-800 dark:bg-slate-500 text-white hover:bg-slate-700 w-36 h-10 font-app rounded-full normal-case`}>Login</Button>
+
+      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
       
     
       
@@ -102,7 +100,7 @@ function NavBar(props:Props) {
     <Box>
      
       <AppBar className="backdrop-blur-md bg-inherit  border-none outline-none  flex flex-row justify-center">
-          <div className=' flex flex-row px-3 py-4 justify-between items-center bg-inherit w-screen sm:max-w-screen-xl'>
+          <div className=' flex flex-row px-3 py-2.5 justify-between items-center bg-inherit w-screen sm:max-w-screen-xl'>
 
               <NavScroll
               activeClass="active"
@@ -165,7 +163,7 @@ function NavBar(props:Props) {
               
               <div className="hidden lg:block flex-row space-x-4 items-center">
                <ThemeSwitch />
-               <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-800 dark:bg-slate-500 text-white hover:bg-slate-700 w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+               <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
               </div>
               
               

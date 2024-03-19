@@ -13,12 +13,11 @@ function NavBar() {
     return (
   
        
-        <AppBar sx={{paddingLeft:0}} className="backdrop-blur-md bg-inherit border-none outline-none w-full flex flex-row justify-center">
+        <AppBar  className="backdrop-blur-md bg-inherit border-none outline-none w-full flex flex-row justify-center">
             
-            <div className="flex flex-row px-3 py-4 justify-between items-center w-full sm:max-w-screen-xl">
+            <div className="flex flex-row px-3 py-3 justify-between items-center w-full sm:max-w-screen-xl">
                 <Link href='/'>
-                        <Button startIcon={<ArrowBackIcon/>} className={`${montserrat.className} text-slate-800 dark:text-white`}>
-                            Go Back
+                        <Button startIcon={<ArrowBackIcon className="text-3xl"/>} className={`${montserrat.className} text-slate-800 dark:text-white`}>
                         </Button>
                 </Link>
 

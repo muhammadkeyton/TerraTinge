@@ -2,7 +2,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import Divider from '@mui/material/Divider';
-
+import HandshakeIcon from '@mui/icons-material/Handshake';
 import Button from '@mui/material/Button';
 import Footer from '../landingPage/components/FooterSection';
 
@@ -37,7 +37,7 @@ const partnershipData = [
         'text': "Step into an exciting partnership with Ultrawave. Click the 'Become Partner' button below to register and join our mission of creating exceptional apps that redefine user experience. Your journey towards a profitable partnership begins here.",
     },
     {
-        'color':'bg-indigo-950',
+        'color':'bg-indigo-800',
         'icon':<TrendingUpIcon className='text-3xl'/>,
         'heading': 'Maximize Your Earnings through Sharing',
         'text': "Once onboard, request your unique promo code and start advertising our software development services on your social media platforms. For every completed app project that uses your promo code, you earn a 10% share of the project cost. Imagine earning $4000 from a $40,000 project just by sharing your promo code! The more clients you bring, the more money you make. Let's reach potential clients, build extraordinary apps, and prosper together."
@@ -101,7 +101,7 @@ export default function PartnershipPage(){
 
             </div>
 
-            <Button  variant="contained"  className={`${montserrat.className} mb-5 text-base bg-slate-800 dark:bg-slate-500 text-white w-44 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
+            <Button  variant="contained" startIcon={<Diversity1Icon/>}  className={`${montserrat.className} mb-5 text-base bg-slate-950 dark:bg-indigo-950 text-white w-52 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
             </PageWrapper> 
             <Divider className="dark:bg-slate-300" />
 
