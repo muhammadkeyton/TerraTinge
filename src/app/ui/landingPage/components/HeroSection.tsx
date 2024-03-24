@@ -44,8 +44,8 @@ export default function HeroSection(){
 
        <div className='basis-1/2 xl:basis-1/3 flex flex-col space-y-4 '>
         <h1 className="text-lg text-gray-600 dark:text-gray-100 font-medium">Software Development Company</h1>
-        <h4 className='text-2xl dark:text-white font-bold  max-w-sm'>Empowering Digital Transformation with Tailored Software Solutions</h4>
-        <p className='text-base text-gray-700 dark:text-gray-300 font-medium max-w-prose'>We design top-tier mobile and web apps using advanced technology. Our custom software boosts business efficiency and customer engagement. Join us for your digital journey.</p>
+        <h4 className='text-2xl dark:text-white font-bold  max-w-sm'>Elevate Your Digital Experience with Our Exquisite Software Solutions</h4>
+        <p className='text-base text-gray-700 dark:text-gray-300 font-medium max-w-prose'>We architect aesthetically pleasing, user-centric mobile and web applications that are a breeze to navigate. Our bespoke software solutions streamline your business operations and enhance customer satisfaction. Embark on a transformative digital journey with us.</p>
         
         <Button  variant="contained"  className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-36 h-10 font-app rounded-full normal-case`}>Get Started</Button>
         

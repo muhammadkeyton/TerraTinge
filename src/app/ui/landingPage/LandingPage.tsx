@@ -1,6 +1,6 @@
 
 import Divider from '@mui/material/Divider';
-
+import MuiServerProvider from '../MuiProviders/muiServerProvider';
 
 
 
@@ -25,7 +25,10 @@ export default function LandingPage(){
 
    
         <div>
-            <NavBar />
+            <MuiServerProvider>
+             <NavBar />
+            
+            
             <PageWrapper>
                 <HeroSection/>
                 <ContentLineBreak/>
@@ -36,9 +39,11 @@ export default function LandingPage(){
                 <Faqs/>
                 <ContentLineBreak/>
             </PageWrapper>
+            
 
             
-            <Footer/> 
+            <Footer/>
+            </MuiServerProvider>
         </div>
    
     

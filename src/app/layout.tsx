@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import {montserrat} from '@/app/ui/fonts';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+
 
 
 import { Providers } from './providers'
@@ -26,14 +26,14 @@ export default function RootLayout({
        <div className="max-w-screen-2xl mx-auto px-4">
 
       
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+       
           
         <Providers>
           {children}
         </Providers>
  
          
-        </AppRouterCacheProvider>
+        
 
         </div>
         

@@ -6,13 +6,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { montserrat } from '@/app/ui/fonts';
 import ThemeSwitch from '../landingPage/Mui Components/ThemeSwitch';
-
+import MuiServerProvider from '../MuiProviders/muiServerProvider';
 
 function NavBar() {
 
     return (
   
-       
+       <MuiServerProvider>
         <AppBar  className="backdrop-blur-md bg-inherit border-none outline-none w-full flex flex-row justify-center">
             
             <div className="flex flex-row px-3 py-3 justify-between items-center w-full sm:max-w-screen-xl">
@@ -30,6 +30,7 @@ function NavBar() {
             
      
         </AppBar>
+        </MuiServerProvider>
         
         
  

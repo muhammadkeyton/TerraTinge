@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-
+import Link from 'next/link';
 import { Link as NavScroll} from "react-scroll";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -83,8 +83,11 @@ function NavBar(props:Props) {
       </div>
       <Divider className="dark:bg-white"/>
 
-      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
-      
+      <Link
+       href='Authentication/Login'
+      >
+      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} mt-4 text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+      </Link>
     
       
       
@@ -163,7 +166,13 @@ function NavBar(props:Props) {
               
               <div className="hidden lg:block flex-row space-x-4 items-center">
                <ThemeSwitch />
-               <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+
+               <Link
+               href='Authentication/Login'
+               >
+                <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+               </Link>
+              
               </div>
               
               
