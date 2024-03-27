@@ -145,7 +145,7 @@ export default function RegisterPage(){
 
                 <TextField label="Password*" type={showPassword?'text':'password'} variant="outlined"  fullWidth
                  helperText='we recommend you create a password that is atleast 8 characters long and has a combination of upperCase letters & numbers & symbols.this will make your password more secure.'
-                 error
+                 
                 sx={{
 
                     marginBottom:2,

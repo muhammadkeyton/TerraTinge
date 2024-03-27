@@ -1,6 +1,6 @@
 
 import Button from '@mui/material/Button';
-
+import Link from 'next/link';
 
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import ComputerIcon from '@mui/icons-material/Computer';
@@ -47,7 +47,9 @@ export default function HeroSection(){
         <h4 className='text-2xl dark:text-white font-bold  max-w-sm'>Elevate Your Digital Experience with Our Exquisite Software Solutions</h4>
         <p className='text-base text-gray-700 dark:text-gray-300 font-medium max-w-prose'>We architect aesthetically pleasing, user-centric mobile and web applications that are a breeze to navigate. Our bespoke software solutions streamline your business operations and enhance customer satisfaction. Embark on a transformative digital journey with us.</p>
         
+        <Link href="Authentication/Register">
         <Button  variant="contained"  className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-36 h-10 font-app rounded-full normal-case`}>Get Started</Button>
+        </Link>
         
        </div>
       
