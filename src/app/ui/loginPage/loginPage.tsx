@@ -6,7 +6,7 @@ import NavBar from "../reusableComponents/navbar"
 import TextField from '@mui/material/TextField';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Button from '@mui/material/Button';
-
+import Link from 'next/link';
 
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -170,11 +170,11 @@ export default function LoginPage(){
 
                 <MuiServerProvider>
                 <div className="flex flex-col space-y-4 mb-6">
-                    <Button startIcon={<FcGoogle className="text-3xl"/>} variant="contained" className="dark:bg-slate-900 w-full py-2 px-4">Login with Google</Button>
-                    <Button startIcon={<FaTiktok className="text-3xl"/>} variant="contained" className="dark:bg-slate-900 w-full py-2 px-4">Login with TikTok</Button>
-                    <Button startIcon={<FaApple className="text-3xl"/>} variant="contained" className="dark:bg-slate-900 w-full py-2 px-4">Login with Apple</Button>
-                    <Button startIcon={<FaFacebook className="text-3xl text-blue-600 dark:text-white"/>} variant="contained" className="dark:bg-slate-900 w-full py-2 px-4">Login with Facebook</Button>
-                    <Button startIcon={<RiTwitterXLine className="text-3xl "/>} variant="contained" className="dark:bg-slate-900 w-full py-2 px-4">Login with X</Button>
+                    <Button startIcon={<FcGoogle className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Login with Google</Button>
+                    <Button startIcon={<FaTiktok className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Login with TikTok</Button>
+                    <Button startIcon={<FaApple className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Login with Apple</Button>
+                    <Button startIcon={<FaFacebook className="text-3xl text-blue-600 dark:text-white"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Login with Facebook</Button>
+                    <Button startIcon={<RiTwitterXLine className="text-3xl "/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Login with X</Button>
                 </div>
                 
                 </MuiServerProvider>
@@ -186,8 +186,10 @@ export default function LoginPage(){
                 </div>
                     
                     
-                <p className="mb-6">Don&apos;t have an account? <span><a className="text-green-700 dark:text-green-400">Create an account here</a></span></p>
-
+                <Link href="/Authentication/Register"><p className="mb-8 text-indigo-700 dark:text-white">Don&apos;t have an account? Go Create an account
+                        </p>
+                        </Link>
+                
                
             </div>
 
