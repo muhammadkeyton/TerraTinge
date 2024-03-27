@@ -186,7 +186,7 @@ export default function LoginPage(){
                 </div>
                     
                     
-                <p className="mb-6">Don't have an account? <span><a className="text-green-700 dark:text-green-400">Create an account here</a></span></p>
+                <p className="mb-6">Don&apos;t have an account? <span><a className="text-green-700 dark:text-green-400">Create an account here</a></span></p>
 
                
             </div>
