@@ -14,6 +14,7 @@ import { PageWrapper } from '../pageAnimater';
 import NavBar from '../reusableComponents/navbar';
 
 import { montserrat } from '@/app/ui/fonts';
+import MuiServerProvider from '../MuiProviders/muiServerProvider';
 
 
 interface PartnershipCardProp{
@@ -100,8 +101,10 @@ export default function PartnershipPage(){
 
 
             </div>
-
-            <Button  variant="contained" startIcon={<Diversity1Icon/>}  className={`${montserrat.className} mb-5 text-base bg-slate-950 dark:bg-indigo-950 text-white w-52 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
+            <MuiServerProvider>
+             <Button  variant="contained" startIcon={<Diversity1Icon/>}  className={`${montserrat.className} mb-5 text-base bg-slate-950 dark:bg-indigo-950 text-white w-52 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
+            </MuiServerProvider>
+            
             </PageWrapper> 
             <Divider className="dark:bg-slate-300" />
 
