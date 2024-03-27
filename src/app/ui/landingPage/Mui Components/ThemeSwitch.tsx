@@ -96,4 +96,3 @@ const MaterialUISwitch = styled(Switch)(({ checked }) => ({
   }));
 
 
-//   export default MaterialUISwitch;
