@@ -1,6 +1,6 @@
 'use client';
 import { useTheme } from 'next-themes'
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useReducer } from 'react';
 import NavBar from "../reusableComponents/navbar"
 
 import TextField from '@mui/material/TextField';
@@ -8,7 +8,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 
-
+import clsx from 'clsx';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
@@ -16,6 +16,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import MuiServerProvider from "../MuiProviders/muiServerProvider";
 import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+
 import { montserrat } from '@/app/ui/fonts';
 
 import { FcGoogle } from "react-icons/fc";
@@ -25,27 +27,72 @@ import { FaFacebook } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 
 
+import {TextFieldUIReducer,RegisterDataReducer} from './registerReducer';
+import { FieldName } from './registerConstants';
+
+
 export default function RegisterPage(){
     const { resolvedTheme } = useTheme();
-    const [textColor,setTextColor] = useState('');
-    const [borderColor,setBorderColor] = useState('');
-    const [labelFocusedColor,setLabelColor] = useState('');
     const [showPassword,setPassword] = useState(false);
-  
+    
 
+    const initialTextFieldUi = {
+        textColor:'',
+        borderColor:'',
+        labelFocusedColor:'',
+        helperTextColor:'',
+    }
+
+    const initialRegisterData = {
+        firstName:{
+            text:"",
+           
+        },
+        lastName:{
+            text:"",
+            
+        },
+        emailAddress:{
+            text:"",
+            
+        },
+        password:{
+            text:"",
+            helperText:'we recommend you create a password that is atleast 8 characters long and has a combination of upperCase letters & numbers & symbols,this will make your password more secure.'
+            
+        },
+        repeatPassword:{
+            text:"",
+           
+        },
+        submitEnabled:false
+    }
+
+    const [textFieldState, dispatchUI] = useReducer(TextFieldUIReducer,initialTextFieldUi);
+    const [registerData,dispatchData] = useReducer(RegisterDataReducer,initialRegisterData);
+
+    function updateRegisterData(event:React.ChangeEvent<HTMLInputElement>){
+        const {name,value} = event.target;
+        dispatchData({type:"DataFieldUpdate",payload:{field:name as FieldName,text:value}})  
+    }
+
+
+    function validateAllDataBeforeSubmit(){
+        dispatchData({type:"ValidateBeforeSubmit"})
+    }
 
     useEffect(() => {
         if(resolvedTheme == 'light'){
-            setTextColor('#0f172a')
-            setBorderColor('#6366f1')
-            setLabelColor('#6366f1')
-           
+            dispatchUI({type:'textColor',payload:'#0f172a'})
+            dispatchUI({type:'borderColor',payload:'#6366f1'})
+            dispatchUI({type:'labelFocusedColor',payload:'#6366f1'})
+            dispatchUI({type:'helperTextColor',payload:'#4b5563'})
+       
         }else{
-            setTextColor('#fff')
-            setBorderColor('#fff')
-            setLabelColor('#fff')
-            
-            
+            dispatchUI({type:"textColor",payload:'#fff'})
+            dispatchUI({type:'borderColor',payload:'#fff'})
+            dispatchUI({type:'labelFocusedColor',payload:'#fff'})
+            dispatchUI({type:'helperTextColor',payload:'#fff'})    
         }
     }, [resolvedTheme]);
 
@@ -71,22 +118,32 @@ export default function RegisterPage(){
 
                 
                
-                <TextField label="First Name*"  variant="outlined" fullWidth 
+                <TextField label="First Name"  variant="outlined" fullWidth
+                error={registerData.firstName.error}
+                helperText={registerData.firstName.helperText}
+                required
+                inputProps={{
+                    maxLength:45
+                }}
+                autoFocus={true}
+                name='firstName'
+                value={registerData.firstName.text}
+                onChange={updateRegisterData}
                 sx={{
 
                     marginBottom:2,
 
                     '& .MuiOutlinedInput-root':{
-                        color:textColor,
-                        '&.Mui-focused fieldset': {borderColor: borderColor,},
-                        '&:hover fieldset': {borderColor: borderColor,},
+                        color:textFieldState.textColor,
+                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
                     },
                     '& label.Mui-focused': {
-                        color: labelFocusedColor,
+                        color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
                         color: '#71717a',
@@ -94,22 +151,32 @@ export default function RegisterPage(){
                     
                     }}/>
 
-               <TextField label="Last Name*"  variant="outlined" fullWidth 
+               <TextField label="Last Name"  variant="outlined" fullWidth
+                error={registerData.lastName.error}
+                helperText={registerData.lastName.helperText}
+                required
+                inputProps={{
+                    maxLength:45
+                }}
+
+                name='lastName'
+                value={registerData.lastName.text}
+                onChange={updateRegisterData}
                 sx={{
 
                     marginBottom:2,
 
                     '& .MuiOutlinedInput-root':{
-                        color:textColor,
-                        '&.Mui-focused fieldset': {borderColor: borderColor,},
-                        '&:hover fieldset': {borderColor: borderColor,},
+                        color:textFieldState.textColor,
+                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
                     },
                     '& label.Mui-focused': {
-                        color: labelFocusedColor,
+                        color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
                         color: '#71717a',
@@ -119,22 +186,28 @@ export default function RegisterPage(){
 
                 </div>
 
-                <TextField label="Email Address*"  variant="outlined" fullWidth 
+                <TextField label="Email Address"  variant="outlined" fullWidth
+                error={registerData.emailAddress.error}
+                helperText={registerData.emailAddress.helperText}
+                required
+                name='emailAddress'
+                value={registerData.emailAddress.text}
+                onChange={updateRegisterData}
                 sx={{
 
                     marginBottom:2,
 
                     '& .MuiOutlinedInput-root':{
-                        color:textColor,
-                        '&.Mui-focused fieldset': {borderColor: borderColor,},
-                        '&:hover fieldset': {borderColor: borderColor,},
+                        color:textFieldState.textColor,
+                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
                     },
                     '& label.Mui-focused': {
-                        color: labelFocusedColor,
+                        color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
                         color: '#71717a',
@@ -143,29 +216,44 @@ export default function RegisterPage(){
                     }}/>
 
 
-                <TextField label="Password*" type={showPassword?'text':'password'} variant="outlined"  fullWidth
-                 helperText='we recommend you create a password that is atleast 8 characters long and has a combination of upperCase letters & numbers & symbols.this will make your password more secure.'
+                <TextField label="Password" type={showPassword?'text':'password'} variant="outlined"  fullWidth
+                error={registerData.password.error}
+                helperText={registerData.password.helperText}
+                required
+                name='password'
+                value={registerData.password.text}
+                onChange={updateRegisterData}
+
+             
                  
                 sx={{
 
                     marginBottom:2,
-                    
 
+                    '& .MuiFormHelperText-root':{
+                        color:registerData.password.error? null :textFieldState.helperTextColor
+                    },
+                    
                     '& .MuiOutlinedInput-root':{
-                         color:textColor,
-                        '&.Mui-focused fieldset': {borderColor: borderColor,},
-                        '&:hover fieldset': {borderColor: borderColor,},
+                         color:textFieldState.textColor,
+                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
                     },
                     '& label.Mui-focused': {
-                        color: labelFocusedColor,
+                        color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
                         color: '#71717a',
                     },
+
+                    
+
+
+
                 }}
 
                InputProps={{
@@ -196,6 +284,12 @@ export default function RegisterPage(){
 
 
           <TextField label="Repeat Password*" type={showPassword?'text':'password'} variant="outlined"  fullWidth
+                error={registerData.repeatPassword.error}
+                helperText={registerData.repeatPassword.helperText}
+                required
+                name='repeatPassword'
+                value={registerData.repeatPassword.text}
+                onChange={updateRegisterData}
                 
                 sx={{
 
@@ -203,16 +297,16 @@ export default function RegisterPage(){
                     
 
                     '& .MuiOutlinedInput-root':{
-                         color:textColor,
-                        '&.Mui-focused fieldset': {borderColor: borderColor,},
-                        '&:hover fieldset': {borderColor: borderColor,},
+                         color:textFieldState.textColor,
+                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
                     },
                     '& label.Mui-focused': {
-                        color: labelFocusedColor,
+                        color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
                         color: '#71717a',
@@ -247,7 +341,17 @@ export default function RegisterPage(){
 
             
                 <MuiServerProvider>
-                <Button  variant="contained" startIcon={<LockIcon className='text-2xl'/>} className={`mt-4 ${montserrat.className}  text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-full h-10 font-app rounded-full normal-case`}>Create Account</Button>
+                <Button disabled={!registerData.submitEnabled} onClick={validateAllDataBeforeSubmit}  variant="contained" startIcon={registerData.submitEnabled?<LockOpenIcon className='text-2xl'/> :<LockIcon className='text-2xl'/>} 
+                    className={
+                        clsx(
+                            `mt-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
+                            {
+                                'bg-slate-950 dark:bg-indigo-950 text-white':registerData.submitEnabled == true,
+                                'bg-inherit': registerData.submitEnabled == false
+                            }
+                        )
+                   
+                    }>Create Account</Button>
                 </MuiServerProvider>
 
                     

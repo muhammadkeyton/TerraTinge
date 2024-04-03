@@ -1,0 +1,1 @@
+export type FieldName = 'firstName' | 'lastName' | 'emailAddress' | 'password' | 'repeatPassword';
