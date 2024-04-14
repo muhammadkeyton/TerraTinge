@@ -65,7 +65,8 @@ export default function RegisterPage(){
             text:"",
            
         },
-        submitEnabled:false
+        submitEnabled:false,
+        errorIds:[]
     }
 
     const [textFieldState, dispatchUI] = useReducer(TextFieldUIReducer,initialTextFieldUi);

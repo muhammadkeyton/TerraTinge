@@ -46,7 +46,8 @@ type RegisterDataState = {
         error?:boolean,
         helperText?:string
     },
-    submitEnabled:boolean
+    submitEnabled:boolean,
+    errorIds:Array<string>
 
 
 } & {[key:string]:any}
@@ -71,15 +72,15 @@ function validateFieldData({field,text}:{field:string,text:string}):{updatedText
 
         }
         case 'emailAddress':{
-            return {updatedText:text}
+            return {updatedText:text.trim()}
         }
 
         case 'password':{
-            return {updatedText:text}
+            return {updatedText:text.trim()}
         }
 
         case 'repeatPassword':{
-            return {updatedText:text}
+            return {updatedText:text.trim()}
         }
 
         
@@ -104,7 +105,7 @@ function allFieldsHaveData(state:RegisterDataState):boolean{
     return true;
 }
 
-
+//validate all fields check if email is valid,if passwords match and return an array of all errors to be fed to the state
 function validateAllFields (state:RegisterDataState):Array<{field:string,error:boolean,helperText:string}>{
     let result:Array<{field:string,error:boolean,helperText:string}> = Object.keys(state).map(field => ({field, error: false, helperText: ''}));
 
@@ -200,6 +201,11 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
                 break
             }
 
+            case 'errorIds':{
+                break
+            }
+
+
             default:{
                 throw Error('unknown field')
             }
@@ -208,11 +214,15 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
 
     }
 
-    return result.slice(0, -1);
+    console.log(result)
+
+    return result.slice(0, -2);
 
 
 }
 
+
+//our register state reducer that gives us back a state
 export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataAction):RegisterDataState{
     if(action.type == 'DataFieldUpdate'){
         
@@ -241,7 +251,7 @@ export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataA
     }else if (action.type == 'ValidateBeforeSubmit') {
         const results = validateAllFields(state);
         
-        let newState = {...state}; 
+         let newState = {...state}; 
 
         for (let result of results) {
             const {field, error, helperText} = result; 
