@@ -28,14 +28,19 @@ export default function ChatTextBox({ setOpenChat, setStartChat }) {
     { author: 'customer', content: 'I need a website for my business.' },
   ]);
 
-  const messageRef = useRef(null);
+  const chatInputRef = useRef(null);
+  const chatBoxRef = useRef(null);
 
   function sendMessage() {
-    messageRef!.current.value = messageRef!.current.value.trim();
-    if (messageRef!.current.value === '') return;
-    setChatHistory((cur) => [...cur, { author: 'customer', content: messageRef!.current.value }]);
-    messageRef!.current.value = '';
-    messageRef!.current.focus();
+    chatInputRef!.current.value = chatInputRef!.current.value.trim();
+    if (chatInputRef!.current.value === '') return;
+    setChatHistory((cur) => [...cur, { author: 'customer', content: chatInputRef!.current.value }]);
+    chatInputRef!.current.value = '';
+    chatInputRef!.current.focus();
+    console.log(chatBoxRef.current);
+    setTimeout(() => {
+      chatBoxRef!.current.scrollTop = chatBoxRef!.current.scrollHeight - chatBoxRef!.current.clientHeight;
+    }, 200);
   }
 
   return (
@@ -43,7 +48,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }) {
       <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold'>UltraWave Chat</h2>
       </div>
-      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 overflow-scroll'>
+      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 overflow-scroll' ref={chatBoxRef}>
         {chatHistory.map((text, i) =>
           text.author === 'ultrawave' ? (
             <UltraWaveText key={i}>
@@ -62,7 +67,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }) {
             aria-label='empty textarea'
             placeholder='I need help with...'
             className='border-2 rounded border-black text-black bg-white p-1 resize-none pr-20 w-full'
-            ref={messageRef}
+            ref={chatInputRef}
           />
           <Button className='absolute right-0 bottom-0 bg-black text-white p-2 h-8 flex items-center justify-center' onClick={() => setTimeout(sendMessage, 200)}>
             <SendIcon />
