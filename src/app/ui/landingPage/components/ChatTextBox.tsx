@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, ReactNode, RefObject, ReactElement } from 'react';
+import React, { useState, useRef, ReactNode, RefObject, ReactElement, useEffect } from 'react';
 
 import { Button, IconButton, FormControl } from '@mui/material';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
@@ -31,16 +31,32 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
   const chatInputRef = React.useRef<HTMLTextAreaElement>(null);
   const chatBoxRef = React.useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    chatInputRef!.current!.focus();
+  }, []);
+
+  function handleKeyPress(event: any) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setTimeout(sendMessage, 200);
+    }
+  }
+
   function sendMessage() {
     chatInputRef!.current!.value = chatInputRef!.current!.value.trim();
     if (chatInputRef!.current!.value === '') return;
-    setChatHistory((cur) => [...cur, { author: 'customer', content: chatInputRef!.current!.value }]);
+    // console.log(chatInputRef!.current!.value);
+    updateChatData(chatInputRef!.current!.value);
     chatInputRef!.current!.value = '';
     chatInputRef!.current!.focus();
-    console.log(chatBoxRef.current);
+    // console.log(chatBoxRef.current);
     setTimeout(() => {
       chatBoxRef!.current!.scrollTop = chatBoxRef!.current!.scrollHeight - chatBoxRef!.current!.clientHeight;
     }, 200);
+  }
+
+  function updateChatData(text: string) {
+    setChatHistory((cur) => [...cur, { author: 'customer', content: text }]);
   }
 
   return (
@@ -68,6 +84,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
             placeholder='I need help with...'
             className='border-2 rounded border-black text-black bg-white p-1 resize-none pr-20 w-full'
             ref={chatInputRef}
+            onKeyDown={handleKeyPress}
           />
           <Button className='absolute right-0 bottom-0 bg-black text-white p-2 h-8 flex items-center justify-center' onClick={() => setTimeout(sendMessage, 200)}>
             <SendIcon />
