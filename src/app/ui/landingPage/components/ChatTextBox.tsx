@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 function UltraWaveText({ children }: { children: ReactNode }) {
   return (
-    <div className='text-black bg-gray-200 p-2 rounded before:block before:absolute before:top-1.5 before:-left-1 before:h-2 before:w-2 before:rotate-45 before:bg-gray-200 before:z-20 z-40 relative w-fit max-w-3/4'>
+    <div className='text-black bg-gray-200 p-2 rounded before:block before:absolute before:top-1.5 before:-left-1 before:h-2 before:w-2 before:rotate-45 before:bg-gray-200 before:z-20 z-40 relative w-fit max-w-64'>
       {children}
     </div>
   );
@@ -16,7 +16,7 @@ function UltraWaveText({ children }: { children: ReactNode }) {
 
 function CustomerText({ children }: { children: ReactNode }) {
   return (
-    <div className='self-end text-black bg-blue-200 p-2 rounded before:block before:absolute before:top-1.5 before:-right-1 before:h-2 before:w-2 before:rotate-45 before:bg-blue-200 before:z-20 z-40 relative w-fit max-w-3/4'>
+    <div className='self-end text-black bg-blue-200 p-2 rounded before:block before:absolute before:top-1.5 before:-right-1 before:h-2 before:w-2 before:rotate-45 before:bg-blue-200 before:z-20 z-40 relative w-fit max-w-64'>
       {children}
     </div>
   );
