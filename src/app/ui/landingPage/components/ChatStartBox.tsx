@@ -22,7 +22,7 @@ export default function ChatStartBox({ setOpenChat, setStartChat }: { setOpenCha
           Start Chat
         </Button>
       </div>
-      <IconButton className='absolute top-1 right-1 p-3' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
+      <IconButton className='absolute top-1 right-1 p-3 text-white' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
         <CloseIcon />
       </IconButton>
     </div>

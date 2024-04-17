@@ -48,7 +48,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
       <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold'>UltraWave Chat</h2>
       </div>
-      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 min-h-24 overflow-scroll' ref={chatBoxRef}>
+      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 min-h-24 overflow-y-scroll' ref={chatBoxRef}>
         {chatHistory.map((text, i) =>
           text.author === 'ultrawave' ? (
             <UltraWaveText key={i}>
@@ -74,7 +74,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
           </Button>
         </FormControl>
       </div>
-      <IconButton className='absolute top-1 right-1 p-3' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
+      <IconButton className='absolute top-1 right-1 p-3 text-white' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
         <CloseIcon />
       </IconButton>
     </div>
