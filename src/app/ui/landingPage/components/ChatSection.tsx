@@ -13,7 +13,7 @@ export default function ChatSection() {
   const [startChat, setStartChat] = useState(false);
 
   return (
-    <div className='z-10 fixed bottom-5 right-5 flex flex-col gap-5 max-w-64'>
+    <div className='z-10 fixed bottom-5 right-5 flex flex-col gap-5 max-w-96'>
       {/* Chat box */}
       {openChat && (startChat ? <ChatTextBox setOpenChat={setOpenChat} setStartChat={setStartChat} /> : <ChatStartBox setOpenChat={setOpenChat} setStartChat={setStartChat} />)}
 
