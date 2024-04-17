@@ -9,8 +9,8 @@ import ChatStartBox from './ChatStartBox';
 import ChatTextBox from './ChatTextBox';
 
 export default function ChatSection() {
-  const [openChat, setOpenChat] = useState(false);
-  const [startChat, setStartChat] = useState(false);
+  const [openChat, setOpenChat] = useState<boolean>(false);
+  const [startChat, setStartChat] = useState<boolean>(false);
 
   return (
     <div className='z-10 fixed bottom-5 right-5 flex flex-col gap-5 max-w-96'>

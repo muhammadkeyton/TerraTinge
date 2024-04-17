@@ -1,12 +1,12 @@
 'use client';
-import { useState, useRef } from 'react';
+import React, { useState, useRef, ReactNode, RefObject, ReactElement } from 'react';
 
-import { Button, IconButton, TextField, FormControl } from '@mui/material';
+import { Button, IconButton, FormControl } from '@mui/material';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 
-function UltraWaveText({ children }) {
+function UltraWaveText({ children }: { children: ReactNode }) {
   return (
     <div className='text-black bg-gray-200 p-2 rounded before:block before:absolute before:top-1.5 before:-left-1 before:h-2 before:w-2 before:rotate-45 before:bg-gray-200 before:z-20 z-40 relative w-fit max-w-3/4'>
       {children}
@@ -14,7 +14,7 @@ function UltraWaveText({ children }) {
   );
 }
 
-function CustomerText({ children }) {
+function CustomerText({ children }: { children: ReactNode }) {
   return (
     <div className='self-end text-black bg-blue-200 p-2 rounded before:block before:absolute before:top-1.5 before:-right-1 before:h-2 before:w-2 before:rotate-45 before:bg-blue-200 before:z-20 z-40 relative w-fit max-w-3/4'>
       {children}
@@ -22,24 +22,24 @@ function CustomerText({ children }) {
   );
 }
 
-export default function ChatTextBox({ setOpenChat, setStartChat }) {
+export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat: Function; setStartChat: Function }) {
   const [chatHistory, setChatHistory] = useState([
     { author: 'ultrawave', content: 'Hello, how can we help you today?' },
-    { author: 'customer', content: 'I need a website for my business.' },
+    // { author: 'customer', content: 'I need a website for my business.' },
   ]);
 
-  const chatInputRef = useRef(null);
-  const chatBoxRef = useRef(null);
+  const chatInputRef = React.useRef<HTMLTextAreaElement>(null);
+  const chatBoxRef = React.useRef<HTMLDivElement>(null);
 
   function sendMessage() {
-    chatInputRef!.current.value = chatInputRef!.current.value.trim();
-    if (chatInputRef!.current.value === '') return;
-    setChatHistory((cur) => [...cur, { author: 'customer', content: chatInputRef!.current.value }]);
-    chatInputRef!.current.value = '';
-    chatInputRef!.current.focus();
+    chatInputRef!.current!.value = chatInputRef!.current!.value.trim();
+    if (chatInputRef!.current!.value === '') return;
+    setChatHistory((cur) => [...cur, { author: 'customer', content: chatInputRef!.current!.value }]);
+    chatInputRef!.current!.value = '';
+    chatInputRef!.current!.focus();
     console.log(chatBoxRef.current);
     setTimeout(() => {
-      chatBoxRef!.current.scrollTop = chatBoxRef!.current.scrollHeight - chatBoxRef!.current.clientHeight;
+      chatBoxRef!.current!.scrollTop = chatBoxRef!.current!.scrollHeight - chatBoxRef!.current!.clientHeight;
     }, 200);
   }
 
@@ -48,7 +48,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }) {
       <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold'>UltraWave Chat</h2>
       </div>
-      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 overflow-scroll' ref={chatBoxRef}>
+      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 min-h-24 overflow-scroll' ref={chatBoxRef}>
         {chatHistory.map((text, i) =>
           text.author === 'ultrawave' ? (
             <UltraWaveText key={i}>
