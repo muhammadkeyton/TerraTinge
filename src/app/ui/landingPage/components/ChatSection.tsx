@@ -13,14 +13,14 @@ export default function ChatSection() {
   const [startChat, setStartChat] = useState<boolean>(false);
 
   return (
-    <div className='w-screen max-w-screen-2xl mx-auto px-10 fixed bottom-0 right-0 left-0 top-32 pointer-events-none'>
-      <div className='z-50 flex flex-col justify-end gap-5 max-w-md ml-auto px-10 absolute bottom-5 right-0 left-0 h-full'>
+    <div className='w-screen max-w-screen-2xl mx-auto fixed bottom-0 right-0 left-0 top-20 sm:top-32 pointer-events-none'>
+      <div className='z-50 flex flex-col justify-end gap-5 max-w-md ml-auto sm:px-10 absolute bottom-0 right-0 left-0 sm:bottom-5 h-full'>
         {/* Chat box */}
         {openChat && (startChat ? <ChatTextBox setOpenChat={setOpenChat} setStartChat={setStartChat} /> : <ChatStartBox setOpenChat={setOpenChat} setStartChat={setStartChat} />)}
 
         {/* Chat button */}
         <Button
-          className='group bg-black text-white dark:text-black dark:bg-white flex rounded-full self-end pointer-events-auto'
+          className={`group bg-black text-white dark:text-black dark:bg-white flex rounded-full self-end pointer-events-auto mx-5 sm:mx-0 mb-5 sm:mb-0 ${openChat ? 'hidden' : ''}`}
           onClick={() => setTimeout(() => setOpenChat((cur) => !cur), 200)}
         >
           {!openChat && (
