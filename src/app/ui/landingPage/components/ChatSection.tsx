@@ -13,20 +13,22 @@ export default function ChatSection() {
   const [startChat, setStartChat] = useState<boolean>(false);
 
   return (
-    <div className='z-10 fixed bottom-5 right-5 flex flex-col gap-5 max-w-96'>
-      {/* Chat box */}
-      {openChat && (startChat ? <ChatTextBox setOpenChat={setOpenChat} setStartChat={setStartChat} /> : <ChatStartBox setOpenChat={setOpenChat} setStartChat={setStartChat} />)}
+    <div className='w-screen max-w-screen-2xl mx-auto px-10 fixed bottom-5 right-5 left-5'>
+      <div className='z-10 flex flex-col gap-5 max-w-xl ml-auto relative'>
+        {/* Chat box */}
+        {openChat && (startChat ? <ChatTextBox setOpenChat={setOpenChat} setStartChat={setStartChat} /> : <ChatStartBox setOpenChat={setOpenChat} setStartChat={setStartChat} />)}
 
-      {/* Chat button */}
-      <Button className='group bg-black text-white dark:text-black dark:bg-white flex rounded-full self-end' onClick={() => setTimeout(() => setOpenChat((cur) => !cur), 200)}>
-        {!openChat && (
-          <div className='text-sm text-left w-0 h-0 overflow-hidden group-hover:pl-7 group-hover:w-auto group-hover:h-auto flex flex-col gap-1 justify-center transition-all'>
-            <h2 className='font-bold'>Need help?</h2>
-            <p>Click to chat with us!</p>
-          </div>
-        )}
-        <div className='p-5 text-2xl md:text-3xl'>{openChat ? <CloseIcon fontSize='inherit' /> : <ChatIcon fontSize='inherit' />}</div>
-      </Button>
+        {/* Chat button */}
+        <Button className='group bg-black text-white dark:text-black dark:bg-white flex rounded-full self-end' onClick={() => setTimeout(() => setOpenChat((cur) => !cur), 200)}>
+          {!openChat && (
+            <div className='text-sm text-left w-0 h-0 overflow-hidden group-hover:pl-7 group-hover:w-auto group-hover:h-auto flex flex-col gap-1 justify-center transition-all'>
+              <h2 className='font-bold'>Need help?</h2>
+              <p>Click to chat with us!</p>
+            </div>
+          )}
+          <div className='p-5 text-2xl md:text-3xl'>{openChat ? <CloseIcon fontSize='inherit' /> : <ChatIcon fontSize='inherit' />}</div>
+        </Button>
+      </div>
     </div>
   );
 }
