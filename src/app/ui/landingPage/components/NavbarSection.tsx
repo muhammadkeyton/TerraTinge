@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import Link from 'next/link';
 import { Link as NavScroll} from "react-scroll";
 import AppBar from '@mui/material/AppBar';
@@ -20,12 +20,10 @@ import ThemeSwitch from '@/app/ui/landingPage/Mui Components/ThemeSwitch';
 import { montserrat } from '@/app/ui/fonts';
 const drawerWidth = 260;
 const navItems = ['Why choose us','App Development','Faqs'];
-interface Props {
-  window?: () => Window;
-}
-function NavBar(props:Props) {
-  const { window } = props;
+
+function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
   
 
   
@@ -33,6 +31,24 @@ function NavBar(props:Props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+
+    //closing side nav if window resizes to a larger screen
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      if (window.innerWidth >= 1024) {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   
 
@@ -108,7 +124,7 @@ function NavBar(props:Props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = typeof window !== undefined ? () => window.document.body : undefined;
 
   
 
@@ -205,7 +221,7 @@ function NavBar(props:Props) {
         <Drawer
           container={container}
           variant="temporary"
-          open={mobileOpen}
+          open={(mobileOpen == true && windowWidth < 1024)?true:false}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
