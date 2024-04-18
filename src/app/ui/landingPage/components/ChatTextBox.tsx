@@ -60,11 +60,11 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
   }
 
   return (
-    <div className=' bg-white w-full  rounded-2xl overflow-hidden shadow-lg'>
+    <div className=' bg-white w-full  rounded-2xl overflow-hidden shadow-lg relative h-full pointer-events-auto flex flex-col'>
       <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold'>UltraWave Chat</h2>
       </div>
-      <div className='p-2 text-sm flex flex-col gap-2 max-h-48 min-h-24 overflow-y-scroll' ref={chatBoxRef}>
+      <div className='py-4 px-2 text-sm flex flex-col gap-2 overflow-y-scroll flex-grow' ref={chatBoxRef}>
         {chatHistory.map((text, i) =>
           text.author === 'ultrawave' ? (
             <UltraWaveText key={i}>

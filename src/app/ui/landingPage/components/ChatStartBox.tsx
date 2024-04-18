@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export default function ChatStartBox({ setOpenChat, setStartChat }: { setOpenChat: Function; setStartChat: Function }) {
   return (
-    <div className=' bg-white w-full  rounded-2xl overflow-hidden shadow-lg'>
+    <div className=' bg-white w-full  rounded-2xl overflow-hidden shadow-lg relative pointer-events-auto'>
       <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold w-3/4'>Welcome to Ultrawave Chat</h2>
         <p className='text-sm'>Let us know how we can help!</p>
