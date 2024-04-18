@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
 
 import ThemeSwitch from '@/app/ui/landingPage/Mui Components/ThemeSwitch';
 import { montserrat } from '@/app/ui/fonts';
@@ -82,12 +83,24 @@ function NavBar(props:Props) {
         ))}
       </div>
       <Divider className="dark:bg-white"/>
+      
 
+      <div className="flex flex-col space-y-6 sm:space-y-0 sm:flex-row sm:space-x-3.5 items-center justify-center mt-4 ">
+
+      
       <Link
        href='Authentication/Login'
       >
-      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} mt-4 text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className}  text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
       </Link>
+
+      <Link
+          href='Authentication/Register'
+          >
+          <Button  variant="outlined" startIcon={<PeopleIcon  />} className={`${montserrat.className} text-base text-center border-2 border-slate-600 dark:border-white text-black dark:text-white  w-32 h-10 font-app rounded-full normal-case`}>Register</Button>
+      </Link>
+
+      </div>
     
       
       
@@ -171,6 +184,12 @@ function NavBar(props:Props) {
                href='Authentication/Login'
                >
                 <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+               </Link>
+               
+               <Link
+               href='Authentication/Register'
+               >
+                <Button  variant="outlined" startIcon={<PeopleIcon  />} className={`${montserrat.className} text-base text-center border-2 border-slate-600 dark:border-white text-black dark:text-white  w-32 h-10 font-app rounded-full normal-case`}>Register</Button>
                </Link>
               
               </div>
