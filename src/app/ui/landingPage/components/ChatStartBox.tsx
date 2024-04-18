@@ -22,6 +22,9 @@ export default function ChatStartBox({ setOpenChat, setStartChat }: { setOpenCha
           Start Chat
         </Button>
       </div>
+      <div>
+        <p className='text-gray-400 pb-2 text-center text-sm'>Powered by UltraWave</p>
+      </div>
       <IconButton className='absolute top-1 right-1 p-3 text-white' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
         <CloseIcon />
       </IconButton>
