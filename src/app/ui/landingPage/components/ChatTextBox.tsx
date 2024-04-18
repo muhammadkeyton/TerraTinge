@@ -68,25 +68,25 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
         {chatHistory.map((text, i) =>
           text.author === 'ultrawave' ? (
             <UltraWaveText key={i}>
-              <p>{text.content}</p>
+              <p className='overflow-hidden'>{text.content}</p>
             </UltraWaveText>
           ) : (
             <CustomerText key={i}>
-              <p>{text.content}</p>
+              <p className='overflow-hidden'>{text.content}</p>
             </CustomerText>
           ),
         )}
       </div>
-      <div className='p-4 text-sm flex flex-col gap-6'>
-        <FormControl fullWidth className='relative flex flex-row items-center mr-2'>
+      <div className='p-2 sm:p-4 text-sm flex flex-col gap-6'>
+        <FormControl fullWidth className='flex flex-row items-center mr-2 gap-2'>
           <TextareaAutosize
             aria-label='empty textarea'
             placeholder='I need help with...'
-            className='border-2 rounded border-black text-black bg-white p-1 resize-none pr-20 w-full'
+            className='border-2 rounded border-black text-black bg-white p-1 resize-none w-full'
             ref={chatInputRef}
             onKeyDown={handleKeyPress}
           />
-          <Button className='absolute right-0 bottom-0 bg-black text-white p-2 h-8 flex items-center justify-center' onClick={() => setTimeout(sendMessage, 200)}>
+          <Button className='bg-black text-white p-2 h-8 flex items-center justify-center self-end' onClick={() => setTimeout(sendMessage, 200)}>
             <SendIcon />
           </Button>
         </FormControl>
