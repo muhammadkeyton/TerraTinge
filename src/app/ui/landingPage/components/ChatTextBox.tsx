@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 function UltraWaveText({ children }: { children: ReactNode }) {
   return (
-    <div className='text-black bg-gray-200 p-2 rounded before:block before:absolute before:top-1.5 before:-left-1 before:h-2 before:w-2 before:rotate-45 before:bg-gray-200 before:z-20 z-40 relative w-fit max-w-64'>
+    <div className='text-black bg-gray-200 dark:bg-gray-300 p-2 rounded before:block before:absolute before:top-1.5 before:-left-1 before:h-2 before:w-2 before:rotate-45 before:bg-gray-200 dark:before:bg-gray-300 before:z-20 z-40 relative w-fit max-w-64'>
       {children}
     </div>
   );
@@ -16,7 +16,7 @@ function UltraWaveText({ children }: { children: ReactNode }) {
 
 function CustomerText({ children }: { children: ReactNode }) {
   return (
-    <div className='self-end text-black bg-blue-200 p-2 rounded before:block before:absolute before:top-1.5 before:-right-1 before:h-2 before:w-2 before:rotate-45 before:bg-blue-200 before:z-20 z-40 relative w-fit max-w-64'>
+    <div className='self-end text-black bg-blue-200 dark:bg-blue-300 p-2 rounded before:block before:absolute before:top-1.5 before:-right-1 before:h-2 before:w-2 before:rotate-45 before:bg-blue-200 dark:before:bg-blue-300 before:z-20 z-40 relative w-fit max-w-64'>
       {children}
     </div>
   );
@@ -60,8 +60,8 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
   }
 
   return (
-    <div className=' bg-white w-full  rounded-2xl overflow-hidden shadow-lg relative h-full pointer-events-auto flex flex-col'>
-      <div className='text-white bg-gray-800 p-4 flex flex-col gap-2'>
+    <div className=' bg-white w-full dark:text-white dark:bg-black rounded-2xl overflow-hidden shadow-lg dark:shadow-lg-white relative h-full pointer-events-auto flex flex-col'>
+      <div className='text-white dark:text-black dark:bg-white bg-gray-800 p-4 flex flex-col gap-2'>
         <h2 className='text-xl font-bold'>UltraWave Chat</h2>
       </div>
       <div className='py-4 px-2 text-sm flex flex-col gap-2 overflow-y-scroll flex-grow' ref={chatBoxRef}>
@@ -82,11 +82,11 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
           <TextareaAutosize
             aria-label='empty textarea'
             placeholder='I need help with...'
-            className='border-2 rounded border-black text-black bg-white p-1 resize-none w-full'
+            className='border-2 rounded border-black text-black bg-white dark:border-white dark:text-white dark:bg-black p-1 resize-none w-full'
             ref={chatInputRef}
             onKeyDown={handleKeyPress}
           />
-          <Button className='bg-black text-white p-2 h-8 flex items-center justify-center self-end' onClick={() => setTimeout(sendMessage, 200)}>
+          <Button className='bg-black text-white dark:bg-white dark:text-black p-2 h-8 flex items-center justify-center self-end' onClick={() => setTimeout(sendMessage, 200)}>
             <SendIcon />
           </Button>
         </FormControl>
@@ -94,7 +94,7 @@ export default function ChatTextBox({ setOpenChat, setStartChat }: { setOpenChat
       <div>
         <p className='text-gray-400 pb-2 text-center text-sm'>Powered by UltraWave</p>
       </div>
-      <IconButton className='absolute top-1 right-1 p-3 text-white' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
+      <IconButton className='absolute top-1 right-1 p-3 text-white dark:text-black' onClick={() => setTimeout(() => setOpenChat(false), 200)}>
         <CloseIcon />
       </IconButton>
     </div>

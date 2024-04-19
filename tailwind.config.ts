@@ -20,6 +20,9 @@ const config: Config = {
       spacing: {
         '128': '32rem',
       },
+      boxShadow: {
+        'lg-white': '0 10px 15px -3px rgb(255 255 255 / 0.3), 0 4px 6px -4px rgb(255 255 255 / 0.3)',
+      },
     },
   },
   plugins: [],
