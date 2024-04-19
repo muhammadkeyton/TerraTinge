@@ -35,7 +35,7 @@ export default function RegisterPage(){
     const { resolvedTheme } = useTheme();
     const [showPassword,setPassword] = useState(false);
     
-
+   //initial text field state
     const initialTextFieldUi = {
         textColor:'',
         borderColor:'',
@@ -68,8 +68,13 @@ export default function RegisterPage(){
         submitEnabled:false,
         errorIds:[]
     }
-
+    
+    //textfield ui reducer state
     const [textFieldState, dispatchUI] = useReducer(TextFieldUIReducer,initialTextFieldUi);
+
+
+
+
     const [registerData,dispatchData] = useReducer(RegisterDataReducer,initialRegisterData);
 
     function updateRegisterData(event:React.ChangeEvent<HTMLInputElement>){

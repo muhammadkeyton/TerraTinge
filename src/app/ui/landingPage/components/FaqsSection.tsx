@@ -16,7 +16,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 
-const faqsData = [
+const faqsDataFirstBatch = [
     {
         "icon": <DesignServicesIcon/>,
         "question": "What services do you offer?",
@@ -39,28 +39,34 @@ const faqsData = [
         "question": "What is your pricing model? Are there any hidden costs?",
         "answer": "Our pricing model is flexible and is determined by the complexity and scope of your project. Typically, projects range from $4000 to $15000 + tax. We believe in transparency and assure you that there are no hidden costs. We charge a third of the project cost upfront, with the balance due upon your satisfaction with the completed project."
     },
-    { 
-        "icon": <CodeIcon/>,
-        "question": "What kind of support do you offer after the Development?",
-        "answer": "Post-launch, we offer three months of free maintenance. After this period, you can opt for our monthly maintenance service at 10% of the total development cost. Alternatively, you can choose other developers for maintenance since you own the app."
-    },
-    {   "icon":<LockIcon/>,
-        "question": "How do you handle data security and privacy?",
-        "answer": "Data security and privacy are paramount in our development process. We adhere to industry-standard security practices and regulations to safeguard your data. We implement robust security measures to prevent unauthorized access and ensure the confidentiality of your data."
-    },
-    {   "icon": <EditNoteIcon/>,
-        "question": "Can I make changes to the project once it has started?",
-        "answer": "Yes, we accommodate changes during the development process. However, if these changes necessitate additional development time compared to the original plan, we will charge an additional 5% of the project cost to your remaining balance."
-    },
-    {   "icon":<InsertEmoticonIcon/>,
-        "question": "What happens if I'm not satisfied with the final product?",
-        "answer": "Your satisfaction is our priority. We involve you in every step of the development process, requiring your review and approval for each completed feature before proceeding. This collaborative approach ensures that you are satisfied with the final product, as you have guided its creation."
-    },
-    {   "icon": <CopyrightIcon />,
-        "question": "Do I own the intellectual property of the developed software?",
-        "answer": "Absolutely, you retain full ownership of the app and its source code. We respect your rights and maintain strict confidentiality, never disclosing our clients' projects on our website."
-    }
+    
 ]
+
+const faqsDataSecondBatch = [
+  { 
+      "icon": <CodeIcon/>,
+      "question": "What kind of support do you offer after the Development?",
+      "answer": "Post-launch, we offer three months of free maintenance. After this period, you can opt for our monthly maintenance service at 10% of the total development cost. Alternatively, you can choose other developers for maintenance since you own the app."
+  },
+  {   "icon":<LockIcon/>,
+      "question": "How do you handle data security and privacy?",
+      "answer": "Data security and privacy are paramount in our development process. We adhere to industry-standard security practices and regulations to safeguard your data. We implement robust security measures to prevent unauthorized access and ensure the confidentiality of your data."
+  },
+  {   "icon": <EditNoteIcon/>,
+      "question": "Can I make changes to the project once it has started?",
+      "answer": "Yes, we accommodate changes during the development process. However, if these changes necessitate additional development time compared to the original plan, we will charge an additional 5% of the project cost to your remaining balance."
+  },
+  {   "icon":<InsertEmoticonIcon/>,
+      "question": "What happens if I'm not satisfied with the final product?",
+      "answer": "Your satisfaction is our priority. We involve you in every step of the development process, requiring your review and approval for each completed feature before proceeding. This collaborative approach ensures that you are satisfied with the final product, as you have guided its creation."
+  },
+  {   "icon": <CopyrightIcon />,
+      "question": "Do I own the intellectual property of the developed software?",
+      "answer": "Absolutely, you retain full ownership of the app and its source code. We respect your rights and maintain strict confidentiality, never disclosing our clients' projects on our website."
+  }
+]
+
+
 
 interface CustomAccordianPropType{
   icon:any,
@@ -117,12 +123,29 @@ export default function Faqs() {
       <h4 className="text-gray-700 dark:text-slate-50 mb-16">Quick answers to questions,you may have.</h4>
 
    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <div className='space-y-8'>
+        {
+            faqsDataFirstBatch.map((data,index)=>{
+                return ( <CustomAccordian key={index} panel={`panel${index}`} handleChange={handleChange} expanded={expanded} icon={data.icon} question={data.question} answer={data.answer}/>)
+            })
+        }
 
-    {
-        faqsData.map((data,index)=>{
-            return ( <CustomAccordian key={index} panel={`panel${index}`} handleChange={handleChange} expanded={expanded} icon={data.icon} question={data.question} answer={data.answer}/>)
-        })
-    }
+    </div>
+
+
+    <div className='space-y-8'>
+         {
+            faqsDataSecondBatch.map((data,index)=>{
+                /* index + 10 in key and panel,this makes the faqs components have
+                   different keys so that we don't get two faqs open when we click one because they might have the same key
+                */
+                return ( <CustomAccordian key={index+10} panel={`panel${index+10}`} handleChange={handleChange} expanded={expanded} icon={data.icon} question={data.question} answer={data.answer}/>)
+            })
+        }
+
+    </div>
+    
 
 
 
