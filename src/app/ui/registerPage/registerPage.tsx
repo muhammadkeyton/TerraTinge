@@ -1,18 +1,15 @@
 'use client';
-import { useTheme } from 'next-themes'
-import { useState,useEffect,useReducer } from 'react';
+
+import { useReducer } from 'react';
 import NavBar from "../reusableComponents/navbar"
 
-import TextField from '@mui/material/TextField';
+
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 
 import clsx from 'clsx';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+
 
 import MuiServerProvider from "../MuiProviders/muiServerProvider";
 import LockIcon from '@mui/icons-material/Lock';
@@ -27,22 +24,15 @@ import { FaFacebook } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 
 
-import {TextFieldUIReducer,RegisterDataReducer} from './registerReducer';
+import {RegisterDataReducer} from './registerReducer';
 import { FieldName } from './registerConstants';
+
+import UltraTextField from '../reusableComponents/ultraTextField';
+
 
 
 export default function RegisterPage(){
-    const { resolvedTheme } = useTheme();
-    const [showPassword,setPassword] = useState(false);
-    
-
-    const initialTextFieldUi = {
-        textColor:'',
-        borderColor:'',
-        labelFocusedColor:'',
-        helperTextColor:'',
-    }
-
+   
     const initialRegisterData = {
         firstName:{
             text:"",
@@ -68,8 +58,9 @@ export default function RegisterPage(){
         submitEnabled:false,
         errorIds:[]
     }
+    
 
-    const [textFieldState, dispatchUI] = useReducer(TextFieldUIReducer,initialTextFieldUi);
+
     const [registerData,dispatchData] = useReducer(RegisterDataReducer,initialRegisterData);
 
     function updateRegisterData(event:React.ChangeEvent<HTMLInputElement>){
@@ -82,20 +73,6 @@ export default function RegisterPage(){
         dispatchData({type:"ValidateBeforeSubmit"})
     }
 
-    useEffect(() => {
-        if(resolvedTheme == 'light'){
-            dispatchUI({type:'textColor',payload:'#0f172a'})
-            dispatchUI({type:'borderColor',payload:'#6366f1'})
-            dispatchUI({type:'labelFocusedColor',payload:'#6366f1'})
-            dispatchUI({type:'helperTextColor',payload:'#4b5563'})
-       
-        }else{
-            dispatchUI({type:"textColor",payload:'#fff'})
-            dispatchUI({type:'borderColor',payload:'#fff'})
-            dispatchUI({type:'labelFocusedColor',payload:'#fff'})
-            dispatchUI({type:'helperTextColor',payload:'#fff'})    
-        }
-    }, [resolvedTheme]);
 
 
     return (
@@ -115,234 +92,71 @@ export default function RegisterPage(){
                 <p className="mb-5 font-medium">Tell us a bit about yourself. We just need the basics.</p>
                 
 
+                <form id='registerform' onSubmit={(event)=>{
+                    event.preventDefault();
+                    validateAllDataBeforeSubmit();
+                }}>
+
                 <div className="flex flex-row space-x-2">
+                    <UltraTextField
+                     type = 'text'
+                     label='First Name'
+                     name='firstName'
+                     helperText={registerData.firstName.helperText}
+                     error={registerData.firstName.error}
+                     value={registerData.firstName.text}
+                     onChange={updateRegisterData}
+                     inputProps={{maxLength:45}}
+                     autoFocus={true}
+                    />
 
-                
-               
-                <TextField label="First Name"  variant="outlined" fullWidth
-                error={registerData.firstName.error}
-                helperText={registerData.firstName.helperText}
-                required
-                inputProps={{
-                    maxLength:45
-                }}
-                autoFocus={true}
-                name='firstName'
-                value={registerData.firstName.text}
-                onChange={updateRegisterData}
-                sx={{
-
-                    marginBottom:2,
-
-                    '& .MuiOutlinedInput-root':{
-                        color:textFieldState.textColor,
-                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
-                        '& fieldset': {
-                            borderColor: '#94a3b8',
-                            borderRadius:'15px',
-                        },
-                    },
-                    '& label.Mui-focused': {
-                        color: textFieldState.labelFocusedColor,
-                    },
-                    '& label': {
-                        color: '#71717a',
-                    },
-                    
-                    }}/>
-
-               <TextField label="Last Name"  variant="outlined" fullWidth
-                error={registerData.lastName.error}
-                helperText={registerData.lastName.helperText}
-                required
-                inputProps={{
-                    maxLength:45
-                }}
-
-                name='lastName'
-                value={registerData.lastName.text}
-                onChange={updateRegisterData}
-                sx={{
-
-                    marginBottom:2,
-
-                    '& .MuiOutlinedInput-root':{
-                        color:textFieldState.textColor,
-                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
-                        '& fieldset': {
-                            borderColor: '#94a3b8',
-                            borderRadius:'15px',
-                        },
-                    },
-                    '& label.Mui-focused': {
-                        color: textFieldState.labelFocusedColor,
-                    },
-                    '& label': {
-                        color: '#71717a',
-                    },
-                    
-                    }}/>
+                    <UltraTextField
+                     type = 'text'
+                     label='Last Name'
+                     name='lastName'
+                     helperText={registerData.lastName.helperText}
+                     error={registerData.lastName.error}
+                     value={registerData.lastName.text}
+                     onChange={updateRegisterData}
+                     inputProps={{maxLength:45}}
+                    />
 
                 </div>
 
-                <TextField label="Email Address"  variant="outlined" fullWidth
-                error={registerData.emailAddress.error}
-                helperText={registerData.emailAddress.helperText}
-                required
-                name='emailAddress'
-                value={registerData.emailAddress.text}
-                onChange={updateRegisterData}
-                sx={{
+                <UltraTextField
+                    type = 'text'
+                    label='Email Address'
+                    name='emailAddress'
+                    helperText={registerData.emailAddress.helperText}
+                    error={registerData.emailAddress.error}
+                    value={registerData.emailAddress.text}
+                    onChange={updateRegisterData}
+                />
 
-                    marginBottom:2,
-
-                    '& .MuiOutlinedInput-root':{
-                        color:textFieldState.textColor,
-                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
-                        '& fieldset': {
-                            borderColor: '#94a3b8',
-                            borderRadius:'15px',
-                        },
-                    },
-                    '& label.Mui-focused': {
-                        color: textFieldState.labelFocusedColor,
-                    },
-                    '& label': {
-                        color: '#71717a',
-                    },
-                    
-                    }}/>
+                <UltraTextField
+                    type = 'password'
+                    label='Password'
+                    name='password'
+                    helperText={registerData.password.helperText}
+                    error={registerData.password.error}
+                    value={registerData.password.text}
+                    onChange={updateRegisterData}
+                />
 
 
-                <TextField label="Password" type={showPassword?'text':'password'} variant="outlined"  fullWidth
-                error={registerData.password.error}
-                helperText={registerData.password.helperText}
-                required
-                name='password'
-                value={registerData.password.text}
-                onChange={updateRegisterData}
-
-             
-                 
-                sx={{
-
-                    marginBottom:2,
-
-                    '& .MuiFormHelperText-root':{
-                        color:registerData.password.error? null :textFieldState.helperTextColor
-                    },
-                    
-                    '& .MuiOutlinedInput-root':{
-                         color:textFieldState.textColor,
-                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
-                        '& fieldset': {
-                            borderColor: '#94a3b8',
-                            borderRadius:'15px',
-                        },
-                    },
-                    '& label.Mui-focused': {
-                        color: textFieldState.labelFocusedColor,
-                    },
-                    '& label': {
-                        color: '#71717a',
-                    },
-
-                    
-
-
-
-                }}
-
-               InputProps={{
-                endAdornment:<InputAdornment position='end'>
-                             
-                               <IconButton onClick={()=> setPassword(!showPassword)}>
-                                  {showPassword?
-
-                                  
-                                  <VisibilityIcon  className="text-slate-700 dark:text-white"/>
-                                 
-                                  
-                                  :
-                                  
-                                  
-                                  <VisibilityOffIcon  className="text-slate-700 dark:text-white"/>
-                                  
-                                  
-                                  }
-                                  
-                               </IconButton>
-                               
-                             </InputAdornment>
-                             
-               }}
+                <UltraTextField
+                    type = 'password'
+                    label='Repeat Password'
+                    name='repeatPassword'
+                    helperText={registerData.repeatPassword.helperText}
+                    error={registerData.repeatPassword.error}
+                    value={registerData.repeatPassword.text}
+                    onChange={updateRegisterData}
+                />
                 
-               />
-
-
-          <TextField label="Repeat Password*" type={showPassword?'text':'password'} variant="outlined"  fullWidth
-                error={registerData.repeatPassword.error}
-                helperText={registerData.repeatPassword.helperText}
-                required
-                name='repeatPassword'
-                value={registerData.repeatPassword.text}
-                onChange={updateRegisterData}
                 
-                sx={{
-
-                    marginBottom:1,
-                    
-
-                    '& .MuiOutlinedInput-root':{
-                         color:textFieldState.textColor,
-                        '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
-                        '& fieldset': {
-                            borderColor: '#94a3b8',
-                            borderRadius:'15px',
-                        },
-                    },
-                    '& label.Mui-focused': {
-                        color: textFieldState.labelFocusedColor,
-                    },
-                    '& label': {
-                        color: '#71717a',
-                    },
-                }}
-
-               InputProps={{
-                endAdornment:<InputAdornment position='end'>
-                             
-                               <IconButton onClick={()=> setPassword(!showPassword)}>
-                                  {showPassword?
-
-                                  
-                                  <VisibilityIcon  className="text-slate-700 dark:text-white"/>
-                                 
-                                  
-                                  :
-                                  
-                                  
-                                  <VisibilityOffIcon  className="text-slate-700 dark:text-white"/>
-                                  
-                                  
-                                  }
-                                  
-                               </IconButton>
-                               
-                             </InputAdornment>
-                             
-               }}
-                
-               />
-
-            
                 <MuiServerProvider>
-                <Button disabled={!registerData.submitEnabled} onClick={validateAllDataBeforeSubmit}  variant="contained" startIcon={registerData.submitEnabled?<LockOpenIcon className='text-2xl'/> :<LockIcon className='text-2xl'/>} 
+                <Button type='submit' disabled={!registerData.submitEnabled} onClick={validateAllDataBeforeSubmit}  variant="contained" startIcon={registerData.submitEnabled?<LockOpenIcon className='text-2xl'/> :<LockIcon className='text-2xl'/>} 
                     className={
                         clsx(
                             `mt-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
@@ -354,6 +168,7 @@ export default function RegisterPage(){
                    
                     }>Create Account</Button>
                 </MuiServerProvider>
+                </form>
 
                     
                
