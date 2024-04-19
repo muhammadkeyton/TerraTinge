@@ -2,6 +2,7 @@
 
 import { FieldName } from "./registerConstants"
 import * as EmailValidator from 'email-validator';
+import scrollTo  from 'scroll-to-element';
 
 
 
@@ -108,7 +109,7 @@ function allFieldsHaveData(state:RegisterDataState):boolean{
 //validate all fields check if email is valid,if passwords match and return an array of all errors to be fed to the state
 function validateAllFields (state:RegisterDataState):Array<{field:string,error:boolean,helperText:string}>{
     let result:Array<{field:string,error:boolean,helperText:string}> = Object.keys(state).map(field => ({field, error: false, helperText: ''}));
-
+    
     function updateResult(newData:{field:string,error:boolean,helperText:string}){
         let newResult = result.map((data)=>{
             if(data.field === newData.field){
@@ -119,6 +120,11 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
         });
 
         result = newResult;
+
+        
+
+
+
     }
 
 
@@ -214,8 +220,8 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
 
     }
 
-    console.log(result)
-
+    
+    
     return result.slice(0, -2);
 
 
@@ -249,9 +255,12 @@ export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataA
         }
 
     }else if (action.type == 'ValidateBeforeSubmit') {
+        scrollTo('#registerform');
         const results = validateAllFields(state);
+
         
-         let newState = {...state}; 
+        
+        let newState = {...state}; 
 
         for (let result of results) {
             const {field, error, helperText} = result; 
@@ -273,33 +282,4 @@ export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataA
     }
 }
 
-
-
-
-
-
-
-
-//--------------------------------reducer used to update the textfield ui style when theme is changed-----------------------------
-
-type UIAction={
-    type:string,
-    payload:any
-};
-
-
-type UIState = {
-    textColor:string,
-    borderColor:string,
-    labelFocusedColor: string,
-    helperTextColor:string
-};
-
-
-export function TextFieldUIReducer(state:UIState,action:UIAction):UIState{
-    return {
-        ...state,
-        [action.type]:action.payload
-    }
-}
 
