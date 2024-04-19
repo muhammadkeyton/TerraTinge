@@ -40,7 +40,7 @@ function NavBar(props:Props) {
 
 
   const drawer = (
-    <div onClick={handleDrawerToggle}  className="h-screen bg-white dark:bg-inherit space-y-6 text-center dark:backdrop-blur-lg ">
+    <div onClick={handleDrawerToggle}  className="h-screen bg-white dark:bg-inherit space-y-6 text-center dark:backdrop-blur-lg">
       <NavScroll
         onClick={handleDrawerToggle}
         activeClass="active"
@@ -102,7 +102,7 @@ function NavBar(props:Props) {
   return (
     <Box>
      
-      <AppBar className="backdrop-blur-md bg-inherit  border-none outline-none  flex flex-row justify-center">
+      <AppBar className="backdrop-blur-md bg-inherit  border-none outline-none  flex flex-row justify-center z-10">
           <div className=' flex flex-row px-3 py-2.5 justify-between items-center bg-inherit w-screen sm:max-w-screen-xl'>
 
               <NavScroll
