@@ -14,7 +14,7 @@ export default function ChatSection() {
 
   return (
     <div className='w-screen max-w-screen-2xl mx-auto fixed bottom-0 right-0 left-0 top-20 sm:top-32 pointer-events-none'>
-      <div className='z-50 flex flex-col justify-end gap-5 max-w-md ml-auto sm:px-10 absolute bottom-0 right-0 left-0 sm:bottom-5 h-full'>
+      <div className='z-50 flex flex-col justify-end gap-5 max-w-md ml-auto sm:px-10 absolute bottom-0 right-0 left-0 sm:bottom-5 h-full max-h-128'>
         {/* Chat box */}
         {openChat && (startChat ? <ChatTextBox setOpenChat={setOpenChat} setStartChat={setStartChat} /> : <ChatStartBox setOpenChat={setOpenChat} setStartChat={setStartChat} />)}
 
