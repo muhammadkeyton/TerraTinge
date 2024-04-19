@@ -30,6 +30,7 @@ import { FieldName } from './registerConstants';
 import UltraTextField from '../reusableComponents/ultraTextField';
 
 
+
 export default function RegisterPage(){
    
     const initialRegisterData = {
@@ -58,9 +59,6 @@ export default function RegisterPage(){
         errorIds:[]
     }
     
-    
-
-
 
 
     const [registerData,dispatchData] = useReducer(RegisterDataReducer,initialRegisterData);
