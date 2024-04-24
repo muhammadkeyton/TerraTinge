@@ -1,6 +1,6 @@
 
 
-import { FieldName } from "./registerConstants"
+import { FieldName } from "./partnerRegisterConstants"
 import * as EmailValidator from 'email-validator';
 
 
@@ -26,7 +26,7 @@ type RegisterDataState = {
         error?:boolean,
         helperText?:string
     },
-    lastName: {
+    companyName: {
         text:string,
         error?:boolean,
         helperText?:string
@@ -36,16 +36,16 @@ type RegisterDataState = {
         error?:boolean,
         helperText?:string
     },
-    password: {
-        text:string,
+    industry:{
+        text: string,
         error?:boolean,
         helperText?:string
     },
-    repeatPassword: {
-        text:string,
+    role:{
+        text: string,
         error?:boolean,
         helperText?:string
-    },
+    }
     submitEnabled:boolean,
     errorIds:Array<string>
 
@@ -63,7 +63,7 @@ function validateFieldData({field, text}:{ field: string, text: string}):{update
             //then return the cleaned first name with the first character being capitalized
             return {updatedText:cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1)}
         }
-        case 'lastName': {
+        case 'companyName': {
             //this also matches any character that is not an uppercase or lowercase letter but allows space to be added
             let regex = /[^a-zA-Z ]/g;
             let cleanedText = text.replace(regex, '');
@@ -74,12 +74,10 @@ function validateFieldData({field, text}:{ field: string, text: string}):{update
         case 'emailAddress': {
             return {updatedText:text.trim()}
         }
-
-        case 'password': {
+        case 'industry': {
             return {updatedText:text.trim()}
         }
-
-        case 'repeatPassword': {
+        case 'role': {
             return {updatedText:text.trim()}
         }
 
@@ -137,13 +135,13 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
                 
             }
 
-            case 'lastName':{
+            case 'companyName':{
                
                 if(state[field].text.length === 0){
-                    let error = {field:'lastName',error:true,helperText:'last name is required!'}
+                    let error = {field:'companyName',error:true,helperText:'company name is required!'}
                     updateResult(error)
                 }else{
-                    let noError = {field:'lastName',error:false,helperText:''}
+                    let noError = {field:'companyName',error:false,helperText:''}
                     updateResult(noError) 
                 }
                 break
@@ -162,39 +160,6 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
                     updateResult(error)
                 }
 
-            }
-
-            case 'password' : {
-                if(state[field].text.length === 0){
-                    let error = {field:'password',error:true,helperText:'password is required!'}
-                    updateResult(error)
-                }else if(state[field].text.length < 8){
-                    let error = {field:'password',error:true,helperText:'password must be atleast 8 characters long!'}
-                    updateResult(error)
-                }else if(state[field].text !== state.repeatPassword.text && state.repeatPassword.text.length > 0 ){
-                    let error = {field:'password',error:true,helperText:"passwords don't match!,double check and try again"}
-                    updateResult(error)
-                }else{
-                    let noError = {field:'password',error:false,helperText:''}
-                    updateResult(noError) 
-                }
-            }
-
-            case 'repeatPassword' : {
-                if(state[field].text.length === 0){
-                    let error = {field:'repeatPassword',error:true,helperText:'repeat password is required!'}
-                    updateResult(error)
-                }else if(state[field].text.length < 8){
-                    let error = {field:'repeatPassword',error:true,helperText:'password must be atleast 8 characters long!'}
-                    updateResult(error)
-                }
-                else if(state[field].text !== state.password.text && state.password.text.length > 0 ){
-                    let error = {field:'repeatPassword',error:true,helperText:"passwords don't match!,double check and try again"}
-                    updateResult(error)
-                }else{
-                    let noError = {field:'repeatPassword',error:false,helperText:''}
-                    updateResult(noError) 
-                } 
             }
 
             case 'submitEnabled':{
