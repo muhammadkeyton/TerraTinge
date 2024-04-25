@@ -49,9 +49,11 @@ function NavBar() {
   const drawer = (
     <div onClick={handleDrawerToggle} className='h-screen bg-white dark:bg-inherit space-y-6 text-center dark:backdrop-blur-lg'>
       <NavScroll onClick={handleDrawerToggle} activeClass='active' to='hero' spy={true} smooth={true} offset={-100} duration={500}>
-        <Typography variant='h6' className={`${montserrat.className} my-6 cursor-pointer  text-black dark:text-white font-black`}>
-          Ultrawave Tech
-        </Typography>
+        <Button className='cursor-pointer mt-6'>
+          <Typography variant='h6' className={`${montserrat.className} text-black dark:text-white font-black`}>
+            Ultrawave Tech
+          </Typography>
+        </Button>
       </NavScroll>
 
       <Divider className='dark:bg-white' />
@@ -65,7 +67,7 @@ function NavBar() {
       <Divider className='dark:bg-white' />
 
       <div className='flex flex-col space-y-6 sm:space-y-0 sm:flex-row sm:space-x-3.5 items-center justify-center mt-4 '>
-        <Link href='Authentication/Login'>
+        <Link href='Authentication/Login' tabIndex={-1}>
           <Button
             variant='contained'
             startIcon={<PersonIcon />}
@@ -75,7 +77,7 @@ function NavBar() {
           </Button>
         </Link>
 
-        <Link href='Authentication/Register'>
+        <Link href='Authentication/Register' tabIndex={-1}>
           <Button
             variant='outlined'
             startIcon={<PeopleIcon />}
