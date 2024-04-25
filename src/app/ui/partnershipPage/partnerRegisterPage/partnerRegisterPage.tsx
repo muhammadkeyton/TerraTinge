@@ -128,7 +128,7 @@ export default function RegisterPage(){
           
                 <div className='rounded-lg ml-4 pt-20 md:max-w-[80%] h-full w-full border bg-indigo-950/90 hover:dark:shadow-lg text-white  dark:shadow-gray-200 text-center p-6'>
                 <Diversity1Icon className='mr-4 mb-8'/>
-                      <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>Join us discover the power of synergy. Partner with us!</h1>
+                      <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>Join us discover the power of synergy</h1>
                         <p className='md:ml-8 mb-5 font-medium'>
                           
                             Partner with us at Altrawave Tech to unlock growth opportunities, access exclusive benefits, and amplify your impact. Together, we will forge strategic alliances, foster innovation, and drive mutual success. 
@@ -154,9 +154,9 @@ export default function RegisterPage(){
 
                      
                         <h1 className='font-extrabold text-2xl mb-5'>
-                            Join as a recruiter , job seeker or hiring manager
+                            Partner with us
                         </h1>
-                        <p className='mb-5 font-medium'>Join our Altrawave tech community now and get early access to 6 months of premium features and content!</p>
+                        <p className='mb-5 font-medium'>Become an Ultrawave Partner, Unlock New Earnings, and Shape the Future of Technology</p>
                         <div className="flex flex-row space-x-2">
 
                     

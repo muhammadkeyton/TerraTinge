@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import Link from 'next/link';
 import { Link as NavScroll} from "react-scroll";
 import AppBar from '@mui/material/AppBar';
@@ -14,17 +14,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
 
 import ThemeSwitch from '@/app/ui/landingPage/Mui Components/ThemeSwitch';
 import { montserrat } from '@/app/ui/fonts';
 const drawerWidth = 260;
 const navItems = ['Why choose us','App Development','Faqs'];
-interface Props {
-  window?: () => Window;
-}
-function NavBar(props:Props) {
-  const { window } = props;
+
+function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
   
 
   
@@ -33,6 +32,24 @@ function NavBar(props:Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  useEffect(() => {
+
+    //closing side nav if window resizes to a larger screen
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      if (window.innerWidth >= 1024) {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   
 
 
@@ -40,7 +57,7 @@ function NavBar(props:Props) {
 
 
   const drawer = (
-    <div onClick={handleDrawerToggle}  className="h-screen bg-white dark:bg-inherit space-y-6 text-center dark:backdrop-blur-lg ">
+    <div onClick={handleDrawerToggle}  className="h-screen bg-white dark:bg-inherit space-y-6 text-center dark:backdrop-blur-lg">
       <NavScroll
         onClick={handleDrawerToggle}
         activeClass="active"
@@ -82,12 +99,24 @@ function NavBar(props:Props) {
         ))}
       </div>
       <Divider className="dark:bg-white"/>
+      
 
+      <div className="flex flex-col space-y-6 sm:space-y-0 sm:flex-row sm:space-x-3.5 items-center justify-center mt-4 ">
+
+      
       <Link
        href='Authentication/Login'
       >
-      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} mt-4 text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
+      <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className}  text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
       </Link>
+
+      <Link
+          href='Authentication/Register'
+          >
+          <Button  variant="outlined" startIcon={<PeopleIcon  />} className={`${montserrat.className} text-base text-center border-2 border-slate-600 dark:border-white text-black dark:text-white  w-32 h-10 font-app rounded-full normal-case`}>Register</Button>
+      </Link>
+
+      </div>
     
       
       
@@ -95,14 +124,14 @@ function NavBar(props:Props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = typeof window !== undefined ? () => window.document.body : undefined;
 
   
 
   return (
     <Box>
      
-      <AppBar className="backdrop-blur-md bg-inherit  border-none outline-none  flex flex-row justify-center">
+      <AppBar className="backdrop-blur-md bg-inherit  border-none outline-none  flex flex-row justify-center z-10">
           <div className=' flex flex-row px-3 py-2.5 justify-between items-center bg-inherit w-screen sm:max-w-screen-xl'>
 
               <NavScroll
@@ -172,6 +201,12 @@ function NavBar(props:Props) {
                >
                 <Button  variant="contained" startIcon={<PersonIcon  />} className={`${montserrat.className} text-base text-center bg-slate-950 dark:bg-indigo-950 text-white w-28 h-10 font-app rounded-full normal-case`}>Login</Button>
                </Link>
+               
+               <Link
+               href='Authentication/Register'
+               >
+                <Button  variant="outlined" startIcon={<PeopleIcon  />} className={`${montserrat.className} text-base text-center border-2 border-slate-600 dark:border-white text-black dark:text-white  w-32 h-10 font-app rounded-full normal-case`}>Register</Button>
+               </Link>
               
               </div>
               
@@ -186,7 +221,7 @@ function NavBar(props:Props) {
         <Drawer
           container={container}
           variant="temporary"
-          open={mobileOpen}
+          open={(mobileOpen == true && windowWidth < 1024)?true:false}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
