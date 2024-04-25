@@ -13,9 +13,15 @@ export default function ChatStartBox({ setOpenChat, setStartChat }: { setOpenCha
       <div className='p-4 flex flex-col gap-6'>
         <FormControl fullWidth className='flex flex-col gap-1 text-white'>
           <FormLabel className='text-black dark:text-white'>Name (Optional)</FormLabel>
-          <input type='text' className='border-2 rounded border-black dark:border-white p-1 text-black bg-white dark:bg-black dark:text-white' />
+          <input
+            type='text'
+            className='border-2 rounded border-black dark:border-white p-1 text-black bg-white dark:bg-black dark:text-white focus-visible:outline-none focus-visible:ring focus-visible:border-indigo-600'
+          />
           <FormLabel className='text-black dark:text-white'>Email (Optional)</FormLabel>
-          <input type='email' className='border-2 rounded border-black dark:border-white p-1 text-black bg-white dark:bg-black dark:text-white' />
+          <input
+            type='email'
+            className='border-2 rounded border-black dark:border-white p-1 text-black bg-white dark:bg-black dark:text-white focus-visible:outline-none focus-visible:ring focus-visible:border-indigo-600'
+          />
         </FormControl>
 
         <Button variant='contained' className='text-white p-1 bg-indigo-700' onClick={() => setTimeout(() => setStartChat(true), 200)}>
