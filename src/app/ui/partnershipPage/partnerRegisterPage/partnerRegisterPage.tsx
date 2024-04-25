@@ -131,7 +131,7 @@ export default function RegisterPage(){
                       <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>Join us discover the power of synergy. Partner with us!</h1>
                         <p className='md:ml-8 mb-5 font-medium'>
                           
-                            Partner with us at Altrawave Tech to unlock growth opportunities, access exclusive benefits, and amplify your impact. Together, we'll forge strategic alliances, foster innovation, and drive mutual success. 
+                            Partner with us at Altrawave Tech to unlock growth opportunities, access exclusive benefits, and amplify your impact. Together, we will forge strategic alliances, foster innovation, and drive mutual success. 
                             Join our network and thrive through the power of partnership.
                         </p>
                     </div> 
