@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html *:focus-visible {
+  outline: 0.2rem solid rgb(20 20 20);
+}
+
+html.dark *:focus-visible {
+  outline: 0.2rem solid rgb(235 235 235);
+}
