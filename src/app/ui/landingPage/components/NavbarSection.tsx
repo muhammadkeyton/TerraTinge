@@ -121,7 +121,7 @@ function NavBar() {
           <div className='hidden lg:block flex-row space-x-4 items-center'>
             <ThemeSwitch />
 
-            <Link href='Authentication/Login'>
+            <Link href='Authentication/Login' tabIndex={-1}>
               <Button
                 variant='contained'
                 startIcon={<PersonIcon />}
@@ -131,7 +131,7 @@ function NavBar() {
               </Button>
             </Link>
 
-            <Link href='Authentication/Register'>
+            <Link href='Authentication/Register' tabIndex={-1}>
               <Button
                 variant='outlined'
                 startIcon={<PeopleIcon />}
