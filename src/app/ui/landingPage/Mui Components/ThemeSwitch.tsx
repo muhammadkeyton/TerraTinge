@@ -24,11 +24,11 @@ export default function ThemeSwitch() {
     <>
       {resolvedTheme === 'dark' ? (
         <Button onClick={() => setTheme('light')}>
-          <MaterialUISwitch onChange={() => setTheme('light')} checked={true} />
+          <MaterialUISwitch onChange={() => setTheme('light')} checked={true} tabIndex={-1} />
         </Button>
       ) : (
         <Button onClick={() => setTheme('dark')}>
-          <MaterialUISwitch onChange={() => setTheme('dark')} checked={false} />
+          <MaterialUISwitch onChange={() => setTheme('dark')} checked={false} tabIndex={-1} />
         </Button>
       )}
     </>
