@@ -1,7 +1,8 @@
 
 
-import { FieldName } from "./partnerRegisterConstants"
+import { FieldName } from "./registerConstants"
 import * as EmailValidator from 'email-validator';
+import scrollTo  from 'scroll-to-element';
 
 
 
@@ -26,7 +27,7 @@ type RegisterDataState = {
         error?:boolean,
         helperText?:string
     },
-    companyName: {
+    lastName: {
         text:string,
         error?:boolean,
         helperText?:string
@@ -36,16 +37,16 @@ type RegisterDataState = {
         error?:boolean,
         helperText?:string
     },
-    industry:{
-        text: string,
+    password: {
+        text:string,
         error?:boolean,
         helperText?:string
     },
-    role:{
-        text: string,
+    repeatPassword: {
+        text:string,
         error?:boolean,
         helperText?:string
-    }
+    },
     submitEnabled:boolean,
     errorIds:Array<string>
 
@@ -63,7 +64,7 @@ function validateFieldData({field, text}:{ field: string, text: string}):{update
             //then return the cleaned first name with the first character being capitalized
             return {updatedText:cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1)}
         }
-        case 'companyName': {
+        case 'lastName': {
             //this also matches any character that is not an uppercase or lowercase letter but allows space to be added
             let regex = /[^a-zA-Z ]/g;
             let cleanedText = text.replace(regex, '');
@@ -74,10 +75,12 @@ function validateFieldData({field, text}:{ field: string, text: string}):{update
         case 'emailAddress': {
             return {updatedText:text.trim()}
         }
-        case 'industry': {
+
+        case 'password': {
             return {updatedText:text.trim()}
         }
-        case 'role': {
+
+        case 'repeatPassword': {
             return {updatedText:text.trim()}
         }
 
@@ -106,7 +109,7 @@ function allFieldsHaveData( state: RegisterDataState ): boolean {
 //validate all fields check if email is valid,if passwords match and return an array of all errors to be fed to the state
 function validateAllFields (state:RegisterDataState):Array<{field:string,error:boolean,helperText:string}>{
     let result:Array<{field:string,error:boolean,helperText:string}> = Object.keys(state).map(field => ({field, error: false, helperText: ''}));
-
+    
     function updateResult(newData:{field:string,error:boolean,helperText:string}){
         let newResult = result.map((data)=>{
             if(data.field === newData.field){
@@ -117,6 +120,11 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
         });
 
         result = newResult;
+
+        
+
+
+
     }
 
 
@@ -135,13 +143,13 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
                 
             }
 
-            case 'companyName':{
+            case 'lastName':{
                
                 if(state[field].text.length === 0){
-                    let error = {field:'companyName',error:true,helperText:'company name is required!'}
+                    let error = {field:'lastName',error:true,helperText:'last name is required!'}
                     updateResult(error)
                 }else{
-                    let noError = {field:'companyName',error:false,helperText:''}
+                    let noError = {field:'lastName',error:false,helperText:''}
                     updateResult(noError) 
                 }
                 break
@@ -162,6 +170,39 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
 
             }
 
+            case 'password' : {
+                if(state[field].text.length === 0){
+                    let error = {field:'password',error:true,helperText:'password is required!'}
+                    updateResult(error)
+                }else if(state[field].text.length < 8){
+                    let error = {field:'password',error:true,helperText:'password must be atleast 8 characters long!'}
+                    updateResult(error)
+                }else if(state[field].text !== state.repeatPassword.text && state.repeatPassword.text.length > 0 ){
+                    let error = {field:'password',error:true,helperText:"passwords don't match!,double check and try again"}
+                    updateResult(error)
+                }else{
+                    let noError = {field:'password',error:false,helperText:''}
+                    updateResult(noError) 
+                }
+            }
+
+            case 'repeatPassword' : {
+                if(state[field].text.length === 0){
+                    let error = {field:'repeatPassword',error:true,helperText:'repeat password is required!'}
+                    updateResult(error)
+                }else if(state[field].text.length < 8){
+                    let error = {field:'repeatPassword',error:true,helperText:'password must be atleast 8 characters long!'}
+                    updateResult(error)
+                }
+                else if(state[field].text !== state.password.text && state.password.text.length > 0 ){
+                    let error = {field:'repeatPassword',error:true,helperText:"passwords don't match!,double check and try again"}
+                    updateResult(error)
+                }else{
+                    let noError = {field:'repeatPassword',error:false,helperText:''}
+                    updateResult(noError) 
+                } 
+            }
+
             case 'submitEnabled':{
                 break
             }
@@ -179,8 +220,8 @@ function validateAllFields (state:RegisterDataState):Array<{field:string,error:b
 
     }
 
-    console.log(result)
-
+    
+    
     return result.slice(0, -2);
 
 
@@ -213,10 +254,15 @@ export function RegisterDataReducer( state:RegisterDataState, action:RegisterDat
             submitEnabled:fieldsHaveData
         }
 
-    }else if ( action.type == 'ValidateBeforeSubmit' ) {
-        const results = validateAllFields( state );
+
+    }else if (action.type == 'ValidateBeforeSubmit') {
+        scrollTo('#registerform');
+        const results = validateAllFields(state);
+
+
         
-         let newState = {...state}; 
+        
+        let newState = {...state}; 
 
         for (let result of results) {
             const {field, error, helperText} = result; 
@@ -238,33 +284,4 @@ export function RegisterDataReducer( state:RegisterDataState, action:RegisterDat
     }
 }
 
-
-
-
-
-
-
-
-//--------------------------------reducer used to update the textfield ui style when theme is changed-----------------------------
-
-type UIAction={
-    type:string,
-    payload:any
-};
-
-
-type UIState = {
-    textColor:string,
-    borderColor:string,
-    labelFocusedColor: string,
-    helperTextColor:string
-};
-
-
-export function TextFieldUIReducer(state:UIState,action:UIAction):UIState{
-    return {
-        ...state,
-        [action.type]:action.payload
-    }
-}
 

@@ -1,1 +1,1 @@
-export type FieldName = 'firstName' | 'companyName' | 'emailAddress' | 'industry' | 'role';
+export type FieldName = 'firstName' | 'lastName' | 'emailAddress' | 'password' | 'repeatPassword';

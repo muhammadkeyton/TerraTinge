@@ -18,6 +18,7 @@ import NavBar from '../reusableComponents/navbar';
 
 import { montserrat } from '@/app/ui/fonts';
 import MuiServerProvider from '../MuiProviders/muiServerProvider';
+import { TextFieldUIReducer } from '../reusableComponents/ultraTextField';
 
 
 interface PartnershipCardProp{
