@@ -1,6 +1,6 @@
 
 
-import { FieldName } from "./registerConstants"
+import { FieldName } from './partnerRegisterConstants';
 import * as EmailValidator from 'email-validator';
 import scrollTo  from 'scroll-to-element';
 
