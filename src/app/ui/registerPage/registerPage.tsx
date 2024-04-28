@@ -18,14 +18,13 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { montserrat } from '@/app/ui/fonts';
 
 import { FcGoogle } from "react-icons/fc";
-import { FaTiktok } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
-import { RiTwitterXLine } from "react-icons/ri";
 
 
-import {RegisterDataReducer} from './registerReducer';
-import { FieldName } from './registerConstants';
+
+import {RegisterDataReducer} from '../reusableFrontendAuthDataValidation/registerReducer';
+import { FieldName } from '../reusableFrontendAuthDataValidation/registerFieldConstants';
 
 import UltraTextField from '../reusableComponents/ultraTextField';
 
@@ -55,8 +54,8 @@ export default function RegisterPage(){
             text:"",
            
         },
+        
         submitEnabled:false,
-        errorIds:[]
     }
     
 
@@ -82,7 +81,7 @@ export default function RegisterPage(){
          <div className="mt-24 flex justify-center">
 
 
-            <div className="max-w-md ">
+            <div id='registerform' className="max-w-md ">
 
                 <MuiServerProvider>
                  <AccountCircleOutlinedIcon className='font-normal text-5xl mb-10 text-indigo-700 dark:text-white'/>
@@ -92,7 +91,7 @@ export default function RegisterPage(){
                 <p className="mb-5 font-medium">Tell us a bit about yourself. We just need the basics.</p>
                 
 
-                <form id='registerform' onSubmit={(event)=>{
+                <form onSubmit={(event)=>{
                     event.preventDefault();
                     validateAllDataBeforeSubmit();
                 }}>
@@ -189,10 +188,8 @@ export default function RegisterPage(){
                 <MuiServerProvider>
                 <div className="flex flex-col space-y-4 mb-6">
                     <Button startIcon={<FcGoogle className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Sign Up with Google</Button>
-                    <Button startIcon={<FaTiktok className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Sign Up with TikTok</Button>
                     <Button startIcon={<FaApple className="text-3xl"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Sign Up with Apple</Button>
                     <Button startIcon={<FaFacebook className="text-3xl text-blue-600 dark:text-white"/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Sign Up with Facebook</Button>
-                    <Button startIcon={<RiTwitterXLine className="text-3xl "/>} variant="contained" className={`${montserrat.className} dark:bg-slate-900 w-full py-2 px-4`}>Sign Up with X</Button>
                 </div>
                 
                 </MuiServerProvider>

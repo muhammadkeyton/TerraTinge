@@ -1,6 +1,6 @@
 import PartnershipPage from "../ui/partnershipPage/partnershipPage";
 
-export default function PrivacyPolicy(){
+export default function PartnerShip(){
     return (
         <PartnershipPage/>
     )
