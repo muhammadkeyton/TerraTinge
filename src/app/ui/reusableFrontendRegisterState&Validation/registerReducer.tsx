@@ -3,7 +3,7 @@
 import { FieldName } from './registerFieldConstants';
 import scrollTo  from 'scroll-to-element';
 
-import { NameSchema,EmailSchema,PasswordSchema} from "./registerDataSchema";
+import { NameSchema,EmailSchema,PasswordSchema} from "../../lib/authDataValidation";
 
 
 //---------------------------reducer for the register data state and some data checking functionality------------------------
@@ -47,7 +47,9 @@ type RegisterDataState = {
         helperText?:string
     },
     
-    submitEnabled:boolean,
+    
+    submitButtonEnabled:boolean,
+    submitNow:boolean,
 
 
 } & {[key:string]:any}
@@ -57,7 +59,7 @@ type RegisterDataState = {
 function allFieldsHaveData(state:RegisterDataState):boolean{
    
     for (const stateData in state){
-       if(stateData === 'submitEnabled') break;
+       if(stateData === 'submitButtonEnabled') break;
 
        if(state[stateData].text.length === 0) return false;
 
@@ -118,7 +120,7 @@ export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataA
 
         return {
             ...newState,
-            submitEnabled:fieldsHaveData
+            submitButtonEnabled:fieldsHaveData
         }
 
     }else if (action.type == 'ValidateBeforeSubmit') {
@@ -176,14 +178,31 @@ export function RegisterDataReducer(state:RegisterDataState,action:RegisterDataA
                 }
             };
 
+        if(!newState.firstName.error && !newState.lastName.error && !newState.emailAddress.error && !newState.password.error && !newState.repeatPassword.error){
+            
+            newState = {
+                ...newState,
+                submitNow:true
 
+            }
+        }else{
+            newState = {
+                ...newState,
+                submitNow:false
 
+            } 
+        }
 
         
         return newState;
        
         
-    }else{
+    }else if(action.type === 'SetSubmitNowToFalse'){
+        return {...state,submitNow:false}
+    }
+    
+    
+    else{
         throw Error('unknown action type at registerReducer');
     }
 }

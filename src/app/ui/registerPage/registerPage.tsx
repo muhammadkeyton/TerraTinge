@@ -1,6 +1,5 @@
 'use client';
 
-import { useReducer } from 'react';
 import NavBar from "../reusableComponents/navbar"
 
 
@@ -21,59 +20,14 @@ import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 
-
-
-import {RegisterDataReducer} from '../reusableFrontendAuthDataValidation/registerReducer';
-import { FieldName } from '../reusableFrontendAuthDataValidation/registerFieldConstants';
-
 import UltraTextField from '../reusableComponents/ultraTextField';
 
+import { useRegistration} from '../reusableFrontendRegisterState&Validation/registerHook';
 
 
 export default function RegisterPage(){
-   
-    const initialRegisterData = {
-        firstName:{
-            text:"",
-           
-        },
-        lastName:{
-            text:"",
-            
-        },
-        emailAddress:{
-            text:"",
-            
-        },
-        password:{
-            text:"",
-            helperText:'we recommend you create a password that is atleast 8 characters long and has a combination of upperCase letters & numbers & symbols,this will make your password more secure.'
-            
-        },
-        repeatPassword:{
-            text:"",
-           
-        },
-        
-        submitEnabled:false,
-    }
+    const {registerData,updateRegisterData,serverErrorMessage,validateAllDataAndUpdateState} = useRegistration()
     
-
-
-    const [registerData,dispatchData] = useReducer(RegisterDataReducer,initialRegisterData);
-
-    function updateRegisterData(event:React.ChangeEvent<HTMLInputElement>){
-        const {name,value} = event.target;
-        dispatchData({type:"DataFieldUpdate",payload:{field:name as FieldName,text:value}})  
-    }
-
-
-    function validateAllDataBeforeSubmit(){
-        dispatchData({type:"ValidateBeforeSubmit"})
-    }
-
-
-
     return (
         <>
          <NavBar/>
@@ -88,12 +42,24 @@ export default function RegisterPage(){
                 </MuiServerProvider>
                 
                 <h1 className="font-extrabold text-2xl mb-5">Create your Account</h1>
-                <p className="mb-5 font-medium">Tell us a bit about yourself. We just need the basics.</p>
+                <p className={
+                    clsx(
+                        `mb-5 font-medium`,
+                        {
+                            'text-red-500':serverErrorMessage.length > 0
+                        }
+                    )
+                }
+                
+                
+               
+                >{serverErrorMessage.length > 0? serverErrorMessage : 'Tell us a bit about yourself. We just need the basics.'}
+                </p>
                 
 
                 <form onSubmit={(event)=>{
                     event.preventDefault();
-                    validateAllDataBeforeSubmit();
+                    validateAllDataAndUpdateState();
                 }}>
 
                 <div className="flex flex-row space-x-2">
@@ -155,13 +121,13 @@ export default function RegisterPage(){
                 
                 
                 <MuiServerProvider>
-                <Button type='submit' disabled={!registerData.submitEnabled} onClick={validateAllDataBeforeSubmit}  variant="contained" startIcon={registerData.submitEnabled?<LockOpenIcon className='text-2xl'/> :<LockIcon className='text-2xl'/>} 
+                <Button type='submit' disabled={!registerData.submitButtonEnabled} variant="contained" startIcon={registerData.submitButtonEnabled?<LockOpenIcon className='text-2xl'/> :<LockIcon className='text-2xl'/>} 
                     className={
                         clsx(
                             `mt-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
                             {
-                                'bg-slate-950 dark:bg-indigo-950 text-white':registerData.submitEnabled == true,
-                                'bg-inherit': registerData.submitEnabled == false
+                                'bg-slate-950 dark:bg-indigo-950 text-white':registerData.submitButtonEnabled == true,
+                                'bg-inherit': registerData.submitButtonEnabled == false
                             }
                         )
                    
