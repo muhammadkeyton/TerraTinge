@@ -49,7 +49,7 @@ export async function POST(req:NextRequest) {
           password: await hashPassword(password)
         });
         console.log("new user Document written with ID: ", docRef.id);
-        return NextResponse.json({'message':'created new user',success:true,statusCode:201});
+        return NextResponse.json({'message':`created new user with email ${emailAddress} in cloud firestore`,success:true,statusCode:201});
       } catch (e) {
         console.error("Error adding document: ", e);
         return NextResponse.json({'message':'failure'});

@@ -90,7 +90,7 @@ useEffect(() => {
                     console.log(response)
                 }else{
                     dispatchData({type:"ValidateBeforeSubmit"})
-                    setServerErrorMessage('');
+                    setServerErrorMessage(response.message);
                     console.log('success')
         
         

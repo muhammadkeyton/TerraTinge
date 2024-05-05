@@ -35,7 +35,7 @@ export async function validateAndPass(data:RegisterData):Promise<any> {
 
     
 
-    const response = await fetch('http://localhost:3000/api/registerUsers', {
+    const response = await fetch(`${process.env.REGISTERPREVIEW_APILINK}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
