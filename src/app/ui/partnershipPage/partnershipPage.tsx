@@ -1,3 +1,5 @@
+'use client';
+
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
@@ -5,8 +7,9 @@ import Divider from '@mui/material/Divider';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import Button from '@mui/material/Button';
 import Footer from '../landingPage/components/FooterSection';
-
-
+import TextField from '@mui/material/TextField';
+import { useTheme } from 'next-themes'
+import { useState, useEffect, useReducer } from 'react';
 
 import { PageWrapper } from '../pageAnimater';
 
@@ -15,6 +18,7 @@ import NavBar from '../reusableComponents/navbar';
 
 import { montserrat } from '@/app/ui/fonts';
 import MuiServerProvider from '../MuiProviders/muiServerProvider';
+import { TextFieldUIReducer } from '../reusableComponents/ultraTextField';
 
 
 interface PartnershipCardProp{
@@ -47,7 +51,9 @@ const partnershipData = [
 
 
 function PartnershipCard({heading,text,color,icon}:PartnershipCardProp){
-    
+      
+
+
        return(
 
        
@@ -69,6 +75,49 @@ function PartnershipCard({heading,text,color,icon}:PartnershipCardProp){
 
 
 export default function PartnershipPage(){
+            const { resolvedTheme } = useTheme();
+            const initialTextFieldUi = {
+            textColor:'',
+            borderColor:'',
+            labelFocusedColor:'',
+            helperTextColor:'',
+        }
+        type UIAction={
+            type:string,
+            payload:any
+        };
+        
+        
+        type UIState = {
+            textColor:string,
+            borderColor:string,
+            labelFocusedColor: string,
+            helperTextColor:string
+        };
+        
+        
+        function TextFieldUIReducer(state:UIState,action:UIAction):UIState{
+            return {
+                ...state,
+                [action.type]:action.payload
+            }
+        }
+        const [textFieldState, dispatchUI] = useReducer(TextFieldUIReducer,initialTextFieldUi);
+
+        useEffect(() => {
+            if(resolvedTheme == 'light'){
+                dispatchUI({type:'textColor',payload:'#0f172a'})
+                dispatchUI({type:'borderColor',payload:'#6366f1'})
+                dispatchUI({type:'labelFocusedColor',payload:'#6366f1'})
+                dispatchUI({type:'helperTextColor',payload:'#4b5563'})
+            
+            }else{
+                dispatchUI({type:"textColor",payload:'#fff'})
+                dispatchUI({type:'borderColor',payload:'#fff'})
+                dispatchUI({type:'labelFocusedColor',payload:'#fff'})
+                dispatchUI({type:'helperTextColor',payload:'#fff'})    
+            }
+        }, [resolvedTheme]);
     return(
     
         <main className=" lg:px-28">
@@ -102,9 +151,10 @@ export default function PartnershipPage(){
 
             </div>
             <MuiServerProvider>
-             <Button  variant="contained" startIcon={<Diversity1Icon/>}  className={`${montserrat.className} mb-5 text-base bg-slate-950 dark:bg-indigo-950 text-white w-52 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
+              <Button  variant="contained" startIcon={<Diversity1Icon/>} href='/Partnership/Register'  className={`${montserrat.className} mb-5 text-base bg-slate-950 dark:bg-indigo-950 text-white w-52 h-10 font-app rounded-full normal-case`}>Become Partner</Button>
             </MuiServerProvider>
             
+           
             </PageWrapper> 
             <Divider className="dark:bg-slate-300" />
 

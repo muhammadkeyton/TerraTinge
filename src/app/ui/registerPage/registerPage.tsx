@@ -38,7 +38,7 @@ export default function RegisterPage(){
             <div id='registerform' className="max-w-md ">
 
                 <MuiServerProvider>
-                 <AccountCircleOutlinedIcon className='font-normal text-5xl mb-10 text-indigo-700 dark:text-white'/>
+                  <AccountCircleOutlinedIcon className='font-normal text-5xl mb-10 text-indigo-700 dark:text-white'/>
                 </MuiServerProvider>
                 
                 <h1 className="font-extrabold text-2xl mb-5">Create your Account</h1>

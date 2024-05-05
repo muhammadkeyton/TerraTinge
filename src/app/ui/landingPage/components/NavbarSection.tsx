@@ -104,7 +104,7 @@ function NavBar() {
             </Button>
           </NavScroll>
 
-          <div className='block lg:hidden flex space-x-4 mr-2 items-center space-around'>
+          <div className='lg:hidden flex space-x-4 mr-2 items-center space-around'>
             <ThemeSwitch />
             <IconButton aria-label='open drawer' edge='start' onClick={handleDrawerToggle}>
               {mobileOpen ? <CloseIcon className='text-slate-800 dark:text-white' /> : <MenuIcon className='text-slate-800 dark:text-white ' />}
@@ -114,7 +114,6 @@ function NavBar() {
           <Box className='hidden lg:block space-x-4'>
             {navItems.map((item, i) => (
               <NavScroll key={item} activeClass='active' to={`section${i}`} spy={true} smooth={true} offset={-100} duration={500}>
-                {' '}
                 <Button className='normal-case p-2 text-sm text-black dark:text-white'>{item}</Button>
               </NavScroll>
             ))}
