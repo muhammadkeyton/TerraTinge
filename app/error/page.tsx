@@ -68,7 +68,7 @@ const errorMap = {
 
 }
  
-export default function AuthErrorPage() {
+function AuthErrorContent() {
 
   const search = useSearchParams()
   const error = search.get("error") as Error
@@ -79,7 +79,7 @@ export default function AuthErrorPage() {
  
   return (
 
-    <Suspense>
+    
     <div className="flex flex-col items-center justify-center w-full h-screen">
       <div
         
@@ -94,6 +94,17 @@ export default function AuthErrorPage() {
       </div>
     
     </div>
+  
+  )
+}
+
+
+
+//Missing Suspense boundary with useSearchParams fix
+export default function AuthErrorPage(){
+  return (
+    <Suspense>
+       <AuthErrorContent/>
     </Suspense>
   )
 }
