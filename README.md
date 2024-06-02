@@ -11,7 +11,7 @@ The purpose of Ultrawave Technologies is twofold:
 ## Technologies Used
 
 Ultrawave Technologies employs the following technologies:
-- **Web Development**: Next Js React Js, Tailwind CSS, Material-UI,Html
+- **Web Development**: Next Js, React Js, Tailwind CSS, Material-UI, Html, Firebase
 - **Mobile Development**: Flutter (Dart)
 - **Languages**: TypeScript, JavaScript, Dart
 
@@ -36,14 +36,19 @@ We welcome contributions to Ultrawave Technologies! Before you start contributin
     git checkout -b feature/new-feature
     ```
     For a detailed guide on branching strategies and GitHub collaboration, you can watch this [YouTube video](https://www.youtube.com/watch?v=MnUd31TvBoU).
-3. **Code Style**: Follow the coding style guidelines of the project. Ensure your code is properly formatted and documented.
+3. **Code Style**: Follow the coding style guidelines of the project. Ensure your code is properly formatted and documented,all folder names and file names should be in lowercase and if the name is too long you can use kebab case like this 'payment-provider',when importing files use the global '@',for example ``` import {someFunction} from '@/app/some-folder/some-file.ts' ```
+
 4. **Commit Messages**: Write clear and descriptive commit messages. Use imperative mood (e.g., "Add feature" instead of "Added feature").
+
 5. **Pull Requests**: When you're ready to submit your changes, open a pull request from your feature branch to the `main` branch of the main repository.
+
 6. **Review Process**: All pull requests will be reviewed by project maintainers. Be prepared to address any feedback or suggestions for improvement.
+
 7. **Testing**: If applicable, ensure that your changes are adequately tested. Write unit tests or provide instructions for manual testing
+
 8. **Be Respectful**: Respect the opinions and efforts of other contributors. We have a zero-tolerance policy for harassment or disrespectful behavior.
 
-By contributing to Ultrawave Technologies, you agree to abide by these guidelines.
+By contributing to Ultrawave Technologies and it's other software development projects, you agree to abide by these guidelines.
 
 ## License
 
