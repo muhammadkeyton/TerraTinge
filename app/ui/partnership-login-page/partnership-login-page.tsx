@@ -58,7 +58,7 @@ export default function PartnershipLoginPage (){
                         Want to Partner with us?
                     </h1>
 
-                    <p>Login with one of the options below and after you're Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">Ultrawave Partner</code> option.</p>
+                    <p>Login with one of the options below and after you&apos;re Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">Ultrawave Partner</code> option.</p>
                    
                     
                      <AuthView/>
