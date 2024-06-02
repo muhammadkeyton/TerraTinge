@@ -1,8 +1,8 @@
 
 
 "use client"
-
-import { useSearchParams,useRouter} from "next/navigation"
+import { Suspense } from 'react'
+import { useSearchParams} from "next/navigation"
 import Button from '@mui/material/Button';
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import { montserrat } from '@/app/ui/fonts';
@@ -69,7 +69,7 @@ const errorMap = {
 }
  
 export default function AuthErrorPage() {
-  const router = useRouter();
+
   const search = useSearchParams()
   const error = search.get("error") as Error
   
@@ -78,6 +78,8 @@ export default function AuthErrorPage() {
     
  
   return (
+
+    <Suspense>
     <div className="flex flex-col items-center justify-center w-full h-screen">
       <div
         
@@ -92,5 +94,6 @@ export default function AuthErrorPage() {
       </div>
     
     </div>
+    </Suspense>
   )
 }
