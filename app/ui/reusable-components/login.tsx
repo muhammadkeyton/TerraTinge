@@ -166,7 +166,7 @@ export default function AuthView({text}:AuthViewPropType){
 
 
 
-                <p>By continuing, you agree to Ultrawave's <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/privacy">Privacy Policy</Link></span> & <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/terms">Terms and Conditions</Link></span>.</p>
+                <p>By continuing, you agree to Ultrawave&apos;s <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/privacy">Privacy Policy</Link></span> & <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/terms">Terms and Conditions</Link></span>.</p>
                 
                 
 
