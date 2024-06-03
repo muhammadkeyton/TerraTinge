@@ -50,12 +50,12 @@ function Privacy({heading,text,i}:{heading:string,text:string,i:number}){
 export default function PrivacyPage(){
     return (
       
-        <main className="md:p-8">
+        <main className="px-4 md:p-8">
             
             <NavBar/>
 
             <PageWrapper>
-            <div className="flex flex-col justify-center mt-24 items-center">
+            <div className="flex flex-col justify-center mt-24 items-center ">
 
                 <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 

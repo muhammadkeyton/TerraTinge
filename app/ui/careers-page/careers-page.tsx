@@ -65,15 +65,17 @@ function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
 export default function CareersPage(){
     return(
     
-        <main className=" lg:px-28">
+        <main className="relative pt-20">
 
             
 
             <NavBar/>
             
+           <div className="flex flex-col justify-center items-center min-h-screen px-4 lg:px-24">
+
            
             <PageWrapper>  
-            <div  className='flex space-x-4 items-center mt-24 mb-8 dark:text-white'>
+            <div  className='flex space-x-4 items-center  mb-8 dark:text-white'>
 
              <WorkIcon/>
              <h1 className="text-3xl font-black">Ultrawave Careers</h1>
@@ -97,9 +99,13 @@ export default function CareersPage(){
             </div>
             <p className="max-w-screen-sm mb-6 text-lg">We greatly appreciate the opportunity to work with skilled and hardworking engineers to build top-notch applications. <span className='font-medium text-xl'> However please be aware that,we are not currently looking to grow our team.</span></p>
             </PageWrapper> 
+            
+
+
             <Divider className="dark:bg-slate-300" />
 
             <Footer/>
+            </div>
 
 
 

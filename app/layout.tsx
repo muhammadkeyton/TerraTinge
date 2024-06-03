@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.className}  antialiased transition-colors duration-200 bg-white dark:bg-black`}>
-       <div className="max-w-screen-2xl mx-auto px-4">
+       <div className="max-w-screen-2xl mx-auto">
 
       
        

@@ -18,22 +18,24 @@ export default function PartnershipLoginPage (){
     
 
     return (
-        <>
+        <div className='relative pt-20'>
          <NavBar/>
          <PageWrapper>
 
         
+        <div className='flex justify-center items-center min-h-screen px-4'>
 
-         <div className='mx-2 flex flex-col lg:flex-row lg:space-x-12 items-center mt-28 '>
+         
+         <div className='flex flex-col lg:flex-row lg:space-x-12 items-center'>
            
-            <div className='relative  lg:w-[50%] h-[75%] flex justify-center items-start'>
+            <div className='relative  lg:w-[50%] flex justify-center items-start'>
           
                 <div className='rounded-lg  pt-20 md:max-w-[80%]  w-full bg-violet-950 dark:bg-violet-950/50  text-white  text-center p-6 lg:p-20'>
                 <Diversity1Icon sx={{fontSize:'4rem'}} className='mr-4 mb-8'/>
                       <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>Ultrawave partnership</h1>
                         <p className='md:ml-8 mb-5 font-medium'>
                           
-                        Become an Ultrawave Partner, Unlock New Earnings, and Shape the Future of Technology
+                        Join Ultrawave&apos;s Partnership Program! Promote us with your unique code and earn 5% profit per referral. Your referrals also get a 5% discount on app development. It&apos;s a rewarding experience for all!
                         </p>
                     </div> 
                 <div className='absolute mb-4 flex flex-col gap-3 items-center  -top-10  sm:left:0  md:bottom-0'>
@@ -72,10 +74,11 @@ export default function PartnershipLoginPage (){
 
 
 
-      </div>
+            </div>
+        </div>
       
         </PageWrapper>
-      </>
+      </div>
     )
     
 }

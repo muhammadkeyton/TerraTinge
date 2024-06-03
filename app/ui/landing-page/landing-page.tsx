@@ -17,7 +17,7 @@ function ContentLineBreak() {
 
 export default function LandingPage() {
   return (
-    <div className='relative'>
+    <div className='relative px-4'>
       <MuiServerProvider>
         <NavBar />
 

@@ -18,6 +18,7 @@ import Resend from "next-auth/providers/resend"
 import { cert } from "firebase-admin/app"
 
 
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: FirestoreAdapter({
     credential: cert({

@@ -23,13 +23,12 @@ export default function LoginPage(){
 
 
     return (
-        <>
-         <NavBar/>
-
-         <div className="mt-24 flex justify-center items-center">
-            
+        <div className='relative pt-16'>
+        <NavBar/>
+         <div className="flex justify-center items-center h-screen">
+         
             <PageWrapper>
-            <div id="loginform" className="max-w-md ">
+            <div id="loginform" className="max-w-md px-4">
 
                 <MuiServerProvider>
                  <AccountCircleOutlinedIcon className='font-normal text-5xl mb-10 text-indigo-700 dark:text-white'/>
@@ -49,7 +48,7 @@ export default function LoginPage(){
             </PageWrapper>
 
          </div>
-        </>
+        </div>
     )
     
 }

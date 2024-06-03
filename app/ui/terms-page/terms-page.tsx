@@ -49,7 +49,7 @@ function Term({heading,text,i}:{heading:string,text:string,i:number}){
 export default function TermsPage(){
     return (
    
-    <main className='md:p-8'>
+    <main className='px-4 md:p-8'>
 
       <NavBar/>
 

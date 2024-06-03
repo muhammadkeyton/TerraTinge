@@ -18,8 +18,8 @@ function NavBar() {
   
   return (
     <MuiServerProvider>
-      <AppBar className='mb-16 backdrop-blur-md bg-inherit border-none outline-none w-full flex flex-row justify-center'>
-        <div className='flex flex-row px-3 py-3 justify-between items-center w-full sm:max-w-screen-xl'>
+    
+        <div className='fixed shadow-lg h-14  top-0 left-0 right-0 backdrop-blur-md bg-inherit border-none outline-none flex flex-row justify-between md:px-16 items-center w-screen'>
         
           <Button onClick={()=>{
             if(pathname == '/authentication' || pathname == '/partnership'){
@@ -32,7 +32,7 @@ function NavBar() {
 
           <ThemeSwitch />
         </div>
-      </AppBar>
+      
     </MuiServerProvider>
   );
 }
