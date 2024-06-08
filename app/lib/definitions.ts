@@ -7,21 +7,25 @@ export type User = NextAuthUser & {
 }
 
 
-export type RegisterData = {
-  firstName:string,
-  lastName:string,
-  email:string,
-  password:string,
-  repeatPassword:string
-}
 
 
-export type LoginData={
-  emailAddress:string,
-  password:string
-}
 
-export type AuthenticationResponse = {
-  success:boolean,
-  message?:string
-}
+
+export type ApplicationData = {
+  name:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  email:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  about: {
+      text: string;
+      limitReached: boolean;
+  };
+  resume: File | null;
+};
+

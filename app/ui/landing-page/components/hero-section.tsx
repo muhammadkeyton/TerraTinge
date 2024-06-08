@@ -28,10 +28,9 @@ export default function HeroSection() {
     <div id='hero' className='flex flex-col  space-y-12 md:space-x-4 md:space-y-0 md:flex-row lg:flex-row pt-28 mb-32 justify-around '>
       <div className='basis-1/2 xl:basis-1/3 flex flex-col space-y-4 '>
         <h1 className='text-lg text-gray-600 dark:text-gray-100 font-medium'>Software Development Company</h1>
-        <h4 className='text-2xl dark:text-white font-bold  max-w-sm'>Elevate Your Digital Experience with Our Exquisite Software Solutions</h4>
+        <h4 className='text-2xl dark:text-white font-bold  max-w-sm'>Innovation Empowered: Your Path to Streamlined App Development and Growth.</h4>
         <p className='text-base text-gray-700 dark:text-gray-300 font-medium max-w-prose'>
-          We architect aesthetically pleasing, user-centric mobile and web applications that are a breeze to navigate. Our bespoke software solutions streamline your business
-          operations and enhance customer satisfaction. Embark on a transformative digital journey with us.
+        We excel in custom mobile and web apps, designed for you. We&apos;re not just developers, but innovators with our own tech startups. Join our journey for growth and success. We build more than apps; we build your path forward. Let&apos;s make your vision real. Choose us, and together, let&apos;s explore new horizons.
         </p>
 
         <Link href='/authentication' tabIndex={-1}>

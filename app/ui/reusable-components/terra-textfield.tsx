@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useTheme } from 'next-themes';
 import { useReducer,useState,useEffect } from 'react';
 
@@ -8,8 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
-
+import { montserrat } from '@/app/ui/fonts';
 
 
 //--------------------------------reducer used to update the textfield ui style when theme is changed-----------------------------
@@ -51,15 +51,16 @@ type UltraTextFieldProps = {
     },
     autoFocus?:boolean,
     name:string,
-    type?:string,
+    type:string,
     value:string,
+    multiline?:boolean,
     onChange:(event: React.ChangeEvent<HTMLInputElement>) => void,
 
 
 }
 
 
-export default function UltraTextField({label,error,helperText,inputProps,autoFocus,name,type,value,onChange}:UltraTextFieldProps){
+export default function TerraTextField({label,error,helperText,inputProps,autoFocus,name,type,value,onChange,multiline}:UltraTextFieldProps){
     const { resolvedTheme } = useTheme();
     const [showPassword,setPassword] = useState(false);
 
@@ -93,8 +94,8 @@ export default function UltraTextField({label,error,helperText,inputProps,autoFo
     switch (type) {
         case 'text':{
             return (
-                <TextField label={label} variant="outlined" fullWidth
-                
+                <TextField label={label} variant='outlined' fullWidth
+                // className='font-app'
                 autoComplete='off'
                 error= {error}
                 helperText= {helperText}
@@ -104,25 +105,44 @@ export default function UltraTextField({label,error,helperText,inputProps,autoFo
                 name={name}
                 value={value}
                 onChange={onChange}
+                multiline={multiline}
+                maxRows={multiline?20:undefined}
                 sx={{
-
-                    marginBottom:2,
-
+                    
+                    marginBottom:3,
+                    
+               
+                    //customizations from material ui texfield docs
                     '& .MuiOutlinedInput-root':{
+                        fontFamily:`${montserrat.style.fontFamily}`,
                         color:textFieldState.textColor,
                         '&.Mui-focused fieldset': {borderColor: textFieldState.borderColor,},
-                        '&:hover fieldset': {borderColor: textFieldState.borderColor,},
+                        '&:hover fieldset': {borderColor:textFieldState.borderColor,},
                         '& fieldset': {
                             borderColor: '#94a3b8',
                             borderRadius:'15px',
                         },
+                        
+                        '& textarea': {
+                            outline: 'none !important', // removing the outline on multiline textfield
+                        },
+                    
+                        
                     },
                     '& label.Mui-focused': {
                         color: textFieldState.labelFocusedColor,
                     },
                     '& label': {
+                        fontFamily:`${montserrat.style.fontFamily}`,
                         color: '#71717a',
                     },
+                    
+                    
+
+                   
+                    
+
+                   
                     
                     }}/>
             )
@@ -200,6 +220,8 @@ export default function UltraTextField({label,error,helperText,inputProps,autoFo
 
             )
         }
+
+        
     
         default:
             throw Error(`unknown textfield type,expected password or text but instead got ${type}`);

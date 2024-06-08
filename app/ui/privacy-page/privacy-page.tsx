@@ -60,7 +60,7 @@ export default function PrivacyPage(){
                 <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
                 <PolicyIcon/>
-                <h1 className="text-2xl font-black ">Ultrawave Privacy Policy</h1>
+                <h1 className="text-2xl font-black ">TerraTinge Privacy Policy</h1>
 
                 </div>
 

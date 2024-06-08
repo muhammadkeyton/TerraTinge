@@ -18,12 +18,12 @@ export default function PartnershipLoginPage (){
     
 
     return (
-        <div className='relative pt-20'>
+        <div className='relative pt-28 px-4'>
          <NavBar/>
          <PageWrapper>
 
         
-        <div className='flex justify-center items-center min-h-screen px-4'>
+        <div className='flex justify-center items-center min-h-screen  z-0'>
 
          
          <div className='flex flex-col lg:flex-row lg:space-x-12 items-center'>
@@ -31,11 +31,11 @@ export default function PartnershipLoginPage (){
             <div className='relative  lg:w-[50%] flex justify-center items-start'>
           
                 <div className='rounded-lg  pt-20 md:max-w-[80%]  w-full bg-violet-950 dark:bg-violet-950/50  text-white  text-center p-6 lg:p-20'>
-                <Diversity1Icon sx={{fontSize:'4rem'}} className='mr-4 mb-8'/>
-                      <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>Ultrawave partnership</h1>
+                <Diversity1Icon sx={{fontSize:'4rem'}} className='mb-8'/>
+                      <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>TerraTinge partnership</h1>
                         <p className='md:ml-8 mb-5 font-medium'>
                           
-                        Join Ultrawave&apos;s Partnership Program! Promote us with your unique code and earn 5% profit per referral. Your referrals also get a 5% discount on app development. It&apos;s a rewarding experience for all!
+                        Join TerraTinge&apos;s Partnership Program! Promote us with your unique code and earn 5% profit per referral. Your referrals also get a 5% discount on app development. It&apos;s a rewarding experience for all!
                         </p>
                     </div> 
                 <div className='absolute mb-4 flex flex-col gap-3 items-center  -top-10  sm:left:0  md:bottom-0'>
@@ -60,7 +60,7 @@ export default function PartnershipLoginPage (){
                         Want to Partner with us?
                     </h1>
 
-                    <p>Login with one of the options below and after you&apos;re Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">Ultrawave Partner</code> option.</p>
+                    <p>Login with one of the options below and after you&apos;re Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">TerraTinge Partner</code> option.</p>
                    
                     
                      <AuthView/>

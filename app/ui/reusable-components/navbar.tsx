@@ -19,7 +19,7 @@ function NavBar() {
   return (
     <MuiServerProvider>
     
-        <div className='fixed shadow-lg h-14  top-0 left-0 right-0 backdrop-blur-md bg-inherit border-none outline-none flex flex-row justify-between md:px-16 items-center w-screen'>
+        <div className='z-10 fixed shadow-lg h-14  top-0 left-0 right-0 backdrop-blur-md bg-inherit border-none outline-none flex flex-row justify-between md:px-16 items-center w-screen'>
         
           <Button onClick={()=>{
             if(pathname == '/authentication' || pathname == '/partnership'){

@@ -11,7 +11,7 @@ import { Providers } from './providers'
 
 
 export const metadata: Metadata = {
-  title: "Ultrawave Technologies",
+  title: "TerraTinge",
   description: "Building Beautiful,user friendly and performant web and mobile applications",
 };
 

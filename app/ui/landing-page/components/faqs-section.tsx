@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import SecurityIcon from '@mui/icons-material/Security';
+import PublicIcon from '@mui/icons-material/Public';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CodeIcon from '@mui/icons-material/Code';
@@ -17,6 +17,10 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 
 const faqsDataFirstBatch = [
+    {   "icon":<PublicIcon/>,
+        "question": "What is the meaning of TerraTinge?",
+        "answer": "“TerraTinge” embodies our ambition to excel in all we undertake. Derived from ‘Terra’, meaning ‘earth’, and ‘Tinge’, indicating a slight influence, it signifies our intent to leave a positive mark on everything we touch. We began with software, but our interests are not confined to it. We aim to bring about improvements in various sectors like Automotive, Telecommunication and Real Estate, among others. We are driven by the desire to enhance existing products and services, and to innovate new solutions. Our scope is not limited to any specific sector; we aim to contribute across a broad spectrum. TerraTinge is our commitment to continuous improvement and excellence in all endeavors."
+    },
     {
         "icon": <DesignServicesIcon/>,
         "question": "What services do you offer?",
@@ -26,10 +30,7 @@ const faqsDataFirstBatch = [
         "question": "What technologies do you specialize in?",
         "answer": "We believe that technologies are tools that serve to realize your vision. Our team is proficient in a wide array of technologies and selects the most suitable ones based on your project's requirements. For instance, if your project involves both a mobile and a web app, we might employ a combination of React, React Native, or Flutter."
     },
-    {   "icon":<SecurityIcon/>,
-        "question": "Can you provide examples of projects you've completed?",
-        "answer": "We hold our clients’ privacy in high regard and ensure the utmost confidentiality for their projects. We refrain from disclosing these projects on our website, as we respect our clients and do not own the copyright to these projects. However, we can proudly share that the web app you’re currently viewing stands as a testament to our capabilities. It showcases a beautifully designed landing page, user authentication, an AI chatbot, an account system for project payments and feature requests, and so much more."
-    },
+    
     {   "icon": <DomainVerificationIcon/>,
         "question": "How do you ensure the quality of your software?",
         "answer": "Quality is at the forefront of our software development process. We adhere to industry best practices and conduct rigorous testing at each stage of development. This meticulous approach ensures that we deliver high-quality, reliable, and efficient software."

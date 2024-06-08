@@ -64,7 +64,7 @@ export default function Footer(){
     return (
         <footer className="grid grid-cols-2 gap-16 md:grid-cols-3 md:gap-0 place-items-center font-bold dark:text-white  my-20 xl:mx-24">
             <div>
-            <h4 className="max-w-sm">© {date} Ultrawave Technologies Canada, All Rights Reserved</h4>
+            <h4 className="max-w-sm">© {date} TerraTinge Canada, All Rights Reserved</h4>
             </div>
 
 
@@ -86,7 +86,7 @@ export default function Footer(){
             <div className="col-span-2 md:col-auto flex flex-col space-y-6">
                 <div>
                 <h4 className="mb-2 text-2xl">Get in touch</h4>
-                <a href="" className="underline decoration-indigo-700 underline-offset-4">support@Ultrawave.tech</a>
+                <a href="" className="underline decoration-indigo-700 underline-offset-4">talktoteam@TerraTinge.com</a>
                 </div>
 
                 <div className="flex items-center space-x-6">

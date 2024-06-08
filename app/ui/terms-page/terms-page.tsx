@@ -59,7 +59,7 @@ export default function TermsPage(){
             <div  className='flex space-x-4 items-center mb-10 dark:text-white'>
 
                 <GavelIcon/>
-                <h1 className="text-2xl font-black ">Ultrawave Terms and Conditions</h1>
+                <h1 className="text-2xl font-black ">TerraTinge Terms and Conditions</h1>
 
             </div>
 

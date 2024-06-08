@@ -34,7 +34,7 @@ export default function LoginPage(){
                  <AccountCircleOutlinedIcon className='font-normal text-5xl mb-10 text-indigo-700 dark:text-white'/>
                 </MuiServerProvider>
                 
-                <h1 className="font-extrabold text-2xl mb-5">Quick Login With Email</h1>
+                <h1 className="font-extrabold text-2xl mb-5">TerraTinge Login With Email</h1>
 
                 <AuthView text={ExplanationText}/>
      

@@ -51,7 +51,7 @@ function NavBar() {
       <NavScroll onClick={handleDrawerToggle} activeClass='active' to='hero' spy={true} smooth={true} offset={-100} duration={500}>
         <Button className='cursor-pointer mt-6'>
           <Typography variant='h6' className={`${montserrat.className} text-black dark:text-white font-black`}>
-            Ultrawave Tech
+            TerraTinge
           </Typography>
         </Button>
       </NavScroll>
@@ -90,7 +90,7 @@ function NavBar() {
           <NavScroll activeClass='active' to='hero' spy={true} smooth={true} offset={-100} duration={500}>
             <Button className='cursor-pointer '>
               <Typography variant='h6' component='div' className={` ${montserrat.className} text-slate-800 dark:text-white font-black`}>
-                Ultrawave Tech
+               TerraTinge
               </Typography>
             </Button>
           </NavScroll>

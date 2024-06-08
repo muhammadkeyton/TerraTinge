@@ -1,7 +1,7 @@
 'use server';
 
 import { signIn } from "@/auth";
-import { EmailSchema } from "@/app/lib/login-data-validation";
+import { EmailSchema } from "@/app/lib/data-validation";
 
 
 

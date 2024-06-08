@@ -16,9 +16,9 @@ import { FcGoogle } from "react-icons/fc";
 
 import clsx from 'clsx';
 
-import UltraTextField from '@/app/ui/reusable-components/ultra-textfield';
+import TerraTextField from '@/app/ui/reusable-components/terra-textfield';
 
-import { EmailSchema } from "@/app/lib/login-data-validation";
+import { EmailSchema } from "@/app/lib/data-validation";
 
 
 
@@ -116,7 +116,7 @@ export default function AuthView({text}:AuthViewPropType){
                              </MuiServerProvider>
                     :
 
-                    <UltraTextField
+                    <TerraTextField
                         type = 'text'
                         label='Email Address'
                         name='text'
@@ -166,7 +166,7 @@ export default function AuthView({text}:AuthViewPropType){
 
 
 
-                <p>By continuing, you agree to Ultrawave&apos;s <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/privacy">Privacy Policy</Link></span> & <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/terms">Terms and Conditions</Link></span>.</p>
+                <p>By continuing, you agree to TerraTinge&apos;s <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/privacy">Privacy Policy</Link></span> & <span className='underline underline-offset-2 text-indigo-700 dark:text-indigo-300'><Link href="/terms">Terms and Conditions</Link></span>.</p>
                 
                 
 
