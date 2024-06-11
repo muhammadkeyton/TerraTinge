@@ -433,7 +433,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
 
             </div>
 
-            <Button disabled={false} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+            <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
                         clsx(
                             `my-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
