@@ -15,7 +15,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import { NameSchema,EmailSchema } from "@/app/lib/data-validation";
-import {ApplicationData} from '@/app/lib/definitions';
+import {ApplicationData,ApplicationDataServer} from '@/app/lib/definitions';
 
 import { saveAs } from 'file-saver';
 
@@ -37,7 +37,9 @@ import { PageWrapper } from '../page-animater';
 
 import NavBar from '../reusable-components/navbar';
 
+import scrollTo  from 'scroll-to-element';
 
+import {submitDeveloperData} from '@/app/server-actions/developer-job-application/submit-developer-data';
 
 
 interface CareerValueCardProp{
@@ -114,6 +116,7 @@ function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
 
 function JobValueCard({jobDescription,icon}:JobValueCardProp){
     const [more,setMore] = useState(false);
+    
 
     const [applicationData,setData] = useState<ApplicationData>({
         name:{
@@ -127,10 +130,14 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             helperText:''
         },
         about:{
+            helperText:'',
+            error:false,
             text:'',
-            limitReached:false
         },
-        resume:null
+        resume:{
+            file:null,
+            error:false
+        }
     });
 
     const emptyField = applicationData.email.text.length < 1 || applicationData.name.text.length < 1 || applicationData.about.text.length < 1;
@@ -149,12 +156,14 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             setData({
                 ...applicationData,
                 about:{
+                    error:limitReached,
+                    helperText:limitReached?'character limit reached!':'',
                     text:value,
-                    limitReached:limitReached
                 }
                 
             })
         } else if(name === 'name'){
+          
             const {data,success,error} = NameSchema.safeParse({name:value});
 
             if(success){
@@ -171,7 +180,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
                 setData({
                     ...applicationData,
                     name:{
-                        ...applicationData.name,
+                        text:value,
                         error:true,
                         helperText:error.errors[0].message
 
@@ -184,12 +193,59 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             setData({
                 ...applicationData,
                 [name]:{
-                    text:value
+                    text:value,
+                    error:false,
+                    helperText:''
                 }
             });
             
         }
 
+    }
+
+
+    const validateDeveloperData = (data:ApplicationData):boolean=>{
+        const emailResult = EmailSchema.safeParse({email:data.email.text});
+        const nameResult = NameSchema.safeParse({name:data.name.text});
+
+        const emptyAbout = data.about.text.length < 1;
+        const emptyResume = data.resume.file == null;
+        
+
+       
+
+
+       if(!emptyAbout && !emptyResume && emailResult.success && nameResult.success){
+         return true;
+       }else{
+            setData({
+                resume:{
+                    ...data.resume,
+                    error:emptyResume
+                },
+                about:{
+                    ...data.about,
+                    error:emptyAbout,
+                    helperText: emptyAbout?'this field is required':''
+                },
+                email:{
+                    ...data.email,
+                    error:!emailResult.success,
+                    helperText: emailResult.success?'':emailResult.error.errors[0].message
+
+
+                },
+                name:{
+                    ...data.name,
+                    error:!nameResult.success,
+                    helperText: nameResult.success?'':nameResult.error.errors[0].message
+                }
+
+            })
+
+            
+        }
+        return false
     }
 
 
@@ -236,11 +292,40 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
          </div>
 
          
-         <Divider className="dark:bg-slate-300 my-6" />
+         <Divider id='devform' className="dark:bg-slate-300 my-6" />
 
-         <p className="my-6 font-medium">Developer Application</p>
+         <p  className="my-6 font-medium">Developer Application</p>
 
-         <form>
+         <form onSubmit={async(event)=>{
+            event.preventDefault()
+            scrollTo("#devform");
+            const dataOk = validateDeveloperData(applicationData);
+
+            
+           
+            const newFormData = new FormData();
+            if(dataOk && applicationData.resume.file){
+                newFormData.append('file', applicationData.resume.file);
+                const devData:ApplicationDataServer = {
+                    name:applicationData.name.text,
+                    email:applicationData.email.text,
+                    about:applicationData.about.text,
+                    resume:newFormData
+                }
+                const serverDataOk = await submitDeveloperData(devData);
+
+                if(!serverDataOk){
+                    validateDeveloperData(applicationData);
+                }
+            }
+            
+          
+
+           
+            
+            
+         }}
+         >
             <TerraTextField
              type='text'
              label='Your Name'
@@ -279,15 +364,15 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
                         maxLength:1000
                     }
                  }
-                error={applicationData.about.limitReached}
-                helperText={applicationData.about.limitReached?'Character Limit Reached!':undefined}
+                error={applicationData.about.error}
+                helperText={applicationData.about.helperText}
             />
             
           <MuiServerProvider>
 
            <div className="flex space-x-2 items-center">
 
-           {!applicationData.resume?
+           {applicationData.resume.file == null?
 
            <>
             <Button
@@ -303,24 +388,30 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             <input accept="application/pdf" type="file" hidden onChange={(e:ChangeEvent<HTMLInputElement>)=>{
                 if (e.target.files) {
                     const file = e.target.files[0];
+                    
+                   
                     setData({
                         ...applicationData,
-                        resume:file
+                        resume:{
+                            file:file,
+                            error:false
+                        }
                     })
+                    
                 }
             }}/>
             
             </Button>
 
-            <h4 className='text-xs italic'>only pdf formats accepted</h4>
+            {applicationData.resume.error?<h4 className='text-xs italic text-red-500'>we need your resume</h4>:<h4 className='text-xs italic'>only pdf formats accepted</h4>}
             </>
 
             :
-            <Chip  className="text-slate-700 dark:text-slate-200" label={`${applicationData.resume.name}`} onClick={()=>{
+            <Chip  className="text-slate-700 dark:text-slate-200" label={`${applicationData.resume.file.name}`} onClick={()=>{
               
-                if(applicationData.resume){
-                    var blob = new Blob([applicationData.resume], {type: "application/pdf"});
-                    saveAs(blob, `${applicationData.resume.name}`);
+                if(applicationData.resume.file){
+                    var blob = new Blob([applicationData.resume.file], {type: "application/pdf"});
+                    saveAs(blob, `${applicationData.resume.file.name}`);
                     
                 }
                 
@@ -328,8 +419,12 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             }} onDelete={()=>{
                 setData({
                     ...applicationData,
-                    resume:null
+                    resume:{
+                        file:null,
+                        error:false
+                    }
                 });
+                
             }}  deleteIcon={<DeleteIcon className="text-red-500"/>} /> 
             
             }
@@ -338,7 +433,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
 
             </div>
 
-            <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+            <Button disabled={false} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
                         clsx(
                             `my-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
@@ -403,12 +498,12 @@ export default function CareersPage(){
 
             </div>
 
-            <Divider className="dark:bg-slate-300 mb-10" />
+            <Divider className="dark:bg-slate-300" />
 
             <div className='flex flex-col justify-center items-center'>
 
             
-            <h2 className=" text-xl font-semibold">Join Our Team Of Engineers <span> <code className="text-xs bg-slate-200  text-indigo-600 dark:text-indigo-700 p-1 rounded-sm"> We&apos;re Hiring</code></span></h2>
+            <h2 className=" text-xl font-semibold mt-10">Join Our Team Of Engineers <span> <code className="text-xs bg-slate-200  text-indigo-600 dark:text-indigo-700 p-1 rounded-sm"> We&apos;re Hiring</code></span></h2>
            
             
 

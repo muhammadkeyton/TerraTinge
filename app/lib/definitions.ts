@@ -10,7 +10,7 @@ export type User = NextAuthUser & {
 
 
 
-
+//Frontend Developer Application DataType
 export type ApplicationData = {
   name:{
     text:string,
@@ -23,9 +23,25 @@ export type ApplicationData = {
     helperText:string
   };
   about: {
+      error:boolean,
+      helperText:string,
       text: string;
-      limitReached: boolean;
   };
-  resume: File | null;
+  resume:{
+    file: File | null,
+    error:boolean
+  }
+  
+};
+
+
+
+//server Developer Application Data Type
+export type ApplicationDataServer = {
+  name:string,
+  email:string,
+  about: string,
+  resume:FormData
+  
 };
 

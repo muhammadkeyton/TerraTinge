@@ -30,6 +30,7 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.0.1",
     "react-scroll": "^1.9.0",
+    "scroll-to-element": "^2.0.3",
     "server-only": "^0.0.1",
     "zod": "^3.23.3"
   },

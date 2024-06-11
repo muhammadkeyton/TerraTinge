@@ -99,7 +99,7 @@ export default function TerraTextField({label,error,helperText,inputProps,autoFo
                 autoComplete='off'
                 error= {error}
                 helperText= {helperText}
-                required
+                // required
                 inputProps={inputProps}
                 autoFocus={autoFocus}
                 name={name}

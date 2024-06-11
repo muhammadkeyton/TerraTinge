@@ -17,6 +17,7 @@ export const EmailSchema = z.object({
 
 export const NameSchema = z.object({
     name: z.string()
+    .min(1,{ message: 'Name is required' })
     .transform(text => {
        // This matches any character that is not an uppercase or lowercase letter but allows space to be added
         let regex = /[^a-zA-Z ]/g;
