@@ -23,6 +23,8 @@ import { montserrat } from '@/app/ui/fonts';
 
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 import TerraTextField from '@/app/ui/reusable-components/terra-textfield';
 
 import Chip from '@mui/material/Chip';
@@ -88,6 +90,9 @@ const JobValueData = [
 ]
 
 
+const applicationResultText = 'Thanks for applying! We’re excited to review your application. We’ll be in touch soon, and if you’re not selected, we’ll provide helpful feedback. Your interest in our team is greatly appreciated!'
+
+
 function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
     
        return(
@@ -117,6 +122,11 @@ function CareerValueCard({heading,text,color,icon}:CareerValueCardProp){
 function JobValueCard({jobDescription,icon}:JobValueCardProp){
     const [more,setMore] = useState(false);
     
+    const [applicationResult,setResult] = useState({
+        error:false,
+        text:'',
+        loading:false
+    });
 
     const [applicationData,setData] = useState<ApplicationData>({
         name:{
@@ -249,6 +259,9 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
     }
 
 
+   
+
+
     return(
 
     
@@ -296,6 +309,19 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
 
          <p  className="my-6 font-medium">Developer Application</p>
 
+
+
+
+
+        
+
+        {/* using nested ternary operator for the from to control the loading and form*/}
+         {
+
+           (applicationResult.text.length < 1 && !applicationResult.loading) ? 
+            
+        
+         
          <form onSubmit={async(event)=>{
             event.preventDefault()
             scrollTo("#devform");
@@ -305,6 +331,14 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
            
             const newFormData = new FormData();
             if(dataOk && applicationData.resume.file){
+
+                //start loading
+                setResult({
+                    ...applicationResult,
+                    loading:true
+                });
+
+
                 newFormData.append('file', applicationData.resume.file);
                 const devData:ApplicationDataServer = {
                     name:applicationData.name.text,
@@ -315,7 +349,20 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
                 const serverDataOk = await submitDeveloperData(devData);
 
                 if(!serverDataOk){
-                    validateDeveloperData(applicationData);
+                    let dataOk = validateDeveloperData(applicationData);
+                    if(dataOk){
+                        setResult({
+                            text:'something went wrong,try again later!',
+                            error:true,
+                            loading:false
+                        })
+                    }
+                }else{
+                    setResult({
+                        text:applicationResultText,
+                        error:false,
+                        loading:false
+                    });
                 }
             }
             
@@ -450,6 +497,38 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
            </MuiServerProvider>
 
          </form>
+
+         :
+
+
+         (applicationResult.text.length > 0 && !applicationResult.loading)
+
+         ?
+
+         <div className="flex flex-col items-center justify-center w-full my-6">
+            <div
+              
+              className="block cursor-pointer max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center"
+            >
+              <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white flex flex-row justify-center items-center gap-2">
+                {applicationResult.error?'❌Application not received❌':'🎊Application Received🎊'}
+              </h5>
+              <p className="font-normal text-gray-700 dark:text-gray-400">
+                {applicationResult.text}
+              </p>
+            </div>
+          
+          </div>
+
+          :
+
+          <MuiServerProvider>
+            <div className='flex justify-center items-center my-12'>
+            <CircularProgress className='text-indigo-700' size={60}/>
+            </div>
+          </MuiServerProvider>
+
+        }
 
          <Divider className="dark:bg-slate-300 my-6" />
 
