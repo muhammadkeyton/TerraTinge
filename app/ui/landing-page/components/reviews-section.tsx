@@ -2,43 +2,127 @@ import { cn } from "@/app/lib/utils";
 import Marquee from "@/app/ui/landing-page/magic-ui/marquee";
 
 const reviews = [
-    {
-      name: "Alice",
-      username: "Innovative Thinkers",
-      body: "Wow! The mobile app TerraTinge created for us is simply outstanding! It's user-friendly and visually appealing. I'm absolutely delighted!",
-      img: "https://avatar.vercel.sh/alice",
-    },
-    {
-      name: "Bob",
-      username: "Eco Enthusiasts",
-      body: "I'm genuinely impressed with the web application TerraTinge developed for us. It's reliable, intuitive, and has significantly simplified our lives. Hats off to the team!",
-      img: "https://avatar.vercel.sh/bob",
-    },
-    {
-      name: "Charlie",
-      username: "Health Advocates",
-      body: "TerraTinge transformed our vision into reality! Our new app exceeds our expectations. Kudos to their exceptional team!",
-      img: "https://avatar.vercel.sh/charlie",
-    },
-    {
-      name: "Diana",
-      username: "Foodie Friends",
-      body: "Collaborating with TerraTinge has been a wonderful experience. They've raised the bar in app development. I couldn't be more satisfied with the results!",
-      img: "https://avatar.vercel.sh/diana",
-    },
-    {
-      name: "Ethan",
-      username: "Travel Trailblazers",
-      body: "The web app TerraTinge developed for us has been a game-changer. It's streamlined our operations and enabled us to reach a wider audience. We're ecstatic!",
-      img: "https://avatar.vercel.sh/ethan",
-    },
-    {
-      name: "Fiona",
-      username: "Fitness Fanatics",
-      body: "I can't praise TerraTinge enough. Their app development expertise is unparalleled, and they've helped us engage with our customers in a whole new way. We're incredibly thankful!",
-      img: "https://avatar.vercel.sh/fiona",
-    },
-  ];
+  {
+    name: "George",
+    username: "App Lover",
+    body: "The app that TerraTinge built for us is a masterpiece. It's fast and looks great!",
+    img: "https://avatar.vercel.sh/george",
+  },
+  {
+    name: "Hannah",
+    username: "Web Fan",
+    body: "Our new web app, developed by TerraTinge, is a lifesaver. It's so easy to use.",
+    img: "https://avatar.vercel.sh/hannah",
+  },
+  {
+    name: "Ian",
+    username: "Techie",
+    body: "The mobile app TerraTinge developed for us is sleek and efficient. A real game-changer.",
+    img: "https://avatar.vercel.sh/ian",
+  },
+  {
+    name: "Jane",
+    username: "Happy Client",
+    body: "TerraTinge delivered beyond our expectations. The app they built for us is just perfect.",
+    img: "https://avatar.vercel.sh/jane",
+  },
+  {
+    name: "Kevin",
+    username: "Satisfied",
+    body: "Impressive work by TerraTinge. The app they developed for us is user-friendly and reliable.",
+    img: "https://avatar.vercel.sh/kevin",
+  },
+  {
+    name: "Laura",
+    username: "Grateful",
+    body: "Our web app, developed by TerraTinge, is intuitive and robust. So grateful!",
+    img: "https://avatar.vercel.sh/laura",
+  },
+  {
+    name: "Mike",
+    username: "Admirer",
+    body: "TerraTinge did a fantastic job on our app. It's beautiful and efficient.",
+    img: "https://avatar.vercel.sh/mike",
+  },
+  {
+    name: "Nina",
+    username: "Enthusiast",
+    body: "TerraTinge exceeded our expectations. The web app they built for us is just amazing.",
+    img: "https://avatar.vercel.sh/nina",
+  },
+  {
+    name: "Oscar",
+    username: "Appreciative",
+    body: "The app that TerraTinge built for us is simply outstanding. It's a joy to use.",
+    img: "https://avatar.vercel.sh/oscar",
+  },
+  {
+    name: "Pam",
+    username: "Impressed",
+    body: "The mobile app TerraTinge developed for us is visually appealing and super efficient.",
+    img: "https://avatar.vercel.sh/pam",
+  },
+  {
+    name: "Quincy",
+    username: "Delighted",
+    body: "TerraTinge's team is exceptional. They turned our vision into a fantastic app.",
+    img: "https://avatar.vercel.sh/quincy",
+  },
+  {
+    name: "Rachel",
+    username: "Joyful",
+    body: "Working with TerraTinge was a pleasure. They've set a new standard in app development.",
+    img: "https://avatar.vercel.sh/rachel",
+  },
+  {
+    name: "Steve",
+    username: "Thrilled",
+    body: "The web app TerraTinge developed for us has revolutionized our operations. It's streamlined and effective.",
+    img: "https://avatar.vercel.sh/steve",
+  },
+  {
+    name: "Tina",
+    username: "Thankful",
+    body: "TerraTinge's expertise in app development is unparalleled. We're incredibly thankful for the app they built for us.",
+    img: "https://avatar.vercel.sh/tina",
+  },
+  {
+    name: "Uma",
+    username: "Excited",
+    body: "The app that TerraTinge built for us is amazing! It's user-friendly and looks stunning.",
+    img: "https://avatar.vercel.sh/uma",
+  },
+  {
+    name: "Victor",
+    username: "Pleased",
+    body: "The web app by TerraTinge is reliable and intuitive. It's made our work easier.",
+    img: "https://avatar.vercel.sh/victor",
+  },
+  {
+    name: "Wendy",
+    username: "Content",
+    body: "TerraTinge turned our idea into a fantastic app. Their team is exceptional.",
+    img: "https://avatar.vercel.sh/wendy",
+  },
+  {
+    name: "Xavier",
+    username: "Satisfied",
+    body: "Working with TerraTinge was a great experience. They've set a new standard in app development.",
+    img: "https://avatar.vercel.sh/xavier",
+  },
+  {
+    name: "Yvonne",
+    username: "Estatic",
+    body: "The web app TerraTinge developed for us has been a game-changer. It's streamlined and effective.",
+    img: "https://avatar.vercel.sh/yvonne",
+  },
+  {
+    name: "Zach",
+    username: "Grateful",
+    body: "Can't thank TerraTinge enough. Their expertise in app development is top-notch.",
+    img: "https://avatar.vercel.sh/zach",
+  },
+];
 
   
 const firstRow = reviews.slice(0, reviews.length / 2);
@@ -95,19 +179,19 @@ const MarqueeDemo = () => {
     
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-background py-12 ">
     
-      <Marquee pauseOnHover className="[--duration:20s]">
+      <Marquee pauseOnHover className="[--duration:80s]">
         {firstRow.map((review) => (
           <ReviewCard key={review.username} {...review} />
         ))}
       </Marquee>
-      <Marquee reverse pauseOnHover className="[--duration:20s]">
+      <Marquee reverse pauseOnHover className="[--duration:80s]">
         {secondRow.map((review) => (
           <ReviewCard key={review.username} {...review} />
         ))}
       </Marquee>
 
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-black"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-black"></div>
+      <div className=" pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-black"></div>
+      <div className=" pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-black"></div>
 
 
     </div>
