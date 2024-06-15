@@ -120,7 +120,10 @@ export default function Faqs() {
 
   return (
  <div id='section2' className="xl:mx-24 mt-20 mb-40">
-      <h1 className="text-4xl font-black dark:text-white mb-4">Frequently Asked Questions</h1>
+      <h2 className="mb-4 text-5xl font-black dark:text-white leading-[1.2] tracking-tighter text-foreground">
+      Frequently Asked Questions
+    </h2>
+    
       <h4 className="text-gray-700 dark:text-slate-50 mb-16">Quick answers to questions,you may have.</h4>
 
    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

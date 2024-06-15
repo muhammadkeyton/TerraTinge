@@ -14,8 +14,21 @@ const config: Config = {
         black: '#000000',
         white: '#ffffff',
       },
+     
       animation: {
-        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+       'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
       },
       spacing: {
         '128': '32rem',

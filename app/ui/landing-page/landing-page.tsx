@@ -1,14 +1,15 @@
 
 import Divider from '@mui/material/Divider';
-import MuiServerProvider from '../mui-providers/mui-server-provider';
+import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
 
-import NavBar from './components/navbar-section';
-import HeroSection from './components/hero-section';
-import WhyUs from './components/whyus-section';
-import AppDevelopment from './components/app-development';
-import Faqs from './components/faqs-section';
-import Footer from './components/footer-section';
-import ChatSection from './components/chat-section';
+import NavBar from '@/app/ui/landing-page/components/navbar-section';
+import HeroSection from '@/app/ui/landing-page/components/hero-section';
+import WhyUs from '@/app/ui/landing-page/components/whyus-section';
+import AppDevelopment from '@/app/ui/landing-page/components/app-development';
+import Faqs from '@/app/ui/landing-page/components/faqs-section';
+import Footer from '@/app/ui/landing-page/components/footer-section';
+import ChatSection from '@/app/ui/landing-page/components/chat-section';
+import Reviews from '@/app/ui/landing-page/components/reviews-section';
 
 import { PageWrapper } from '../page-animater';
 
@@ -27,6 +28,8 @@ export default function LandingPage() {
           <ContentLineBreak />
           <WhyUs />
           <ContentLineBreak />
+          <Reviews/>
+          <ContentLineBreak />
           <AppDevelopment />
           <ContentLineBreak />
           <Faqs />
@@ -36,7 +39,9 @@ export default function LandingPage() {
         
       </MuiServerProvider>
 
-      <ChatSection />
+      {/* <ChatSection /> */}
+
+      
 
       <MuiServerProvider>
        <Footer />
