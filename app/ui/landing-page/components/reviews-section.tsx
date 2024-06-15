@@ -88,7 +88,7 @@ const MarqueeDemo = () => {
           What Our Clients Are Saying
     </h2>
     <h3 className="mx-auto mb-8 max-w-lg text-balance text-center text-lg font-medium tracking-tight text-foreground/80">
-        Here's what{" "}
+        Here&apos;s what{" "}
         <strong>Our Happy Clients</strong> are saying about Us .
     </h3>
     
