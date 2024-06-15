@@ -6,6 +6,8 @@ import ComputerIcon from '@mui/icons-material/Computer';
 
 import { montserrat } from '@/app/ui/fonts';
 
+import NumberTicker from "@/app/ui/landing-page/magic-ui/number-ticker";
+
 interface AppPropType {
   icon: any;
   type: string;
@@ -51,7 +53,7 @@ export default function HeroSection() {
 
         <div className=' text-white flex flex-col space-y-3'>
           <div className='basis-1/2 bg-slate-200 text-slate-800 rounded-lg flex flex-col items-center py-4 px-8 space-y-4'>
-            <h4 className='font-bold text-2xl'>300+</h4>
+            <h4 className='font-bold text-2xl'><NumberTicker value={300} />+</h4>
             <p className='text-xs'>Projects Completed for big brands around the world!</p>
           </div>
 

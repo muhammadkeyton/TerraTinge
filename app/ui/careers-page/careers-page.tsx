@@ -43,6 +43,7 @@ import scrollTo  from 'scroll-to-element';
 
 import {submitDeveloperData} from '@/app/server-actions/developer-job-application/submit-developer-data';
 
+import confettiSideCannons from '@/app/ui/landing-page/magic-ui/confetti';
 
 interface CareerValueCardProp{
     heading:string,
@@ -323,6 +324,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
         
          
          <form onSubmit={async(event)=>{
+
             event.preventDefault()
             scrollTo("#devform");
             const dataOk = validateDeveloperData(applicationData);
@@ -331,6 +333,11 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
            
             const newFormData = new FormData();
             if(dataOk && applicationData.resume.file){
+
+                if(!navigator.onLine){
+                    alert(`Hey ${applicationData.name.text},please connect your device to the internet,we are unable to receive your application without internet connection!`);
+                    return;
+                }
 
                 //start loading
                 setResult({
@@ -358,6 +365,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
                         })
                     }
                 }else{
+                    confettiSideCannons();
                     setResult({
                         text:applicationResultText,
                         error:false,
@@ -454,7 +462,7 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             </>
 
             :
-            <Chip  className="text-slate-700 dark:text-slate-200" label={`${applicationData.resume.file.name}`} onClick={()=>{
+            <Chip  className="text-slate-700 dark:text-slate-200" label={`${applicationData.resume.file.name.substring(0,20)}..`} onClick={()=>{
               
                 if(applicationData.resume.file){
                     var blob = new Blob([applicationData.resume.file], {type: "application/pdf"});

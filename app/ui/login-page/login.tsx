@@ -37,6 +37,7 @@ export default function LoginPage(){
                 <h1 className="font-extrabold text-2xl mb-5">TerraTinge Login With Email</h1>
 
                 <AuthView text={ExplanationText}/>
+                
      
                
                    

@@ -1,3 +1,4 @@
+
 import Divider from '@mui/material/Divider';
 import MuiServerProvider from '../mui-providers/mui-server-provider';
 
@@ -32,9 +33,13 @@ export default function LandingPage() {
           <ContentLineBreak />
         </PageWrapper>
 
-        <ChatSection />
+        
+      </MuiServerProvider>
 
-        <Footer />
+      <ChatSection />
+
+      <MuiServerProvider>
+       <Footer />
       </MuiServerProvider>
     </div>
   );

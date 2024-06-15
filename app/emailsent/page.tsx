@@ -1,8 +1,15 @@
+'use client';
+
+import confettiSideCannons from "@/app/ui/landing-page/magic-ui/confetti"
+
+import { useEffect } from "react";
 
 export default function CheckEmailPage() {
-    
-  
-  
+
+   
+    useEffect(()=>{
+      confettiSideCannons();
+    },[]);
    
     return (
       <div className="flex flex-col items-center justify-center w-full h-screen">
