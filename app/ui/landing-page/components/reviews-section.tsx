@@ -5,37 +5,37 @@ const reviews = [
     {
       name: "Alice",
       username: "Innovative Thinkers",
-      body: "Wow! The mobile app Terra Ting built for us is just fantastic! It's so easy to use and looks great. I'm thrilled!",
+      body: "Wow! The mobile app TerraTinge created for us is simply outstanding! It's user-friendly and visually appealing. I'm absolutely delighted!",
       img: "https://avatar.vercel.sh/alice",
     },
     {
       name: "Bob",
       username: "Eco Enthusiasts",
-      body: "I'm genuinely impressed with the web application Terra Ting developed for us. It's reliable, user-friendly, and has made our lives so much easier. Kudos to the team!",
+      body: "I'm genuinely impressed with the web application TerraTinge developed for us. It's reliable, intuitive, and has significantly simplified our lives. Hats off to the team!",
       img: "https://avatar.vercel.sh/bob",
     },
     {
       name: "Charlie",
       username: "Health Advocates",
-      body: "Terra Ting turned our vision into reality! Our new app is better than we could have ever imagined. Hats off to their team!",
+      body: "TerraTinge transformed our vision into reality! Our new app exceeds our expectations. Kudos to their exceptional team!",
       img: "https://avatar.vercel.sh/charlie",
     },
     {
       name: "Diana",
       username: "Foodie Friends",
-      body: "Working with Terra Ting has been a dream. They've set a new standard in app development. I couldn't be happier with the results!",
+      body: "Collaborating with TerraTinge has been a wonderful experience. They've raised the bar in app development. I couldn't be more satisfied with the results!",
       img: "https://avatar.vercel.sh/diana",
     },
     {
       name: "Ethan",
       username: "Travel Trailblazers",
-      body: "The web app Terra Ting developed for us has been a game-changer. It's streamlined our processes and helped us reach more customers. We're over the moon!",
+      body: "The web app TerraTinge developed for us has been a game-changer. It's streamlined our operations and enabled us to reach a wider audience. We're ecstatic!",
       img: "https://avatar.vercel.sh/ethan",
     },
     {
       name: "Fiona",
       username: "Fitness Fanatics",
-      body: "I can't say enough good things about Terra Ting. Their app development skills are top-notch, and they've helped us connect with our customers in a whole new way. We're so grateful!",
+      body: "I can't praise TerraTinge enough. Their app development expertise is unparalleled, and they've helped us engage with our customers in a whole new way. We're incredibly thankful!",
       img: "https://avatar.vercel.sh/fiona",
     },
   ];
