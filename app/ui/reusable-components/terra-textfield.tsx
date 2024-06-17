@@ -106,10 +106,10 @@ export default function TerraTextField({label,error,helperText,inputProps,autoFo
                 value={value}
                 onChange={onChange}
                 multiline={multiline}
-                maxRows={multiline?20:undefined}
+                maxRows={multiline?3:undefined}
                 sx={{
                     
-                    marginBottom:3,
+                    marginBottom:2,
                     
                
                     //customizations from material ui texfield docs

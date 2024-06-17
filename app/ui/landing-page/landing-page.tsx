@@ -8,7 +8,7 @@ import WhyUs from '@/app/ui/landing-page/components/whyus-section';
 import AppDevelopment from '@/app/ui/landing-page/components/app-development';
 import Faqs from '@/app/ui/landing-page/components/faqs-section';
 import Footer from '@/app/ui/landing-page/components/footer-section';
-import ChatSection from '@/app/ui/landing-page/components/chat-section';
+import ChatSection from '@/app/ui/landing-page/components/chat/chat-section';
 import Reviews from '@/app/ui/landing-page/components/reviews-section';
 
 import { PageWrapper } from '../page-animater';
@@ -39,7 +39,7 @@ export default function LandingPage() {
         
       </MuiServerProvider>
 
-      {/* <ChatSection /> */}
+      <ChatSection />
 
       
 

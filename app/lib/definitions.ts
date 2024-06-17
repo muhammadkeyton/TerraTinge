@@ -45,3 +45,26 @@ export type ApplicationDataServer = {
   
 };
 
+
+
+//frontend clients inquiry message
+export type InquiryData = {
+  name:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  email:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  message: {
+      error:boolean,
+      helperText:string,
+      text: string;
+  };
+  
+  
+};
+
