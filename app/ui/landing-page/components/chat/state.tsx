@@ -10,7 +10,7 @@ import { ChangeEvent, useState } from "react";
 export default function useChatState(){
     const [openChat, setOpenChat] = useState(false);
 
-    const [loading,setLoading] = useState(false);
+
 
     const [inquiryData,setData] = useState<InquiryData>({
         name:{
@@ -151,8 +151,7 @@ export default function useChatState(){
         trackInquiryData,
         validateInquiryData,
         emptyField,
-        loading,
-        setLoading
+       
     }
 
 }
