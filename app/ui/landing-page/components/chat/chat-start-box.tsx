@@ -9,12 +9,16 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import useChatState from './state';
 import { montserrat } from '@/app/ui/fonts';
 import clsx from 'clsx';
+import { InquiryDataServer } from '@/app/lib/definitions';
+import { sendMessage } from '@/app/server-actions/landingpage-messaging/sendmessage';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 type ChatStartBoxProps = {
   chatControl: () => void;
 };
 export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
-  const {emptyField,inquiryData,trackInquiryData,validateInquiryData} = useChatState();
+  const {loading,setLoading,emptyField,inquiryData,trackInquiryData,validateInquiryData} = useChatState();
   return (
     <div className='border-solid border-2 border-slate-200 dark:border-indigo-400 bg-white text-black dark:text-white dark:bg-black w-full sm:max-h-fit rounded-b-none rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-lg dark:shadow-indigo-500/50 relative pointer-events-auto'>
       <div className='text-white dark:text-black dark:bg-white bg-gray-800 p-4 flex flex-col gap-4'>
@@ -22,7 +26,54 @@ export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
         <p className='text-sm'>Your questions are vital to us. Ask freely, and expect our swift response. You are our priority.</p>
       </div>
       <div className='p-4 flex flex-col gap-4'>
-        <form>
+
+
+        {
+        
+          loading ? 
+
+
+          <MuiServerProvider>
+            <div className='flex justify-center items-center my-12'>
+            <CircularProgress className='text-indigo-700' size={60}/>
+            </div>
+          </MuiServerProvider>
+
+
+          :
+        
+      
+      
+      
+        <form onSubmit={async(event)=>{
+           event.preventDefault()
+           const dataOk = validateInquiryData(inquiryData);
+
+           if(dataOk){
+            if(!navigator.onLine){
+              alert(`Hi ${inquiryData.name.text},please connect your device to the internet,we are unable to send your message without internet connection!`);
+              return;
+            }
+
+
+            //start loading
+            setLoading(!loading);
+
+            const messageData:InquiryDataServer = {
+              name:inquiryData.name.text,
+              email:inquiryData.email.text,
+              message:inquiryData.message.text,
+              
+            }
+
+            const serverDataOk = await sendMessage(messageData);
+
+            
+
+
+            
+           }
+        }}>
           <TerraTextField
           name='name'
           label='Your Name'
@@ -79,6 +130,8 @@ export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
 
 
         </form>
+
+        }
         
       </div>
       <div>
@@ -86,7 +139,7 @@ export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
       </div>
 
       <MuiServerProvider>
-      <IconButton className='absolute top-1 right-1 p-3 text-white dark:text-black' onClick={chatControl}>
+      <IconButton disabled={loading} className='absolute top-1 right-1 p-3 text-white dark:text-black' onClick={chatControl}>
         <CloseIcon />
       </IconButton>
       </MuiServerProvider>

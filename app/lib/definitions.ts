@@ -47,7 +47,7 @@ export type ApplicationDataServer = {
 
 
 
-//frontend clients inquiry message
+//frontend clients inquiry message DataType
 export type InquiryData = {
   name:{
     text:string,
@@ -64,6 +64,19 @@ export type InquiryData = {
       helperText:string,
       text: string;
   };
+  
+  
+};
+
+
+
+//server clients inquiry message DataType
+export type InquiryDataServer = {
+  name:string,
+
+  email:string,
+  message: string;
+
   
   
 };

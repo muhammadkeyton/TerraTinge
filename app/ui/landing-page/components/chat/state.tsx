@@ -10,6 +10,8 @@ import { ChangeEvent, useState } from "react";
 export default function useChatState(){
     const [openChat, setOpenChat] = useState(false);
 
+    const [loading,setLoading] = useState(false);
+
     const [inquiryData,setData] = useState<InquiryData>({
         name:{
             text:'',
@@ -41,7 +43,7 @@ export default function useChatState(){
         if(name === 'message'){
             let limitReached = false;
 
-            console.log(value.length)
+            
             if(value.length >= 1000) {
                 limitReached = true;
             }
@@ -148,7 +150,9 @@ export default function useChatState(){
         inquiryData,
         trackInquiryData,
         validateInquiryData,
-        emptyField
+        emptyField,
+        loading,
+        setLoading
     }
 
 }
