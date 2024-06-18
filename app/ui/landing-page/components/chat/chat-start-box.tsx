@@ -32,7 +32,7 @@ export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
 
 
   return (
-    <div className='border-solid border-2 border-slate-200 dark:border-indigo-400 bg-white text-black dark:text-white dark:bg-black w-full sm:max-h-fit rounded-b-none rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-lg dark:shadow-indigo-500/50 relative pointer-events-auto'>
+    <div className='bg-white text-black dark:text-white dark:bg-black w-full sm:max-h-fit rounded-b-none rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-lg dark:shadow-indigo-500/50 relative pointer-events-auto'>
       <div className='text-white dark:text-black dark:bg-white bg-gray-800 p-4 flex flex-col gap-4'>
         <h2 className='text-xl font-bold w-3/4'>Welcome to TerraTinge</h2>
         <p className='text-sm'>Your questions are vital to us. Ask freely, and expect our swift response. You are our priority.</p>
@@ -77,7 +77,7 @@ export default function ChatStartBox({chatControl}:ChatStartBoxProps) {
             if(!serverDataOk){
               let dataOk = validateInquiryData(inquiryData);
               if(dataOk){
-                  alert(`Hi ${inquiryData.name.text},something went wrong while trying to send your message,we apologize for the inconvinience,try again later`)
+                  alert(`Hi ${inquiryData.name.text},something went wrong while trying to send your message,we apologize for the inconvenience,try again later`)
                   setProcess({
                     text:'something went wrong,try again later',
                     loading:false,

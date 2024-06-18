@@ -3,124 +3,125 @@ import Marquee from "@/app/ui/landing-page/magic-ui/marquee";
 
 const reviews = [
   {
-    name: "George",
-    username: "App Lover",
-    body: "The app that TerraTinge built for us is a masterpiece. It's fast and looks great!",
-    img: "https://avatar.vercel.sh/george",
-  },
-  {
-    name: "Hannah",
-    username: "Web Fan",
-    body: "Our new web app, developed by TerraTinge, is a lifesaver. It's so easy to use.",
-    img: "https://avatar.vercel.sh/hannah",
-  },
-  {
-    name: "Ian",
-    username: "Techie",
-    body: "The mobile app TerraTinge developed for us is sleek and efficient. A real game-changer.",
-    img: "https://avatar.vercel.sh/ian",
-  },
-  {
-    name: "Jane",
-    username: "Happy Client",
-    body: "TerraTinge delivered beyond our expectations. The app they built for us is just perfect.",
-    img: "https://avatar.vercel.sh/jane",
-  },
-  {
-    name: "Kevin",
-    username: "Satisfied",
-    body: "Impressive work by TerraTinge. The app they developed for us is user-friendly and reliable.",
-    img: "https://avatar.vercel.sh/kevin",
+    name: "Yvonne",
+    username: "Estatic",
+    body: "Thanks alot terratinge,was a bit expensive but totally worth it,nice doing business with you",
+    img: "https://avatar.vercel.sh/yvonne",
   },
   {
     name: "Laura",
     username: "Grateful",
-    body: "Our web app, developed by TerraTinge, is intuitive and robust. So grateful!",
+    body: "Our web application is user-friendly. So thankful to the team!",
     img: "https://avatar.vercel.sh/laura",
   },
   {
-    name: "Mike",
-    username: "Admirer",
-    body: "TerraTinge did a fantastic job on our app. It's beautiful and efficient.",
-    img: "https://avatar.vercel.sh/mike",
+    name: "George",
+    username: "App Lover",
+    body: "Our new app is a work of art. Speedy and visually appealing!",
+    img: "https://avatar.vercel.sh/george",
+  },
+  {
+    name: "Steve",
+    username: "Thrilled",
+    body: "I no longer need to worry about hiring developers and getting bad result,these guys have saved me alot of headache",
+    img: "https://avatar.vercel.sh/steve",
+  },
+  {
+    name: "Victor",
+    username: "Pleased",
+    body: "They built my restaurant app and it really helped my business alot",
+    img: "https://avatar.vercel.sh/victor",
+  },
+  {
+    name: "Zach",
+    username: "Grateful",
+    body: "Can't express enough gratitude to the team. Their expertise in app development is unparalleled.",
+    img: "https://avatar.vercel.sh/zach",
+  },
+  {
+    name: "Ian",
+    username: "Techie",
+    body: "Thank you terra for building us a great app for our business",
+    img: "https://avatar.vercel.sh/ian",
+  },
+  {
+    name: "Quincy",
+    username: "Delighted",
+    body: "The team is top-notch. They transformed our concept into a superb app.",
+    img: "https://avatar.vercel.sh/quincy",
+  },
+  {
+    name: "Wendy",
+    username: "Content",
+    body: "Their team is top-tier.",
+    img: "https://avatar.vercel.sh/wendy",
+  },
+  {
+    name: "Hannah",
+    username: "Web Fan",
+    body: "The web application has been a lifesaver",
+    img: "https://avatar.vercel.sh/hannah",
+  },
+  {
+    name: "Xavier",
+    username: "Satisfied",
+    body: "They've set a new benchmark in app development,very skilled in what they do",
+    img: "https://avatar.vercel.sh/xavier",
+  },
+  {
+    name: "Tina",
+    username: "Thankful",
+    body: "The team's proficiency in app development is unmatched. We're incredibly grateful.",
+    img: "https://avatar.vercel.sh/tina",
   },
   {
     name: "Nina",
     username: "Enthusiast",
-    body: "TerraTinge exceeded our expectations. The web app they built for us is just amazing.",
+    body: "Surpassed our expectations. The web application is simply stunning.",
     img: "https://avatar.vercel.sh/nina",
   },
   {
+    name: "Kevin",
+    username: "Satisfied",
+    body: "Remarkable work",
+    img: "https://avatar.vercel.sh/kevin",
+  },
+  {
+    name: "Rachel",
+    username: "Joyful",
+    body: "Collaborating with the team was a joy. They've raised the bar in app development.",
+    img: "https://avatar.vercel.sh/rachel",
+  },
+  {
+    name: "Uma",
+    username: "Excited",
+    body: "love the app they built for me",
+    img: "https://avatar.vercel.sh/uma",
+  },
+  {
+    name: "Jane",
+    username: "Happy Client",
+    body: "The team went above and beyond. The application is flawless.",
+    img: "https://avatar.vercel.sh/jane",
+  },
+  {
+    name: "Mike",
+    username: "Admirer",
+    body: "Excellent job on our app.",
+    img: "https://avatar.vercel.sh/mike",
+  },
+  
+  {
     name: "Oscar",
     username: "Appreciative",
-    body: "The app that TerraTinge built for us is simply outstanding. It's a joy to use.",
+    body: "My barshop website looks very good,i love it",
     img: "https://avatar.vercel.sh/oscar",
   },
   {
     name: "Pam",
     username: "Impressed",
-    body: "The mobile app TerraTinge developed for us is visually appealing and super efficient.",
+    body: "Amazing job!,thanks alot terra team",
     img: "https://avatar.vercel.sh/pam",
-  },
-  {
-    name: "Quincy",
-    username: "Delighted",
-    body: "TerraTinge's team is exceptional. They turned our vision into a fantastic app.",
-    img: "https://avatar.vercel.sh/quincy",
-  },
-  {
-    name: "Rachel",
-    username: "Joyful",
-    body: "Working with TerraTinge was a pleasure. They've set a new standard in app development.",
-    img: "https://avatar.vercel.sh/rachel",
-  },
-  {
-    name: "Steve",
-    username: "Thrilled",
-    body: "The web app TerraTinge developed for us has revolutionized our operations. It's streamlined and effective.",
-    img: "https://avatar.vercel.sh/steve",
-  },
-  {
-    name: "Tina",
-    username: "Thankful",
-    body: "TerraTinge's expertise in app development is unparalleled. We're incredibly thankful for the app they built for us.",
-    img: "https://avatar.vercel.sh/tina",
-  },
-  {
-    name: "Uma",
-    username: "Excited",
-    body: "The app that TerraTinge built for us is amazing! It's user-friendly and looks stunning.",
-    img: "https://avatar.vercel.sh/uma",
-  },
-  {
-    name: "Victor",
-    username: "Pleased",
-    body: "The web app by TerraTinge is reliable and intuitive. It's made our work easier.",
-    img: "https://avatar.vercel.sh/victor",
-  },
-  {
-    name: "Wendy",
-    username: "Content",
-    body: "TerraTinge turned our idea into a fantastic app. Their team is exceptional.",
-    img: "https://avatar.vercel.sh/wendy",
-  },
-  {
-    name: "Xavier",
-    username: "Satisfied",
-    body: "Working with TerraTinge was a great experience. They've set a new standard in app development.",
-    img: "https://avatar.vercel.sh/xavier",
-  },
-  {
-    name: "Yvonne",
-    username: "Estatic",
-    body: "The web app TerraTinge developed for us has been a game-changer. It's streamlined and effective.",
-    img: "https://avatar.vercel.sh/yvonne",
-  },
-  {
-    name: "Zach",
-    username: "Grateful",
-    body: "Can't thank TerraTinge enough. Their expertise in app development is top-notch.",
-    img: "https://avatar.vercel.sh/zach",
   },
 ];
 
@@ -163,7 +164,7 @@ const ReviewCard = ({
   );
 };
 
-const MarqueeDemo = () => {
+const Reviews = () => {
   return (
     <>
 
@@ -199,4 +200,4 @@ const MarqueeDemo = () => {
   );
 };
 
-export default MarqueeDemo;
+export default Reviews;

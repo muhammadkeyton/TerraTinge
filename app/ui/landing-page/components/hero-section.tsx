@@ -35,7 +35,7 @@ export default function HeroSection() {
         We excel in custom mobile and web apps, designed for you. We&apos;re not just developers, but innovators with our own tech startups. Join our journey for growth and success. We build more than apps; we build your path forward. Let&apos;s make your vision real. Choose us, and together, let&apos;s explore new horizons.
         </p>
 
-        <Link href='/authentication' tabIndex={-1}>
+        <Link href='/authentication' tabIndex={-1} className='bg-red-500 w-36 h-10 rounded-full'>
           <Button variant='contained' className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-36 h-10 font-app rounded-full normal-case`}>
             Get Started
           </Button>

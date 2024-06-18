@@ -42,7 +42,7 @@ export default function useChatState(){
 
         if(name === 'message'){
             let limitReached = false;
-
+            
             
             if(value.length >= 1000) {
                 limitReached = true;

@@ -37,6 +37,8 @@ export const sendMessage = async(inquiry:InquiryDataServer):Promise<boolean>=>{
         
     }
 
+    
+
 
         
 

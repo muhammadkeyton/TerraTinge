@@ -58,16 +58,24 @@ export default function WhyUs(){
         <div id="section0"  className="space-y-12 my-10  xl:mx-24">
           
             <h1 className=' leading-[1.2] text-3xl tracking-tighter text-foreground dark:text-white text-2xl font-bold text-center underline decoration-wavy decoration-2 underline-offset-4 decoration-indigo-700'>why choose us?</h1>
+            
 
-            <div className='grid md:grid-cols-2   lg:grid-cols-4 gap-4'>
-                 
-                {
-                    cardContent.map(
-                        (content,i) =>  <WhyCard key={i} heading={content.heading} text={content.text} icon={content.icon}/>
-                   )
-                }
+           
 
-            </div>
+           
+                <div className='grid md:grid-cols-2   lg:grid-cols-4 gap-4'>
+                    
+                    {
+                        cardContent.map(
+                            (content,i) =>  <WhyCard key={i} heading={content.heading} text={content.text} icon={content.icon}/>
+                    )
+                    }
+
+                </div>
+
+
+                
+         
 
 
         </div>
