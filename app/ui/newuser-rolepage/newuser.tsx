@@ -66,7 +66,7 @@ function SelectRole(){
               <div className='shadow-lg rounded p-6'>
 
                 <div className='text-center px-6 py-4'>
-                <h4 className='font-bold text-xl mb-2'>Let's Begin!</h4>
+                <h4 className='font-bold text-xl mb-2'>Let&apos;s Begin!</h4>
                 <p className='text-base text-slate-600'>Choose the option that best describes your needs.</p>
                 </div>
 
