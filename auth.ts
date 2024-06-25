@@ -11,9 +11,12 @@ import { Role } from "@/app/lib/definitions";
 
 import Google from "next-auth/providers/google"
 
-
+import Email from '@/emails/login-email'
 
 import Resend from "next-auth/providers/resend"
+
+import { Resend as LoginEmail } from 'resend';
+
 
 import { cert } from "firebase-admin/app"
 
@@ -44,6 +47,32 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
 
     Resend({
       from:'onboarding@resend.dev',
+      async sendVerificationRequest({
+        identifier,
+        url,
+
+        provider
+
+      }) {
+
+        const resend = new LoginEmail(provider.apiKey);
+        
+        const { data, error } = await resend.emails.send({
+          from: 'onboarding@resend.dev',
+          to: identifier,
+          subject:'TerraTinge Secure Login',
+          react: Email({url})
+        });
+
+        if (error){
+          throw new Error(`Resend error:${data}`)
+        }else{
+          console.log(data);
+        }
+       
+
+
+      },
 
 
       

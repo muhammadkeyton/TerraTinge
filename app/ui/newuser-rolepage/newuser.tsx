@@ -36,7 +36,6 @@ function SelectRole(){
       if(data?.user){
 
         if(data.user.role != Role.unknown){
-          setLoading(true)
           return router.push('/dashboard');
         }else{
           setLoading(false)
@@ -86,7 +85,12 @@ function SelectRole(){
                     }
                   })
 
+                  setLoading(true)
+
                 }
+
+                
+                
 
                 } 
                 
@@ -108,6 +112,8 @@ function SelectRole(){
                       role:Role.partner
                     }
                   })
+
+                  setLoading(true)
                 }
 
                 }

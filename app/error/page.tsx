@@ -17,10 +17,10 @@ const errorMap = {
   [Error.Verification]: (
 
     <>
-        <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">User Verification Token Used or Expired!</code>
-        <p>
+        <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">login link used or Expired!</code>
+        <p className='my-6'>
        
-        For security purpose we only allow the login links to be used just once,tap the button below and you will be taken to the login page where you can request a new login link
+        For security, each login link is single-use. Click below for a new link. Used or expired links can not be reused. Thanks!
         
 
         
@@ -85,7 +85,7 @@ function AuthErrorContent() {
         
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center"
       >
-        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white flex flex-row justify-center items-center gap-2">
+        <h5 className="mb-4 text-xl font-bold tracking-tight text-gray-900 dark:text-white flex flex-row justify-center items-center gap-2">
           Can not proceed to login with that request
         </h5>
         <div className="font-normal text-gray-700 dark:text-gray-400">

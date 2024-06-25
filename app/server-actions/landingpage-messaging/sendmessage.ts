@@ -1,7 +1,7 @@
 'use server';
 
 import { Resend } from 'resend';
-import Email from '@/emails';
+import Email from '@/emails/landingpage-message';
 import { EmailSchema, NameSchema } from "@/app/lib/data-validation";
 import { InquiryDataServer } from "@/app/lib/definitions";
 
