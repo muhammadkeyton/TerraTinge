@@ -30,6 +30,7 @@ export const storage = getStorage(app);
 
 
 
-//use in development only!!!!
+// use in development only by uncommenting the code below and comment it in production!!!!this can take the whole database down only use in development
+// and make sure to run in a new terminal 'firebase emulators:start'
 // connectFirestoreEmulator(db, '127.0.0.1', 8080);
 // connectStorageEmulator(storage, "127.0.0.1", 9199);

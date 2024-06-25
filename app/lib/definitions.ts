@@ -1,13 +1,8 @@
-import { User as NextAuthUser } from 'next-auth'
-
-export type User = NextAuthUser & {
-  name:string,
-  password: string,
-  email: string,
+export enum Role {
+  client = 'client',
+  partner = 'partner',
+  unknown = 'unknown'
 }
-
-
-
 
 
 //Frontend Developer Application DataType

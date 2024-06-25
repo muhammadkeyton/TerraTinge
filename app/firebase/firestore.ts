@@ -4,14 +4,48 @@
 'use server';
 
 import { db} from "@/app/firebase/firebase";
-import { collection,addDoc } from "firebase/firestore";
+import { collection,addDoc,doc,getDoc,setDoc } from "firebase/firestore";
 
 
-import { ApplicationDataServer } from "../lib/definitions";
+
+import { ApplicationDataServer, Role } from "@/app/lib/definitions";
 import { uploadDeveloperResume } from "./storage";
 
 
 
+
+
+
+
+export const updateUserRole = async (userId:string,role:Role):Promise<void> => {
+    
+
+    try{
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            await setDoc(docRef,{role:role},{merge:true});
+        } else {
+            return;
+        }
+    }catch(e){
+        throw e;
+    }
+    
+
+}
+
+
+
+
+
+
+
+/**
+ * This function adds developer data to our firestore database,it requires a data parameter
+ * @param {ApplicationDataServer} developerData  - The data received from the developer.
+ 
+ */
 export const addDeveloperApplication = async (data:ApplicationDataServer):Promise<boolean> => {
     const devAppCollection = collection(db,'devApplications');
    

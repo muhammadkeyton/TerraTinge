@@ -10,7 +10,7 @@ export const oAuthSignIn = async(provider: string = 'google') =>{
 
   
     try {
-       await signIn(provider);
+    await signIn(provider,{redirectTo:'/dashboard'});
     } catch (error) {
         throw error;
     }
