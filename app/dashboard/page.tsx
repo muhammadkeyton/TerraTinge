@@ -49,7 +49,7 @@ export default async function DashBoard(){
         case Role.partner:{
             return (
                 <>
-                <h1>Dashboard Role:{JSON.stringify(session?.user?.role)}, pay us to build apps for you</h1>
+                <h1>Dashboard Role:{JSON.stringify(session?.user?.role)},get us clients and we pay you</h1>
                 <p>{JSON.stringify(session.user.email)}</p>
         
         
