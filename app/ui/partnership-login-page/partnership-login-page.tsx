@@ -30,7 +30,7 @@ export default function PartnershipLoginPage (){
            
             <div className='relative  lg:w-[50%] flex justify-center items-start'>
           
-                <div className='rounded-lg  pt-20 md:max-w-[80%]  w-full bg-violet-950 dark:bg-violet-950/50  text-white  text-center p-6 lg:p-20'>
+                <div className='rounded-lg  pt-20 md:max-w-[80%]  w-full bg-violet-700 dark:bg-violet-700/50  text-white  text-center p-6 lg:p-20'>
                 <Diversity1Icon sx={{fontSize:'4rem'}} className='mb-8'/>
                       <h1 className='mb-6 text-3xl sm:text-xl md:text-4xl'>TerraTinge partnership</h1>
                         <p className='md:ml-8 mb-5 font-medium'>
@@ -60,7 +60,7 @@ export default function PartnershipLoginPage (){
                         Want to Partner with us?
                     </h1>
 
-                    <p>Login with one of the options below and after you&apos;re Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">TerraTinge Partner</code> option.</p>
+                    <p>Login with one of the options below and after you&apos;re Logged in, choose the   <code className="text-xs bg-slate-100 dark:text-black p-1 rounded-sm">TerraTinge Partnership</code> option.</p>
                    
                     
                      <AuthView/>

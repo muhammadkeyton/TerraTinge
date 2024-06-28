@@ -15,8 +15,8 @@ const PrivacyPolicyData = [
       "text": "We collect personal information when you register for an account, such as your name and email address. This information is used to provide you with our services. For payment processing, we use Stripe, a third-party service. While you will provide payment information such as credit card details during the transaction process, we do not collect or store this information. Stripe handles all aspects of payment processing. For more information, please refer to Stripe’s Privacy Policy."
     },
     {
-      "heading": "Third-Party Login",
-      "text": "Our web application offers you the option to log in using an email magic link or a third-party service such as Google. When you choose to log in using Google, we will receive certain profile information according to the permissions granted by you on their platform. We do not receive or store your passwords for Google and similary when you just login with our email magic links,we just send you links to allow you access,we don't ask for passwords to your emails or google account, For more information, please refer to the privacy policies of Google."
+      "heading": "How we authenticate our users",
+      "text": "Our web application provides two secure login methods. You can either use your email, where we send you a secure link for access, or you can log in with your Google account. Please note, we do not ask for, receive, or store any password information in either method. When using Google, we only access profile information based on the permissions you grant. We adhere to Google’s privacy policies in this process."
     },
     {
       "heading": "Use of Information",

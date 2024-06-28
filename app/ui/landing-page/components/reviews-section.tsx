@@ -114,7 +114,7 @@ const reviews = [
   {
     name: "Oscar",
     username: "Appreciative",
-    body: "My barshop website looks very good,i love it",
+    body: "My barbershop website looks very good,i love it",
     img: "https://avatar.vercel.sh/oscar",
   },
   {
