@@ -15,7 +15,7 @@ export default async function Client(){
 
           
 
-            <div className='h-full bg-white dark:bg-black dark:md:border-2  overflow-y-auto flex flex-col flex-grow md:rounded-xl justify-center gap-12 items-center '>
+            <div className='h-full bg-white md:shadow-md dark:bg-black dark:md:border-2 dark:md:border-slate-500  overflow-y-auto flex flex-col flex-grow md:rounded-xl justify-center gap-12 items-center '>
                 <h1 className='font-semibold text-lg'>we are so excited to work with you</h1>
                 
                 
@@ -24,6 +24,10 @@ export default async function Client(){
                       Create A Project
                     </Button>
                 </MuiServerProvider>
+               
+                
+
+
                 
                 
                 
