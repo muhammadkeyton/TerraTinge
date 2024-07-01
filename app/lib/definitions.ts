@@ -1,3 +1,9 @@
+
+
+
+
+
+//used to extend our sessions,tokens,users
 export enum Role {
   client = 'client',
   partner = 'partner',
