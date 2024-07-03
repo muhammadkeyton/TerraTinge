@@ -1,20 +1,33 @@
 
-import HomeIcon from '@mui/icons-material/Home';
+
 
 import { RiLogoutCircleLine } from "react-icons/ri";
-import MuiServerProvider from '../../mui-providers/mui-server-provider';
-import Image from 'next/image';
+import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
+
 import Divider from '@mui/material/Divider';
-import { signOut,auth } from '@/auth';
+import { signOut,auth} from '@/auth';
 
 import ThemeSwitch from '@/app/ui/landing-page/mui-components/theme-switch';
 
-import NavLinks  from '../navlinks';
+import NavLinks  from './navlinks';
+import { Role } from "@/app/lib/definitions";
+import { ClientLinks, PartnerLinks } from "../utils";
+
+import { PartnerNavigationContext } from "../partner-dashboard/navigation-context";
+import { ClientNavigationContext } from "../client-dashboard/navigation-context";
+
+
+
+
 export default async function SideNav(){
-    const session = await auth();
+   const session = await auth();
+
+   const links = session?.user?.role === Role.client ? ClientLinks : PartnerLinks;
+   const navContext = session?.user?.role === Role.client ? ClientNavigationContext : PartnerNavigationContext;
+   
 
     return (
-        <div className='flex flex-col md:bg-white bg-inherit md:shadow-md dark:bg-inherit dark:border-2 dark:border-slate-500    shadow-inner backdrop-blur-md  rounded-t-xl p-4 h-full'>
+        <div className='h-full flex flex-col md:bg-white bg-inherit md:shadow-md dark:bg-inherit dark:border-2 dark:border-slate-500    shadow-inner backdrop-blur-md  rounded-t-xl md:rounded-xl p-4'>
             
             
 
@@ -33,7 +46,7 @@ export default async function SideNav(){
 
             <div className='flex flex-grow flex-row  md:flex-col justify-around md:justify-center   md:space-y-28'>
                 
-            <NavLinks/>
+            <NavLinks navigationContext={navContext} links={links}/>
 
             <form
                 action={async () => {
