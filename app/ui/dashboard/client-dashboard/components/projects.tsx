@@ -1,14 +1,12 @@
 'use client';
 
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import { useState,useEffect } from 'react';
 import { montserrat } from '@/app/ui/fonts';
-import { Button } from '@mui/material';
+
 import MuiServerProvider from '../../../mui-providers/mui-server-provider';
 import TerraTextField from '@/app/ui/reusable-components/terra-textfield';
 
-import IconButton from '@mui/material/IconButton';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
@@ -125,13 +123,13 @@ function ProjectDrawerDialog(){
   }
 
   return(
-    <Drawer>
+    <Drawer >
     <DrawerTrigger asChild>
     <button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3  font-app rounded-xl normal-case`}>
                      Begin App Creation
                     </button>
     </DrawerTrigger>
-    <DrawerContent className='bg-white dark:bg-black border-none px-4'>
+    <DrawerContent className='bg-white dark:bg-black border-none px-4 mb-6 z-50'>
     <div className='bg-gray-300 w-40 p-1 m-auto mb-4 rounded-xl '>
                  
                  </div>
@@ -232,3 +230,4 @@ export default function Projects(){
         
     )
 }
+
