@@ -11,16 +11,17 @@ import TerraTextField from '@/app/ui/reusable-components/terra-textfield';
 
 
 
+
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-}  from '../../shadcn-components/drawer';
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from "../../shadcn-components/sheet"
 
 import {
   Dialog,
@@ -123,25 +124,26 @@ function ProjectDrawerDialog(){
   }
 
   return(
-    <Drawer >
-    <DrawerTrigger asChild>
-    <button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3  font-app rounded-xl normal-case`}>
-                     Begin App Creation
-                    </button>
-    </DrawerTrigger>
-    <DrawerContent className='bg-white dark:bg-black border-none px-4 mb-6 z-50'>
-    <div className='bg-gray-300 w-40 p-1 m-auto mb-4 rounded-xl '>
-                 
-                 </div>
-      <div className="mx-auto w-full max-w-sm ">
+    <SheetSide/>
+  )
+}
 
-        
-        <DrawerHeader>
-          <DrawerTitle>App Creation</DrawerTitle>
-          <DrawerDescription>Tell us abit about your App and your budget</DrawerDescription>
-        </DrawerHeader>
-
-               <TerraTextField
+function SheetSide() {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      
+        <Sheet key='bottom'>
+          <SheetTrigger asChild>
+            <Button>bottom</Button>
+          </SheetTrigger>
+          <SheetContent side='bottom' className='bg-white dark:bg-black border-none'>
+            <SheetHeader className='mb-4'>
+              <SheetTitle className='mb-2'>App Creation</SheetTitle>
+              <SheetDescription>
+              Tell us abit about your App and your budget
+              </SheetDescription>
+            </SheetHeader>
+            <TerraTextField
                   label='App Name'
                   type='text'
                   
@@ -159,22 +161,20 @@ function ProjectDrawerDialog(){
                    type='text'
                   
                   />
-        
-        <DrawerFooter>
-                   <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3   rounded-xl normal-case`}>
-                   Submit For Approval
+            <SheetFooter>
+              <SheetClose asChild>
+                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-full p-3  font-app rounded-xl normal-case`}>
+                      Submit For Approval
                     </Button>
-          <DrawerClose asChild>
-          <Button variant='text' className={`${montserrat.className} text-base  text-red-500  w-46 p-3   rounded-xl normal-case`}>
-                      Cancel
-                    </Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </div>
-    </DrawerContent>
-  </Drawer>
+              </SheetClose>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+
+    </div>
   )
 }
+
 
 export default function Projects(){
 

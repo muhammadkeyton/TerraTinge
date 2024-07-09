@@ -22,6 +22,7 @@
     "@radix-ui/react-select": "^2.1.1",
     "@react-email/components": "0.0.19",
     "canvas-confetti": "^1.9.3",
+    "class-variance-authority": "^0.7.0",
     "file-saver": "^2.0.5",
     "firebase": "^10.11.1",
     "firebase-admin": "^11.11.1",
@@ -37,7 +38,6 @@
     "scroll-to-element": "^2.0.3",
     "server-only": "^0.0.1",
     "uuid": "^10.0.0",
-    "vaul": "^0.9.1",
     "zod": "^3.23.3"
   },
   "devDependencies": {
