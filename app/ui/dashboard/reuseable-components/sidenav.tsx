@@ -11,10 +11,8 @@ import ThemeSwitch from '@/app/ui/landing-page/mui-components/theme-switch';
 
 import NavLinks  from './navlinks';
 import { Role } from "@/app/lib/definitions";
-import { ClientLinks, PartnerLinks } from "../utils";
+import { ClientLinks, PartnerLinks } from "./utils";
 
-import { PartnerNavigationContext } from "../partner-dashboard/navigation-context";
-import { ClientNavigationContext } from "../client-dashboard/navigation-context";
 
 
 
@@ -23,7 +21,7 @@ export default async function SideNav(){
    const session = await auth();
 
    const links = session?.user?.role === Role.client ? ClientLinks : PartnerLinks;
-   const navContext = session?.user?.role === Role.client ? ClientNavigationContext : PartnerNavigationContext;
+  
    
 
     return (
@@ -46,7 +44,7 @@ export default async function SideNav(){
 
             <div className='flex flex-grow flex-row  md:flex-col justify-around md:justify-center   md:space-y-28'>
                 
-            <NavLinks navigationContext={navContext} links={links}/>
+            <NavLinks links={links}/>
 
             <form
                 action={async () => {

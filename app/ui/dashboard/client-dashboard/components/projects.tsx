@@ -130,13 +130,17 @@ function ProjectDrawerDialog(){
 
 function SheetSide() {
   return (
-    <div className="grid grid-cols-2 gap-2">
+    
       
         <Sheet key='bottom'>
+        <MuiServerProvider>
           <SheetTrigger asChild>
-            <Button>bottom</Button>
+                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3  font-app rounded-xl normal-case`}>
+                      Begin App Creation
+                    </Button>
           </SheetTrigger>
-          <SheetContent side='bottom' className='bg-white dark:bg-black border-none'>
+        </MuiServerProvider>
+          <SheetContent side='bottom' className='bg-white dark:bg-black border-none rounded-t-xl'>
             <SheetHeader className='mb-4'>
               <SheetTitle className='mb-2'>App Creation</SheetTitle>
               <SheetDescription>
@@ -171,7 +175,7 @@ function SheetSide() {
           </SheetContent>
         </Sheet>
 
-    </div>
+  
   )
 }
 

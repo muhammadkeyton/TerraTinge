@@ -4,8 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { Role } from "@/app/lib/definitions";
 
-import ClientDashBoard from "@/app/ui/dashboard/client-dashboard/client-dashboard";
-import PartnerDashBoard from "@/app/ui/dashboard/partner-dashboard/partner-dashboard";
+
 
 export default async function DashBoard(){
     const session = await auth();
@@ -25,7 +24,7 @@ export default async function DashBoard(){
 
         case Role.partner:{
             return (
-                <PartnerDashBoard />
+                <h1>we will have this soon</h1>
             )
         }
 
