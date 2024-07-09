@@ -18,7 +18,7 @@ export default async function DashBoard(){
         case Role.client:{
             
             return (
-                <ClientDashBoard/>
+                redirect('/dashboard/client')
                 
             )
         }

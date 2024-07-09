@@ -50,11 +50,11 @@ type UltraTextFieldProps = {
         maxLength:number
     },
     autoFocus?:boolean,
-    name:string,
-    type:string,
-    value:string,
+    name?:string,
+    type?:string,
+    value?:string,
     multiline?:boolean,
-    onChange:(event: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange?:(event: React.ChangeEvent<HTMLInputElement>) => void,
 
 
 }
