@@ -18,7 +18,7 @@ export default async function UserProfile(){
               
 
               <div className='flex flex-row items-center gap-6'>
-              <Image  className="rounded-full" src={user?.image ?? `{https://avatar.vercel.sh/${user?.email}}`} width={100} height={100} alt='user profile' />
+              <Image  className="rounded-full" src={user?.image ?? `https://avatar.vercel.sh/${user?.email}`} width={80} height={80} alt='user profile' />
 
 
               
