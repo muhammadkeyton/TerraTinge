@@ -62,11 +62,11 @@ function SelectRole(){
 
             <div  className='flex justify-center px-6 items-center h-screen'>
 
-              <div className='shadow-lg rounded p-6'>
+              <div className='shadow-lg rounded p-6 dark:bg-slate-950'>
 
                 <div className='text-center px-6 py-4'>
                 <h4 className='font-bold text-xl mb-2'>Let&apos;s Begin!</h4>
-                <p className='text-base text-slate-600'>Choose the option that best describes your needs.</p>
+                <p className='text-base text-slate-600 dark:text-white'>Choose the option that best describes your needs.</p>
                 </div>
 
 
@@ -94,11 +94,14 @@ function SelectRole(){
 
                 } 
                 
-                variant="text" className={`${montserrat.className} text-slate-700 bg-slate-50 shadow-lg flex flex-col p-4 md:p-6 `}>
-                  <PhoneIphoneIcon className='mb-4 text-3xl sm:text-4xl'/>
+                variant="text" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col p-4 md:p-6 `}>
+                  <PhoneIphoneIcon className='mb-4 text-3xl sm:text-4xl '/>
                   <p className='font-semibold'>Software Development</p>
                 
                 </Button>
+
+
+                <p className='mx-2'>OR</p>
 
 
                 
@@ -117,7 +120,7 @@ function SelectRole(){
                 }
 
                 }
-                variant="text" className={`${montserrat.className} text-slate-700 bg-slate-50  shadow-lg flex flex-col p-4 md:p-6 `}>
+                variant="text" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col p-4 md:p-6 `}>
                   
                   <Diversity1Icon className='mb-4 text-3xl sm:text-4xl'/>
                   <p className='font-semibold'>TerraTinge Partnership</p>
