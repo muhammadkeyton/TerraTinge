@@ -1,11 +1,11 @@
-//this component uses vaul package
+//this component uses @radix-ui/react-dialog package
 "use client"
 
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import IconButton from '@mui/material/IconButton';
+
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import { cn } from "@/app/lib/utils"
@@ -67,7 +67,7 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
-      <SheetPrimitive.Close className="absolute right-4 top-4 ">
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 ">
      
         <CancelIcon aria-label="close" className='text-red-500'/>
     

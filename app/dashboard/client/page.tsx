@@ -1,5 +1,5 @@
 
-import Projects from "@/app/ui/dashboard/client-dashboard/components/projects"
+import Projects from "@/app/ui/dashboard/client-dashboard/components/projects/projects"
 
 
 

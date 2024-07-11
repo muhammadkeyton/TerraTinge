@@ -50,11 +50,11 @@ type UltraTextFieldProps = {
         maxLength:number
     },
     autoFocus?:boolean,
-    name?:string,
-    type?:string,
-    value?:string,
+    name:string,
+    type:string,
+    value:string,
     multiline?:boolean,
-    onChange?:(event: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange:(event: React.ChangeEvent<HTMLInputElement>) => void,
 
 
 }
@@ -95,11 +95,11 @@ export default function TerraTextField({label,error,helperText,inputProps,autoFo
         case 'text':{
             return (
                 <TextField label={label} variant='outlined' fullWidth
-                // className='font-app'
+                
                 autoComplete='off'
                 error= {error}
                 helperText= {helperText}
-                required
+                // required
                 inputProps={inputProps}
                 autoFocus={autoFocus}
                 name={name}

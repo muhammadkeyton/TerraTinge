@@ -4,9 +4,6 @@ import Image from "next/image"
 
 import { auth} from '@/auth';
 
-import MuiServerProvider from '../../../mui-providers/mui-server-provider';
-import Button from '@mui/material/Button';
-import { montserrat } from "@/app/ui/fonts";
 
 export default async function UserProfile(){
     const session = await auth();

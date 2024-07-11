@@ -150,7 +150,9 @@ function JobValueCard({jobDescription,icon}:JobValueCardProp){
             error:false
         }
     });
+    
 
+    //used by the submit button if no data is available the button is disabled
     const emptyField = applicationData.email.text.length < 1 || applicationData.name.text.length < 1 || applicationData.about.text.length < 1;
 
     
