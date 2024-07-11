@@ -3,7 +3,6 @@
 
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
-import { Cross2Icon } from "@radix-ui/react-icons"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import IconButton from '@mui/material/IconButton';
@@ -69,9 +68,9 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       <SheetPrimitive.Close className="absolute right-4 top-4 ">
-      <IconButton aria-label="close">
-        <CancelIcon className='text-red-500'/>
-      </IconButton>
+     
+        <CancelIcon aria-label="close" className='text-red-500'/>
+    
       </SheetPrimitive.Close>
       {children}
     </SheetPrimitive.Content>
