@@ -8,6 +8,8 @@ import MuiServerProvider from '../../../../mui-providers/mui-server-provider';
 
 import Button from '@mui/material/Button';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { NameSchema } from "@/app/lib/data-validation";
 
 import { montserrat } from '@/app/ui/fonts';
@@ -15,6 +17,12 @@ import { montserrat } from '@/app/ui/fonts';
 
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+
+import { createNewProject } from '@/app/server-actions/in-app/client/project';
+
+import { AppDataFrontend } from '@/app/lib/definitions';
+
+import { useRouter } from 'next/navigation'
 
 import clsx from 'clsx';
 
@@ -42,7 +50,8 @@ import {
 
 
 export default function ProjectDrawerDialog(){
- 
+
+    const router = useRouter();
     const [windowWidth, setWindowWidth] = useState(0);
     const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
   
@@ -64,8 +73,9 @@ export default function ProjectDrawerDialog(){
     }, []);
 
 
-
-    const [appData,setData] = useState({
+    const [loading,setLoading] = useState(false);
+   
+    const [appData,setData] = useState<AppDataFrontend>({
         appName:{
             text:'',
             error:false,
@@ -205,16 +215,33 @@ export default function ProjectDrawerDialog(){
                       Tell us abit about your App and your budget
                     </DialogDescription>
                   </DialogHeader>
-                 
-                   <form onSubmit={(event)=>{
+                   
+                   {!loading ?
+                   <form onSubmit={async(event)=>{
                     event.preventDefault();
 
                     const appDataOk = validateAppData(appData);
 
                     if(appDataOk){
-                        console.log('data looks ok on frontend and ready to be passed to the server')
-                    }else{
-                        console.log('there is some missing fields so data is not going to the server')
+                        setLoading(true);
+                        const responseOk = await createNewProject({
+                            appName:appData.appName.text,
+                            appDetail:appData.appDetail.text,
+                            appBudget:appData.appBudget.text
+                        });
+
+                        console.log(responseOk)
+
+                        if(!responseOk){
+                            setLoading(false);
+                            validateAppData(appData);
+                            alert('something went wrong while trying to create the project,try again later')
+                        }else{
+                            router.push('/dashboard');
+                        }
+                            
+                       
+
                     }
                    }}>
 
@@ -230,7 +257,7 @@ export default function ProjectDrawerDialog(){
                     value={appData.appName.text}
                     inputProps={
                         {
-                            maxLength:41
+                            maxLength:20
                         }
                      }
                     
@@ -298,6 +325,15 @@ export default function ProjectDrawerDialog(){
                     </MuiServerProvider>
                   </DialogFooter>
                   </form>
+
+                  :
+                    <MuiServerProvider>
+                        <div className='flex justify-center items-center my-12'>
+                        <CircularProgress className='text-indigo-700' size={60}/>
+                        </div>
+                    </MuiServerProvider>
+
+                }
                  
                 </DialogContent>
               </Dialog>
@@ -320,16 +356,35 @@ export default function ProjectDrawerDialog(){
               Tell us abit about your App and your budget
               </SheetDescription>
             </SheetHeader>
-            <form onSubmit={(event)=>{
-                    event.preventDefault();
 
-                    const appDataOk = validateAppData(appData);
+            {!loading ?
 
-                    if(appDataOk){
-                        console.log('data looks ok on frontend and ready to be passed to the server')
-                    }else{
-                        console.log('there is some missing fields so data is not going to the server')
-                    }
+            <form onSubmit={async(event)=>{
+                     event.preventDefault();
+
+                     const appDataOk = validateAppData(appData);
+ 
+                     if(appDataOk){
+                         setLoading(true);
+                         const responseOk = await createNewProject({
+                             appName:appData.appName.text,
+                             appDetail:appData.appDetail.text,
+                             appBudget:appData.appBudget.text
+                         });
+ 
+                         console.log(responseOk)
+ 
+                         if(!responseOk){
+                             setLoading(false);
+                             validateAppData(appData);
+                             alert('something went wrong while trying to create the project,try again later')
+                         }else{
+                             router.push('/dashboard');
+                         }
+                             
+                        
+ 
+                     }
                    }}>
             <TerraTextField
                   label='App Name'
@@ -342,7 +397,7 @@ export default function ProjectDrawerDialog(){
                   value={appData.appName.text}
                   inputProps={
                       {
-                          maxLength:41
+                          maxLength:20
                       }
                    }
                   
@@ -402,6 +457,14 @@ export default function ProjectDrawerDialog(){
               {/* </SheetClose> */}
             </SheetFooter>
             </form>
+             :
+             <MuiServerProvider>
+                 <div className='flex justify-center items-center my-12'>
+                 <CircularProgress className='text-indigo-700' size={60}/>
+                 </div>
+             </MuiServerProvider>
+
+         }
           </SheetContent>
         </Sheet>
     )

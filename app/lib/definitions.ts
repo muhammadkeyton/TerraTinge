@@ -82,3 +82,35 @@ export type InquiryDataServer = {
   
 };
 
+
+
+//frontend clients project DataType
+
+export type AppDataFrontend = {
+  appName:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  appDetail:{
+    text:string,
+    error:boolean,
+    helperText:string
+  };
+  appBudget: {
+      error:boolean,
+      helperText:string,
+      text: string;
+  };
+ 
+  
+};
+
+
+
+//server clients project DataType
+export type AppDataServer = {
+  appName:string,
+  appDetail:string,
+  appBudget:string
+};
