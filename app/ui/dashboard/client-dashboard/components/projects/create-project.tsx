@@ -202,15 +202,15 @@ export default function ProjectDrawerDialog(){
                   <MuiServerProvider>
                   <DialogTrigger asChild>
                    
-                      <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3  font-app rounded-xl normal-case`}>
-                        Begin App Creation
+                      <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500  p-4  font-app rounded-xl normal-case`}>
+                        Submit App Description
                       </Button>
                     
                   </DialogTrigger>
                   </MuiServerProvider>
                 <DialogContent className="sm:max-w-[425px] bg-white dark:bg-black">
                   <DialogHeader className='mb-4'>
-                    <DialogTitle className='mb-2'>App Creation</DialogTitle>
+                    <DialogTitle className='mb-2'>App Description</DialogTitle>
                     <DialogDescription >
                       Tell us abit about your App and your budget
                     </DialogDescription>
@@ -344,14 +344,14 @@ export default function ProjectDrawerDialog(){
         <Sheet key='bottom'>
         <MuiServerProvider>
           <SheetTrigger asChild>
-                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 w-46 p-3  font-app rounded-xl normal-case`}>
-                      Begin App Creation
+                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 p-4  font-app rounded-xl normal-case`}>
+                      Submit App Description
                     </Button>
           </SheetTrigger>
         </MuiServerProvider>
           <SheetContent side='bottom' className='bg-white dark:bg-black border-none rounded-t-xl'>
             <SheetHeader className='mb-4'>
-              <SheetTitle className='mb-2'>App Creation</SheetTitle>
+              <SheetTitle className='mb-2'>App Description</SheetTitle>
               <SheetDescription>
               Tell us abit about your App and your budget
               </SheetDescription>
@@ -468,5 +468,7 @@ export default function ProjectDrawerDialog(){
           </SheetContent>
         </Sheet>
     )
-  }
+
+
+}
  

@@ -25,7 +25,7 @@ export default async function SideNav(){
    
 
     return (
-        <div className='h-full flex flex-col md:bg-white bg-inherit md:shadow-md dark:bg-inherit dark:border-2 dark:border-slate-500    shadow-inner backdrop-blur-md  rounded-t-xl md:rounded-xl p-4'>
+        <div className='h-20 md:h-full flex flex-col md:bg-white bg-inherit md:shadow-md dark:bg-inherit dark:border-2 dark:border-slate-500    shadow-inner backdrop-blur-md  rounded-t-xl md:rounded-xl p-4'>
             
             
 
@@ -42,7 +42,7 @@ export default async function SideNav(){
 
             <Divider className='dark:bg-slate-300 hidden md:block' />
 
-            <div className='flex flex-grow flex-row  md:flex-col justify-around md:justify-center   md:space-y-28'>
+            <div className='flex md:flex-grow flex-row md:flex-col justify-around md:justify-center   md:space-y-28'>
                 
             <NavLinks links={links}/>
 

@@ -21,7 +21,7 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
 
     let projects = userDocSnap.data()?.projects;
     
-    if(!projects) return null;
+    if(!projects || projects.length === 0) return null;
 
     const projectsQuery = query(projectsCollectionRef, where("clientId", "==", clientId));
 

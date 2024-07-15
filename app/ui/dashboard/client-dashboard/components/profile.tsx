@@ -9,7 +9,7 @@ export default async function UserProfile(){
     const session = await auth();
     const user = session?.user;
     return (
-        <div className='h-full flex flex-col justify-center gap-6 items-center '>
+        <div className='h-full overflow-y-auto flex flex-col justify-center gap-6 items-center '>
             <h1 className='font-bold text-2xl'>TerraTinge Profile</h1>
            <div className='p-6 rounded-lg bg-slate-200 dark:bg-gray-900'>
               

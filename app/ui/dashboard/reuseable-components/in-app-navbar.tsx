@@ -8,7 +8,7 @@ function NavBar() {
   return (
    
     
-        <div className='md:hidden z-10 rounded-b-xl pr-2 pl-4  shadow h-14  backdrop-blur-md bg-inherit dark:border-2 dark:border-slate-500     flex flex-row justify-between items-center '>
+        <div className='md:hidden z-10 rounded-b-xl pr-2 pl-4  shadow h-20  backdrop-blur-md bg-inherit dark:border-2 dark:border-slate-500     flex flex-row justify-between items-center '>
         
         <h1 className='font-black text-lg block md:hidden'>TerraTinge</h1>
           
