@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { Role } from "@/app/lib/definitions";
 
-import { logout } from "../server-actions/authentication/logout";
+
 
 export default async function DashBoard(){
     const session = await auth();
@@ -41,7 +41,7 @@ export default async function DashBoard(){
 
             return (
                 <div className='h-full p-4 flex flex-col items-center justify-center'>
-                   <h4 className='font-bold text-red-500 text-lg'>Dear User, we've detected a 'Role Error' with your account. Please try logging out and back in. If the issue persists, email us for immediate assistance. We apologize for any inconvenience caused. Thank you.</h4>
+                   <h4 className='font-bold text-red-500 text-lg'>Dear User, we&apos;ve detected a &apos;Role Error&apos; with your account. Please try logging out and back in. If the issue persists, email us for immediate assistance. We apologize for any inconvenience caused. Thank you.</h4>
                 </div>
             );
            
