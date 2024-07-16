@@ -7,6 +7,7 @@
 export enum Role {
   client = 'client',
   partner = 'partner',
+  developer = 'developer',
   unknown = 'unknown'
 }
 

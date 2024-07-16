@@ -94,7 +94,7 @@ export default function Projects({projects}: { projects: null | DocumentData[] }
                       :
 
                       <TabsContent className='grow w-full flex flex-col gap-6 justify-center items-center' value="In Progress">
-                        Nothing In Progress
+                        No project in Progress
                       
                       </TabsContent>
 
@@ -105,8 +105,8 @@ export default function Projects({projects}: { projects: null | DocumentData[] }
 
                     :
 
-                    <div className=' h-full flex flex-col items-center justify-center gap-6'>
-                       <h1 className='font-semibold text-md text-center'>Welcome to TerraTinge! We’re ready for your app development journey.</h1>
+                    <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>
+                       <h1 className='font-semibold text-md text-center'>Welcome to TerraTinge😊, We're ready for your app development journey.</h1>
                        <ProjectDrawerDialog /> 
                     </div>
 

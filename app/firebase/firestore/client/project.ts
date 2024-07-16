@@ -9,6 +9,7 @@ import { AppDataServer } from "@/app/lib/definitions";
 
 
 
+
 export const getClientProjects = async(clientId:string):Promise<null | DocumentData[]>  => {
 
     console.log('data fetching new request');
@@ -45,6 +46,8 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
  * @param {id} id  - the currently logged in user's id
  
  */
+
+
 export const addNewProject = async (id:string,data:AppDataServer):Promise<boolean> => {
    
 

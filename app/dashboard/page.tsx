@@ -1,10 +1,11 @@
-import { auth,signOut } from "@/auth"
+
+import { auth} from "@/auth"
 
 import { redirect } from 'next/navigation'
 
 import { Role } from "@/app/lib/definitions";
 
-
+import { logout } from "../server-actions/authentication/logout";
 
 export default async function DashBoard(){
     const session = await auth();
@@ -28,25 +29,22 @@ export default async function DashBoard(){
             )
         }
 
+        case Role.developer:{
+            return (redirect('/dashboard/developer'))
+        }
+
 
         default:{
+
+            
+                
+
             return (
-                <>
-                <h1>role is unrecognized: </h1>
-                <p>{JSON.stringify(session)}</p>
-                <form
-                  action={async () => {
-                    'use server';
-                    await signOut();
-                  }}
-                >
-                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                   
-                    <div className="hidden md:block">Sign Out</div>
-                  </button>
-                </form>
-                </>
-            )
+                <div className='h-full p-4 flex flex-col items-center justify-center'>
+                   <h4 className='font-bold text-red-500 text-lg'>Dear User, we've detected a 'Role Error' with your account. Please try logging out and back in. If the issue persists, email us for immediate assistance. We apologize for any inconvenience caused. Thank you.</h4>
+                </div>
+            );
+           
         }
         
     }
