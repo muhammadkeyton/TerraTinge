@@ -1,8 +1,12 @@
 
 import { Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
-import { redirect } from 'next/navigation'
-export default async function DeveloperWork(){
+import { redirect } from 'next/navigation';
+
+
+import AllWork from "@/app/ui/dashboard/developer-dashboard/components/work/all-work";
+
+export default async function DeveloperProjects(){
     
     const session = await auth()
 
@@ -11,5 +15,7 @@ export default async function DeveloperWork(){
         return redirect('/dashboard');
     }
 
-    return (<h1 className='text-center p-12'>Hi dev,welcome to your work!</h1>);
+    return (
+        <AllWork projects={null}/>
+    )
 }

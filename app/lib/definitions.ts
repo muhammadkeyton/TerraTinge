@@ -1,6 +1,6 @@
 
 
-
+//-----------------client and server definitions start------------------------------------------------------------------
 
 
 //used to extend our sessions,tokens,users
@@ -115,3 +115,42 @@ export type AppDataServer = {
   appDetail:string,
   appBudget:string
 };
+
+
+//-----------------client and server definitions end------------------------------------------------------------------
+
+
+
+
+//--------------------------database data received definitions start--------------------------------------------------------------
+
+
+export type Project = {
+  appName:string,
+  appDetail:string,
+  appBudget:string,
+  clientId:string,
+  clientEmail:string
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------database data received definitions end--------------------------------------------------------------

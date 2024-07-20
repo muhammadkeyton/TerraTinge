@@ -3,7 +3,7 @@ import { PiDevices } from "react-icons/pi";
 import { FcAdvertising } from "react-icons/fc";
 
 import { MdOutlineWork } from "react-icons/md";
-
+import { FaCode } from "react-icons/fa6";
 
 
 //client dashboard navLinks
@@ -52,6 +52,12 @@ export const DeveloperLinks = [
         name:'Profile',
         icon:<FiUser className='text-3xl' />,
         href:'/dashboard/developer/profile'
+    },
+
+    {
+        name:'DevApplications',
+        icon:<FaCode className='text-3xl' />,
+        href:'/dashboard/developer/applications'
     }
     
 ]

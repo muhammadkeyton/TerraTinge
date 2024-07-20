@@ -1,12 +1,32 @@
-
 import Image from "next/image"
 
 import { auth} from '@/auth';
+import { Role } from "@/app/lib/definitions";
 
 
-export default async function DeveloperProfile(){
+export default async function Profile(){
     const session = await auth();
     const user = session?.user;
+
+    const textRole = (()=>{
+
+        switch(user?.role){
+            case Role.client:{
+                return 'App Founder'
+            }
+
+            case Role.partner:{
+                return 'Partner'
+            }
+
+            case Role.developer:{
+                return 'Developer'
+            }
+        }
+
+    })();
+
+
     return (
         <div className='h-full overflow-y-auto flex flex-col justify-center gap-6 items-center '>
             <h1 className='font-bold text-2xl'>TerraTinge Profile</h1>
@@ -19,7 +39,7 @@ export default async function DeveloperProfile(){
 
               
               <div>
-                <h3 className='text-sm font-light mb-2'>Developer</h3>
+                <h3 className='text-sm font-light mb-2'>{textRole}</h3>
                 <p className='font-semibold'>{user?.name ?? user?.email?.split('@')[0]}</p>
               </div>
             

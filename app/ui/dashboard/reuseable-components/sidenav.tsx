@@ -68,7 +68,7 @@ export default async function SideNav(){
 
             <Divider className='dark:bg-slate-300 hidden md:block' />
 
-            <div className='flex md:flex-grow flex-row md:flex-col justify-around md:justify-center   md:space-y-28'>
+            <div className='flex md:flex-grow flex-row md:flex-col justify-around   '>
                 
            {links !== null && <NavLinks links={links}/>}
 

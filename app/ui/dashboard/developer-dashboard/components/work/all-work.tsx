@@ -1,32 +1,9 @@
 
-
-
-
-
 import ProjectTabs from '../../../reuseable-components/project-tabs';
-import ProjectDrawerDialog from '../../components/projects/create-project';
+
 import { DocumentData } from 'firebase/firestore';
 
-
-     
-    
-    
-     
-     
-
-     
-    
-
-
-     
-     
-     
-
-    
-
-
-
-export default function Projects({projects}: { projects: null | DocumentData[] }){
+export default function AllWork({projects}: { projects: null | DocumentData[] }){
 
 
   
@@ -46,8 +23,7 @@ export default function Projects({projects}: { projects: null | DocumentData[] }
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>
-                       <h1 className='font-semibold text-md text-center'>Welcome to TerraTinge, We&apos;re ready for your app development journey.</h1>
-                       <ProjectDrawerDialog /> 
+                       <h1 className='font-semibold text-md text-center'>Hi developer,you have no projects</h1> 
                     </div>
 
                     }
@@ -86,4 +62,3 @@ export default function Projects({projects}: { projects: null | DocumentData[] }
         
     )
 }
-

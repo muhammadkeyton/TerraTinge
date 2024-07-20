@@ -5,9 +5,14 @@
 
 import { db} from "@/app/firebase/firebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData } from "firebase/firestore";
-import { AppDataServer } from "@/app/lib/definitions";
+import { AppDataServer,Project } from "@/app/lib/definitions";
 
 
+//we are trying to fetch all data for developer to view
+export const getAllProject = async() => {
+    const projectsCollectionRef = collection(db, "projects");
+    const allProjects = (await getDocs(collection(db, "cities"))).docs
+}
 
 
 export const getClientProjects = async(clientId:string):Promise<null | DocumentData[]>  => {
@@ -30,7 +35,10 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
 
     projectsQuerySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        clientProjects.push(doc.data());
+        let data = doc.data() as Project;
+        clientProjects.push(data);
+
+        
     });
 
     return clientProjects;
@@ -48,9 +56,9 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
  */
 
 
-export const addNewProject = async (id:string,data:AppDataServer):Promise<boolean> => {
-   
+export const addNewProject = async (email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
+    console.log(data)
 
     try {
         const userRef = doc(db, "users", id);
@@ -71,7 +79,7 @@ export const addNewProject = async (id:string,data:AppDataServer):Promise<boolea
             const newProjectId = doc(projectsCollection).id;
     
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id });
+            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,clientEmail:email });
     
             projects.push(newProjectId);
     

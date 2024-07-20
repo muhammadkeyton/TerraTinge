@@ -1,9 +1,9 @@
-import UserProfile from "@/app/ui/dashboard/client-dashboard/components/profile"
+import Profile from "@/app/ui/dashboard/reuseable-components/profile";
 import { Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
 
-export default async function Profile(){
+export default async function ClientProfile(){
 
     const session = await auth();
     if(session?.user?.role !== Role.client){
@@ -11,6 +11,6 @@ export default async function Profile(){
     }
 
     return(
-        <UserProfile/>
+        <Profile/>
     )
 }

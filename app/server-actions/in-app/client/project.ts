@@ -26,11 +26,13 @@ import { revalidatePath } from 'next/cache';
  */
 export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
 
+    // console.log(data);
+
     const session = await auth();
     
 
     const appNameResult = NameSchema.safeParse({name:data.appName});
-    const appDetail = data.appDetail
+    const appDetail = data.appDetail;
     const appBudget = data.appBudget;
 
     if(!appNameResult.success || appDetail.length < 1 || appBudget.length < 1){
@@ -38,9 +40,10 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
     }
 
      //data has been validated and is ok,now we can get the client id and pass to the firestore transaction
-    const user = session?.user?.id as string;
+    const userId = session?.user?.id as string;
+    const userEmail = session?.user?.email as string;
 
-    const newProjectCreated = await addNewProject(user,{appName:appNameResult.data.name,appDetail,appBudget});
+    const newProjectCreated = await addNewProject(userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
 
     if(newProjectCreated){
         revalidatePath('/dashboard/client')

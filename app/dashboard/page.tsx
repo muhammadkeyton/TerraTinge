@@ -25,7 +25,7 @@ export default async function DashBoard(){
 
         case Role.partner:{
             return (
-                <h1>we will have this soon</h1>
+                redirect('/dashboard/partner')
             )
         }
 
