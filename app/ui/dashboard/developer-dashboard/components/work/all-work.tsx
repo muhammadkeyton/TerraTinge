@@ -1,10 +1,10 @@
 
+import { Role } from '@/app/lib/definitions';
 import ProjectTabs from '../../../reuseable-components/project-tabs';
 
 import { DocumentData } from 'firebase/firestore';
 
-export default function AllWork({projects}: { projects: null | DocumentData[] }){
-
+export default function AllWork({projects,role}: { projects: undefined | DocumentData[],role:Role }){
 
   
     return(
@@ -16,10 +16,10 @@ export default function AllWork({projects}: { projects: null | DocumentData[] })
 
                    {
 
-                   projects ?
+                   projects !== undefined ?
                    
                  
-                    <ProjectTabs projects={projects}/>
+                    <ProjectTabs projects={projects} role={role}/>
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>

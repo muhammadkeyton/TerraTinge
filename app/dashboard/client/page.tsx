@@ -7,8 +7,9 @@ import { redirect } from 'next/navigation';
 
 export default async function ClientProjects(){
     const session = await auth();
+    const role = session?.user?.role;
 
-    if(session?.user?.role !== Role.client){
+    if(role !== Role.client){
         return redirect('/dashboard');
     }
 
@@ -22,6 +23,6 @@ export default async function ClientProjects(){
 
 
     return (
-        <Projects projects={projects}/>
+        <Projects projects={projects} role={role}/>
     )
 }

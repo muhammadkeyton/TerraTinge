@@ -3,6 +3,7 @@
 
 
 
+import { Role } from '@/app/lib/definitions';
 import ProjectTabs from '../../../reuseable-components/project-tabs';
 import ProjectDrawerDialog from '../../components/projects/create-project';
 import { DocumentData } from 'firebase/firestore';
@@ -26,7 +27,7 @@ import { DocumentData } from 'firebase/firestore';
 
 
 
-export default function Projects({projects}: { projects: null | DocumentData[] }){
+export default function Projects({projects,role}: { projects: null | DocumentData[],role:Role }){
 
 
   
@@ -42,7 +43,7 @@ export default function Projects({projects}: { projects: null | DocumentData[] }
                    projects ?
                    
                  
-                    <ProjectTabs projects={projects}/>
+                    <ProjectTabs projects={projects} role={role}/>
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>

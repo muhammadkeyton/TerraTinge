@@ -6,16 +6,22 @@ import { redirect } from 'next/navigation';
 
 import AllWork from "@/app/ui/dashboard/developer-dashboard/components/work/all-work";
 
+import { getAllProjects } from "@/app/server-actions/in-app/developer/all-work";
+
 export default async function DeveloperProjects(){
     
     const session = await auth()
+    const role = session?.user?.role;
 
 
-    if(session?.user?.role !== Role.developer){
+    if(role !== Role.developer){
         return redirect('/dashboard');
     }
 
+    const allProjects = await getAllProjects();
+    const test = allProjects?.slice(1,2);
+
     return (
-        <AllWork projects={null}/>
+        <AllWork projects={test} role={role}/>
     )
 }

@@ -8,12 +8,13 @@ import ProjectCard from './project-card';
 
 
 import { DocumentData } from 'firebase/firestore';
+import { Role } from '@/app/lib/definitions';
 
 
 
 
 
-export default function ProjectTabs({projects}: { projects:DocumentData[] }){
+export default function ProjectTabs({projects,role}: { projects:DocumentData[],role:Role}){
     const [currentTab,setTab] = useState('In Review')
 
 
@@ -22,9 +23,9 @@ export default function ProjectTabs({projects}: { projects:DocumentData[] }){
         <Tabs defaultValue={currentTab} className="h-full overflow-y-auto p-2 md:py-4 flex flex-col gap-4 ">
                       <TabsList className='shadow-lg bg-slate-100 py-6 md:px-3 dark:bg-slate-800 md:self-center md:gap-4'>
                     
-                        <TabsTrigger className={`   ${currentTab === 'In Review' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="In Review" onClick={()=> setTab("In Review")}><span className='mr-2 bg-green-500 p-2 text-white rounded-full w-[25px] h-[25px] flex items-center justify-center'>1</span>In Review</TabsTrigger>
+                        <TabsTrigger className={`${currentTab === 'In Review' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="In Review" onClick={()=> setTab("In Review")}><span className='mr-2 bg-green-500 p-2 text-white rounded-full w-[25px] h-[25px] flex items-center justify-center'>1</span>In Review</TabsTrigger>
                         <TabsTrigger className={`${currentTab === 'In Progress' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="In Progress" onClick={()=> setTab("In Progress")}>In Progress</TabsTrigger>
-                        <TabsTrigger className={`   ${currentTab === 'Completed' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="Completed" onClick={()=> setTab("Completed")}>15 Done</TabsTrigger>
+                        <TabsTrigger className={`${currentTab === 'Completed' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="Completed" onClick={()=> setTab("Completed")}>Done</TabsTrigger>
                       </TabsList>
 
 
@@ -38,19 +39,19 @@ export default function ProjectTabs({projects}: { projects:DocumentData[] }){
                                 case 'In Review':{
                                     return  (
                                     
-                                     <ProjectCard appName={projects[0]?.appName} />
+                                     <ProjectCard appName={projects[0]?.appName} role={role} />
                                    
                                     )
                                 }
 
 
                                 case 'In Progress':{
-                                    return 'nothing in progress'
+                                    return 'There Is No App Development In Progress'
                                 }
 
 
                                 case 'Completed':{
-                                    return 'nothing completed'
+                                    return 'Your Completed Apps Will Be Here'
                                 }
 
 
