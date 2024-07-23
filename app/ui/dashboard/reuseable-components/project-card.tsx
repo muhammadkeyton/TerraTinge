@@ -3,10 +3,15 @@
 import { useState,useEffect, ChangeEvent } from 'react';
 import Divider from '@mui/material/Divider';
 
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+
+
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -16,16 +21,20 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger
 } from "../shadcn-components/sheet"
 
 import Image from 'next/image';
-import { Role } from '@/app/lib/definitions';
+import { AppDataFrontend, Role } from '@/app/lib/definitions';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '../../mui-providers/mui-server-provider';
 import { montserrat } from '../../fonts';
+import { NameSchema } from '@/app/lib/data-validation';
+import TerraTextField from '../../reusable-components/terra-textfield';
+import clsx from 'clsx';
 
 
 type ProjectCardProps = {
@@ -38,6 +47,387 @@ type ProjectCardProps = {
   appDetail:string
 }
 
+function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
+
+ 
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
+
+  //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
+  useEffect(() => {
+    setIsDesktop(window.matchMedia("(min-width: 768px)"));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+  
+ 
+  const [appData,setData] = useState({
+      appName:{
+          text:appName ?? '',
+          error:false,
+          helperText:''
+      },
+      appDetail:{
+          text: appDetail ?? '',
+          error:false,
+          helperText:''
+      },
+      appCost:{
+          helperText:'',
+          error:false,
+          text:0,
+      },
+      
+  });
+
+
+  //used by the submit button if no appdata is available button is disabled
+  const emptyField = appData.appCost.text < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1;
+
+  function trackAppData(event:ChangeEvent<HTMLInputElement>){
+      const {name,value} = event.target;
+
+      
+
+      if(name === 'appCost' || name === 'appDetail'){
+          let limitReached = false;
+          if(value.length >= 4000) {
+              limitReached = true;
+          }
+          setData({
+              ...appData,
+              [name]:{
+                  error:limitReached,
+                  helperText:limitReached?'character limit reached!':'',
+                  text:value,
+              }
+              
+          })
+      } else if(name === 'appName'){
+        
+          const {data,success,error} = NameSchema.safeParse({name:value});
+
+          if(success){
+              setData({
+                  ...appData,
+                  appName:{
+                      error:false,
+                      text:data.name,
+                      helperText:''
+
+                  }
+              });
+          }else{
+              setData({
+                  ...appData,
+                  appName:{
+                      text:value,
+                      error:true,
+                      helperText:error.errors[0].message
+
+                  }
+              });
+
+          }
+          
+      }
+
+  }
+
+
+  const validateAppData = (data:any):boolean=>{
+      
+      const nameResult = NameSchema.safeParse({name:data.appName.text});
+
+      const emptyAppDetail = data.appDetail.text.length < 1;
+      
+      const emptyAppBudget = data.appBudget.text.length < 1;
+      
+      
+
+     
+
+
+     if(!emptyAppDetail && !emptyAppBudget && nameResult.success){
+       return true;
+     }else{
+          setData({
+              ...data,
+              appBudget:{
+                  ...data.appBudget,
+                  error:emptyAppBudget,
+                  helperText: emptyAppBudget?'this field is required':''
+              },
+              appDetail:{
+                  ...data.appDetail,
+                  error:emptyAppDetail,
+                  helperText: emptyAppDetail?'this field is required':''
+              },
+             
+              appName:{
+                  ...data.appName,
+                  error:!nameResult.success,
+                  helperText: nameResult.success?'':nameResult.error.errors[0].message
+              }
+
+          })
+
+          
+      }
+      return false
+  }
+
+
+  if(isDesktop?.matches || windowWidth >= 768){
+    return (
+           
+
+
+           
+           <Dialog>
+                <MuiServerProvider>
+                <DialogTrigger asChild>
+                 
+                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500  p-1   rounded-xl normal-case`}>
+                      Edit
+                    </Button>
+                  
+                </DialogTrigger>
+                </MuiServerProvider>
+              <DialogContent className="max-w-lg bg-white dark:bg-black">
+                <DialogHeader className='mb-4'>
+                  <DialogTitle className='mb-2'>{appData.appName.text}</DialogTitle>
+                  <DialogDescription >
+                    Edit Client Project Detail and Enable Payment
+                  </DialogDescription>
+                </DialogHeader>
+                 
+                 
+                 <form onSubmit={async(event)=>{
+                  event.preventDefault();
+
+                  const appDataOk = validateAppData(appData);
+
+                  if(appDataOk){
+                    console.log('data is ok')
+                          
+                     
+
+                  }
+                 }}>
+
+                 
+                  <TerraTextField
+                  label='App Name'
+                  type='text'
+                  autoFocus={true}
+                  name='appName'
+                  onChange={trackAppData}
+                  error={appData.appName.error}
+                  helperText={appData.appName.helperText}
+                  value={appData.appName.text}
+                  inputProps={
+                      {
+                          maxLength:20
+                      }
+                   }
+                  
+                  />
+
+                  <TerraTextField
+                  label='Detailed App Description'
+                  type='text'
+                  name='appDetail'
+                  error={appData.appDetail.error}
+                  onChange={trackAppData}
+                  helperText={appData.appDetail.helperText}
+                  value={appData.appDetail.text}
+                  multiline={true}
+                  inputProps={
+                      {
+                          maxLength:4000
+                      }
+                   }
+                  />
+
+
+
+                 <TerraTextField
+                  label='total cost of project?(enter numbers only)'
+                  type='text'
+                  name='appCost'
+                  onChange={trackAppData}
+                  error={appData.appCost.error}
+                  helperText={appData.appCost.helperText}
+                  value={appData.appCost.text}
+                  multiline={true}
+                  inputProps={
+                      {
+                          maxLength:7
+                      }
+                   }
+                  
+                  />
+
+
+
+                 
+
+                  
+                
+              
+                <DialogFooter>
+                  <MuiServerProvider>
+
+                  <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+                    className={
+                      clsx(
+                          `my-4 ${montserrat.className} w-full p-3   rounded-xl  text-base text-center normal-case`,
+                          {
+                              'bg-indigo-700 hover:bg-indigo-500 text-white':!emptyField,
+                              'bg-inherit': emptyField
+                          }
+                      )
+                 
+                  }
+                  >Save & Enable Payment
+                   </Button>
+                    
+                  </MuiServerProvider>
+                </DialogFooter>
+                </form>
+
+              
+               
+              </DialogContent>
+            </Dialog>
+    )
+  }
+
+  return(
+      <Sheet key='bottom'>
+      <MuiServerProvider>
+        <SheetTrigger asChild>
+                  <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 p-1 rounded-xl normal-case`}>
+                  Edit
+                  </Button>
+        </SheetTrigger>
+      </MuiServerProvider>
+        <SheetContent side='bottom' className='bg-white dark:bg-black border-none rounded-t-xl'>
+          <SheetHeader className='mb-4'>
+            <SheetTitle className='mb-2'>{appData.appName.text}</SheetTitle>
+            <SheetDescription>
+            Edit Client Project Detail and Enable Payment
+            </SheetDescription>
+          </SheetHeader>
+
+       
+
+          <form onSubmit={async(event)=>{
+            event.preventDefault();
+
+            const appDataOk = validateAppData(appData);
+
+            if(appDataOk){
+              console.log('data is ok')
+                    
+               
+
+            }
+        }}>
+          <TerraTextField
+                label='App Name'
+                type='text'
+                autoFocus={true}
+                name='appName'
+                onChange={trackAppData}
+                error={appData.appName.error}
+                helperText={appData.appName.helperText}
+                value={appData.appName.text}
+                inputProps={
+                    {
+                        maxLength:20
+                    }
+                 }
+                
+                />
+
+                <TerraTextField
+                label='Detailed App Description'
+                type='text'
+                name='appDetail'
+                error={appData.appDetail.error}
+                onChange={trackAppData}
+                helperText={appData.appDetail.helperText}
+                value={appData.appDetail.text}
+                multiline={true}
+                inputProps={
+                    {
+                        maxLength:4000
+                    }
+                 }
+                />
+
+
+
+               
+               <TerraTextField
+                  label='total cost of project?(enter numbers only)'
+                  type='text'
+                  name='appCost'
+                  onChange={trackAppData}
+                  error={appData.appCost.error}
+                  helperText={appData.appCost.helperText}
+                  value={appData.appCost.text}
+                  multiline={true}
+                  inputProps={
+                      {
+                          maxLength:7
+                      }
+                   }
+                  
+                  />
+
+          <SheetFooter>
+       
+                <MuiServerProvider>
+                <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+                    className={
+                      clsx(
+                          `my-4 ${montserrat.className} w-full p-3   rounded-xl  text-base text-center normal-case`,
+                          {
+                              'bg-indigo-700 hover:bg-indigo-500 text-white':!emptyField,
+                              'bg-inherit': emptyField
+                          }
+                      )
+                 
+                  }
+                  >Save & Enable Payment
+                   </Button>
+                </MuiServerProvider>
+          
+          </SheetFooter>
+          </form>
+           
+    
+        </SheetContent>
+      </Sheet>
+  )
+
+
+}
 
 
 function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:string,appDetail:string}){
@@ -62,17 +452,17 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  },[]);
 
   if(isDesktop?.matches || windowWidth >= 768){
   return(
-    <div className='flex flex-row justify-around items-center space-x-4 my-12'>
+   
 
                  <Dialog>
-                  <MuiServerProvider>
+                 <MuiServerProvider>
                   <DialogTrigger asChild>
                    
-                      <Button variant='text' className={`${montserrat.className} text-indigo-700  dark:text-indigo-500`}>
+                      <Button variant='text' className={`${montserrat.className} p-1 text-indigo-700  dark:text-indigo-500`}>
                         View
                       </Button>
                     
@@ -127,26 +517,26 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
                  
                 </DialogContent>
                 </Dialog>
+
                
-                 <Button variant="contained" className={`${montserrat.className} bg-indigo-700 text-white`}>Edit</Button>
-                 <Button variant="text" className='text-red-600'>Delete</Button>
-      </div>
+                
+      
 
   )
 }
 
   return(
 
-    <div className='flex flex-row justify-around items-center space-x-4 my-12'>
+   
     <Sheet key='bottom'>
     <MuiServerProvider>
       <SheetTrigger asChild>
-        <Button variant='text' className={`${montserrat.className} text-indigo-700 dark:text-indigo-500`}>
+        <Button variant='text' className={`${montserrat.className} p-1 text-indigo-700 dark:text-indigo-500`}>
           View
         </Button>
       </SheetTrigger>
     </MuiServerProvider>
-      <SheetContent side='bottom' className='h-[60vh] flex flex-col bg-white dark:bg-black border-none rounded-t-xl'>
+      <SheetContent side='bottom' className='h-[80vh] flex flex-col bg-white dark:bg-black border-none  rounded-t-xl'>
         <SheetHeader className='mb-4'>
           <SheetTitle className='mb-2'>{appName}</SheetTitle>
           <SheetDescription>
@@ -183,16 +573,15 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
       
       </SheetContent>
     </Sheet>
+  
+    
 
-  <Button variant="contained" className={`${montserrat.className} bg-indigo-700 text-white`}>Edit</Button>
-  <Button variant="text" className='text-red-600'>Delete</Button>
-  </div>
   )
     
 }
 
 export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail}:ProjectCardProps){
-    // let appDetailLines = appDetail.split('\n');
+
 
 
     
@@ -252,7 +641,14 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
 
             case Role.developer:{
               return (
-                <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail}/> 
+                <div className='flex flex-row justify-around items-center space-x-4 my-12'>
+                  <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail}/>
+                  <EditProject appName={appName}  appDetail={appDetail}/>
+                  <MuiServerProvider>
+                   <Button variant="text" className='p-1 text-red-600'>Delete</Button>
+                  </MuiServerProvider>
+                </div>
+                
               )
             }
               
@@ -279,11 +675,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
   
        
   
-       {/* <>
-         {appDetailLines.map((line, index) => (
-            <p className='text-sm max-w-xs mt-4' key={index}>{line}</p>
-          ))}
-       </> */}
+       
        
        
   
