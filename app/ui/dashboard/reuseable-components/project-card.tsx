@@ -5,8 +5,8 @@ import Divider from '@mui/material/Divider';
 
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-
-
+import { useRouter } from 'next/navigation'
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Dialog,
   DialogContent,
@@ -32,9 +32,10 @@ import { AppDataFrontend, Role } from '@/app/lib/definitions';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '../../mui-providers/mui-server-provider';
 import { montserrat } from '../../fonts';
-import { NameSchema } from '@/app/lib/data-validation';
+import { NameSchema,AppCostSchema } from '@/app/lib/data-validation';
 import TerraTextField from '../../reusable-components/terra-textfield';
 import clsx from 'clsx';
+import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-work';
 
 
 type ProjectCardProps = {
@@ -44,14 +45,17 @@ type ProjectCardProps = {
   clientImage:string,
   createdAt:string,
   appBudget:string,
-  appDetail:string
+  appDetail:string,
+  projectId:string
 }
 
-function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
+function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
 
- 
+  const router = useRouter();
   const [windowWidth, setWindowWidth] = useState(0);
   const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
+
+
 
   //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
   useEffect(() => {
@@ -71,7 +75,7 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
   }, []);
 
 
-  
+  const [loading,setLoading] = useState(false);
  
   const [appData,setData] = useState({
       appName:{
@@ -87,21 +91,21 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
       appCost:{
           helperText:'',
           error:false,
-          text:0,
+          text:'',
       },
       
   });
 
 
   //used by the submit button if no appdata is available button is disabled
-  const emptyField = appData.appCost.text < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1;
+  const emptyField = appData.appCost.text.length < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1;
 
   function trackAppData(event:ChangeEvent<HTMLInputElement>){
       const {name,value} = event.target;
 
       
 
-      if(name === 'appCost' || name === 'appDetail'){
+      if(name === 'appDetail'){
           let limitReached = false;
           if(value.length >= 4000) {
               limitReached = true;
@@ -142,6 +146,35 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
 
           }
           
+      }else if (name === 'appCost'){
+        const {data,success,error} = AppCostSchema.safeParse({appCost:value});
+
+        if(success){
+          setData({
+              ...appData,
+              appCost:{
+                  error:false,
+                  text:data.appCost,
+                  helperText:''
+
+              }
+          });
+
+
+        }else{
+          setData({
+            ...appData,
+            appCost:{
+                text:value,
+                error:true,
+                helperText:error.errors[0].message
+
+            }
+        });
+
+        }
+
+        
       }
 
   }
@@ -153,22 +186,22 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
 
       const emptyAppDetail = data.appDetail.text.length < 1;
       
-      const emptyAppBudget = data.appBudget.text.length < 1;
+      const AppCostResult = AppCostSchema.safeParse({appCost:data.appCost.text})
       
       
 
      
 
 
-     if(!emptyAppDetail && !emptyAppBudget && nameResult.success){
+     if(!emptyAppDetail && AppCostResult.success && nameResult.success){
        return true;
      }else{
           setData({
               ...data,
-              appBudget:{
+              appCost:{
                   ...data.appBudget,
-                  error:emptyAppBudget,
-                  helperText: emptyAppBudget?'this field is required':''
+                  error:!AppCostResult.success,
+                  helperText: AppCostResult.success?'':AppCostResult.error.errors[0].message
               },
               appDetail:{
                   ...data.appDetail,
@@ -214,18 +247,35 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
                   </DialogDescription>
                 </DialogHeader>
                  
-                 
-                 <form onSubmit={async(event)=>{
+                 {
+                  !loading?
+                
+                 <form onSubmit={ async(event)=>{
                   event.preventDefault();
 
                   const appDataOk = validateAppData(appData);
 
-                  if(appDataOk){
-                    console.log('data is ok')
-                          
-                     
-
-                  }
+                 
+ 
+                    if(appDataOk){
+                         setLoading(true);
+                         const responseOk = await submitUpdateProject(projectId,{
+                             appName:appData.appName.text,
+                             appDetail:appData.appDetail.text,
+                             appCost:appData.appCost.text
+                         });
+ 
+                         console.log(responseOk)
+ 
+                         if(!responseOk){
+                             setLoading(false);
+                             validateAppData(appData);
+                             alert('something went wrong while trying to update the project,try again')
+                         }else{
+                             router.push('/dashboard');
+                         }
+                    }
+                 
                  }}>
 
                  
@@ -309,6 +359,18 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
                 </DialogFooter>
                 </form>
 
+                :
+
+                <MuiServerProvider>
+                  <div className='flex justify-center items-center my-12'>
+                  <CircularProgress className='text-indigo-700' size={60}/>
+                  </div>
+                </MuiServerProvider>
+
+
+
+                }
+
               
                
               </DialogContent>
@@ -334,18 +396,30 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
           </SheetHeader>
 
        
-
+          {!loading ?
           <form onSubmit={async(event)=>{
             event.preventDefault();
 
             const appDataOk = validateAppData(appData);
 
             if(appDataOk){
-              console.log('data is ok')
-                    
-               
+              setLoading(true);
+              const responseOk = await submitUpdateProject(projectId,{
+                  appName:appData.appName.text,
+                  appDetail:appData.appDetail.text,
+                  appCost:appData.appCost.text
+              });
 
-            }
+              console.log(responseOk)
+
+              if(!responseOk){
+                  setLoading(false);
+                  validateAppData(appData);
+                  alert('something went wrong while trying to update the project,try again')
+              }else{
+                  router.push('/dashboard');
+              }
+          }
         }}>
           <TerraTextField
                 label='App Name'
@@ -420,6 +494,18 @@ function EditProject({appName,appDetail}:{appName:string,appDetail:string}){
           
           </SheetFooter>
           </form>
+
+          :
+
+
+          <MuiServerProvider>
+              <div className='flex justify-center items-center my-12'>
+              <CircularProgress className='text-indigo-700' size={60}/>
+              </div>
+          </MuiServerProvider>
+
+
+         }
            
     
         </SheetContent>
@@ -580,7 +666,7 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
     
 }
 
-export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail}:ProjectCardProps){
+export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId}:ProjectCardProps){
 
 
 
@@ -643,9 +729,11 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
               return (
                 <div className='flex flex-row justify-around items-center space-x-4 my-12'>
                   <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail}/>
-                  <EditProject appName={appName}  appDetail={appDetail}/>
+                  <EditProject appName={appName}  appDetail={appDetail} projectId={projectId}/>
                   <MuiServerProvider>
-                   <Button variant="text" className='p-1 text-red-600'>Delete</Button>
+                   <Button variant="text" className='p-1 text-red-600' onClick={()=>{
+                    console.log('delete requested!');
+                   }}>Delete</Button>
                   </MuiServerProvider>
                 </div>
                 
@@ -682,4 +770,4 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
   
       </div>
     )
-  }
+}

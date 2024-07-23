@@ -5,14 +5,10 @@
 
 import { db} from "@/app/firebase/firebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData } from "firebase/firestore";
-import { AppDataServer,Project } from "@/app/lib/definitions";
+import { AppDataServer,Project,ProjectPayment } from "@/app/lib/definitions";
 
 
-//we are trying to fetch all data for developer to view
-export const getAllProject = async() => {
-    const projectsCollectionRef = collection(db, "projects");
-    const allProjects = (await getDocs(collection(db, "cities"))).docs
-}
+
 
 
 export const getClientProjects = async(clientId:string):Promise<null | DocumentData[]>  => {
@@ -35,8 +31,14 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
 
     projectsQuerySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        let data = doc.data() as Project;
-        clientProjects.push(data);
+        let projectId = doc.id;
+        
+        let project = {
+            ...doc.data(),
+            projectId:projectId
+        } as Project;
+      
+        clientProjects.push(project);
 
         
     });
@@ -90,7 +92,7 @@ export const addNewProject = async (userProfileImage:string,email:string,id:stri
            
                 
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate});
+            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate});
     
             projects.push(newProjectId);
     

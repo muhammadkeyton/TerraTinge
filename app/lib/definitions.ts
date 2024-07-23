@@ -12,6 +12,14 @@ export enum Role {
 }
 
 
+//used to represent the status of a project
+export enum ProjectPayment {
+  initial = 'initial',
+  pending = 'pending',
+  paid = 'paid'
+}
+
+
 //Frontend Developer Application DataType
 export type ApplicationData = {
   name:{
@@ -117,6 +125,15 @@ export type AppDataServer = {
 };
 
 
+export type ReviewedProjectType = {
+  appName:string,
+  paymentStatus:ProjectPayment,
+  appCost:number,
+  appDetail:string
+
+}
+
+
 //-----------------client and server definitions end------------------------------------------------------------------
 
 
@@ -126,12 +143,17 @@ export type AppDataServer = {
 
 
 export type Project = {
+  projectId:string,
   appName:string,
   appDetail:string,
   appBudget:string,
   clientId:string,
-  clientEmail:string
+  clientEmail:string,
+  status:ProjectPayment
 }
+
+
+
 
 
 

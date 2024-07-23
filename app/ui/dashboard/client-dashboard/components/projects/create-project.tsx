@@ -28,7 +28,6 @@ import clsx from 'clsx';
 
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
