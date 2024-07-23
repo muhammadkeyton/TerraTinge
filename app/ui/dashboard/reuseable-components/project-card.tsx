@@ -82,7 +82,7 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
                   <DialogHeader className='mb-4'>
                     <DialogTitle className='mb-2'>{appName}</DialogTitle>
                     <DialogDescription >
-                      Project's Details and Budget
+                      Project&apos;s Details and Budget
                     </DialogDescription>
                   </DialogHeader>
 
@@ -150,7 +150,7 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
         <SheetHeader className='mb-4'>
           <SheetTitle className='mb-2'>{appName}</SheetTitle>
           <SheetDescription>
-          Project's Details and Budget
+          Project&apos;s Details and Budget
           </SheetDescription>
         </SheetHeader>
 
