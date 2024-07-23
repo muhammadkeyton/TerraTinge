@@ -4,7 +4,7 @@ import ProjectTabs from '../../../reuseable-components/project-tabs';
 
 import { DocumentData } from 'firebase/firestore';
 
-export default function AllWork({projects,role}: { projects: undefined | DocumentData[],role:Role }){
+export default function AllWork({projects,role}: { projects: null | DocumentData[],role:Role }){
 
   
     return(
@@ -16,7 +16,7 @@ export default function AllWork({projects,role}: { projects: undefined | Documen
 
                    {
 
-                   projects !== undefined ?
+                   projects?
                    
                  
                     <ProjectTabs projects={projects} role={role}/>

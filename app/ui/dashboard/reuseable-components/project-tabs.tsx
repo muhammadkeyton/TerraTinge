@@ -39,19 +39,19 @@ export default function ProjectTabs({projects,role}: { projects:DocumentData[],r
                                 case 'In Review':{
                                     return  (
                                     
-                                     <ProjectCard appName={projects[0]?.appName} role={role} />
+                                     <ProjectCard appName={projects[0]?.appName} clientEmail={projects[0]?.clientEmail} clientImage={projects[0]?.clientImage} createdAt={projects[0]?.createdAt} role={role} appBudget={projects[0]?.appBudget} appDetail={projects[0]?.appDetail}/>
                                    
                                     )
                                 }
 
 
                                 case 'In Progress':{
-                                    return 'There Is No App Development In Progress'
+                                    return 'You Have No App Development In Progress'
                                 }
 
 
                                 case 'Completed':{
-                                    return 'Your Completed Apps Will Be Here'
+                                    return 'All Your Completed Apps Will Appear Here'
                                 }
 
 

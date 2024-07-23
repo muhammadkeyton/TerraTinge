@@ -42,8 +42,9 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
      //data has been validated and is ok,now we can get the client id and pass to the firestore transaction
     const userId = session?.user?.id as string;
     const userEmail = session?.user?.email as string;
+    const userProfileImage = session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}` as string;
 
-    const newProjectCreated = await addNewProject(userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
+    const newProjectCreated = await addNewProject(userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
 
     if(newProjectCreated){
         revalidatePath('/dashboard/client')

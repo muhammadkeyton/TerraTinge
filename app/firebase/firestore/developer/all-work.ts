@@ -21,7 +21,12 @@ export const fetchAllProjects = async():Promise<null| DocumentData[]> => {
 
     });
 
+    
+    if(Projects.length > 0){
+        return Projects;
+    }
 
+    return null;
 
-    return Projects;
+    
 }

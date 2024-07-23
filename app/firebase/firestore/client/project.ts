@@ -56,7 +56,7 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
  */
 
 
-export const addNewProject = async (email:string,id:string,data:AppDataServer):Promise<boolean> => {
+export const addNewProject = async (userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
     console.log(data)
 
@@ -77,9 +77,20 @@ export const addNewProject = async (email:string,id:string,data:AppDataServer):P
     
             // Generate a unique ID for the new project
             const newProjectId = doc(projectsCollection).id;
-    
+            
+
+            //we need the date when this project was created
+            const date = new Date();
+            const options: Intl.DateTimeFormatOptions = { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
+            };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+           
+                
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,clientEmail:email });
+            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate});
     
             projects.push(newProjectId);
     

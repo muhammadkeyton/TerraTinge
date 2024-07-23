@@ -34,9 +34,9 @@ export default async function Profile(){
               
 
               <div className='flex flex-row items-center gap-6 mx-4'>
-              <Image  className="rounded-full" src={user?.image ?? `https://avatar.vercel.sh/${user?.email}`} width={50} height={50} alt='user profile' />
+              
 
-
+             <Image  className="rounded-full" src={user?.image ?? `https://avatar.vercel.sh/${user?.email}`} width={50} height={50} alt='user profile' />
               
               <div>
                 <h3 className='text-sm font-light mb-2'>{textRole}</h3>

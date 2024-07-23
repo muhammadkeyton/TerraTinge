@@ -19,9 +19,9 @@ export default async function DeveloperProjects(){
     }
 
     const allProjects = await getAllProjects();
-    const test = allProjects?.slice(1,2);
+    
 
     return (
-        <AllWork projects={test} role={role}/>
+        <AllWork projects={allProjects} role={role}/>
     )
 }
