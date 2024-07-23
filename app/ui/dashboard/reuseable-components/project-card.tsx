@@ -146,7 +146,7 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
         </Button>
       </SheetTrigger>
     </MuiServerProvider>
-      <SheetContent side='bottom' className='h-[90vh] flex flex-col bg-white dark:bg-black border-none rounded-t-xl'>
+      <SheetContent side='bottom' className='h-[60vh] flex flex-col bg-white dark:bg-black border-none rounded-t-xl'>
         <SheetHeader className='mb-4'>
           <SheetTitle className='mb-2'>{appName}</SheetTitle>
           <SheetDescription>
