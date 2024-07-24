@@ -58,7 +58,7 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
  */
 
 
-export const addNewProject = async (userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
+export const addNewProject = async (reviewed:boolean,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
     console.log(data)
 
@@ -92,7 +92,7 @@ export const addNewProject = async (userProfileImage:string,email:string,id:stri
            
                 
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate});
+            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate,reviewed:reviewed});
     
             projects.push(newProjectId);
     

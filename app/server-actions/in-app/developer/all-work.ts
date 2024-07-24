@@ -4,6 +4,7 @@ import { fetchAllProjects, updateProject } from "@/app/firebase/firestore/develo
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
 import { ReviewedProjectType,ProjectPayment } from "@/app/lib/definitions";
 import { DocumentData } from "firebase/firestore";
+import { revalidatePath } from "next/cache";
 
 
 export const getAllProjects = async ():Promise<null | DocumentData []> => {
@@ -29,11 +30,17 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
         paymentStatus:ProjectPayment.pending,
         appName,
         appDetail,
-        appCost:cost*100
+        appCost:cost*100,
+        paymentAmount:0,
+        reviewed:true
     }
 
 
     const projectUpdateResult = await updateProject({projectId:id,newData:projectUpdate});
+
+    if(projectUpdateResult){
+        revalidatePath('/dashboard/developer')
+    }
 
 
    

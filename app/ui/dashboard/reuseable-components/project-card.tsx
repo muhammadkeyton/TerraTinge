@@ -38,16 +38,7 @@ import clsx from 'clsx';
 import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-work';
 
 
-type ProjectCardProps = {
-  appName:string,
-  role:Role,
-  clientEmail:string,
-  clientImage:string,
-  createdAt:string,
-  appBudget:string,
-  appDetail:string,
-  projectId:string
-}
+
 
 function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
 
@@ -516,12 +507,27 @@ function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:str
 }
 
 
-function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:string,appDetail:string}){
+
+
+
+
+type viewProjectPropTypes = {
+  appName:string,
+  appBudget:string,
+  appDetail:string,
+  reviewed:boolean
+}
+
+function ViewProject({appName,appBudget,appDetail,reviewed}:viewProjectPropTypes){
   const [windowWidth, setWindowWidth] = useState(0);
   const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
 
   const appDetailLines = appDetail.split('\n');
-  const appBudgetLines = appBudget.split('\n');
+  let appBudgetLines;
+  if(!reviewed){
+    appBudgetLines = appBudget?.split('\n');
+  }
+  
 
   //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
   useEffect(() => {
@@ -575,16 +581,22 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
        
                       </div>
                       
-                   
-                      <Divider className='dark:bg-slate-300'/>
                       
+                      {
+                        !reviewed &&
+                        <>
+                        <Divider className='dark:bg-slate-300'/>
+                        
+                        
+                        <div>
+                          <h2 className='font-bold mb-2'>App Budget:</h2>
+                          {appBudgetLines?.map((line, index) => (
+                            <p className='text-sm mt-4' key={index}>{line}</p>
+                          ))}
+                        </div>
+                        </>
 
-                      <div>
-                        <h2 className='font-bold mb-2'>App Budget:</h2>
-                        {appBudgetLines.map((line, index) => (
-                          <p className='text-sm mt-4' key={index}>{line}</p>
-                        ))}
-                      </div>
+                       }
                   
                   
                   </div>
@@ -643,15 +655,21 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
                   </div>
                   
                
-                  <Divider className='dark:bg-slate-300'/>
-                  
+                  {
+                    !reviewed &&
+                    <>
+                    <Divider className='dark:bg-slate-300'/>
+                    
+                    
+                    <div>
+                      <h2 className='font-bold mb-2'>App Budget:</h2>
+                      {appBudgetLines?.map((line, index) => (
+                        <p className='text-sm mt-4' key={index}>{line}</p>
+                      ))}
+                    </div>
+                    </>
 
-                  <div>
-                    <h2 className='font-bold mb-2'>App Budget:</h2>
-                    {appBudgetLines.map((line, index) => (
-                      <p className='text-sm mt-4' key={index}>{line}</p>
-                    ))}
-                  </div>
+                    }
               
               
               </div>
@@ -666,7 +684,27 @@ function ViewProject({appName,appBudget,appDetail}:{appName:string,appBudget:str
     
 }
 
-export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId}:ProjectCardProps){
+
+
+
+
+
+
+type ProjectCardProps = {
+  appName:string,
+  role:Role,
+  clientEmail:string,
+  clientImage:string,
+  createdAt:string,
+  appBudget:string,
+  appDetail:string,
+  projectId:string
+  reviewed:boolean
+  appCost:number
+}
+
+
+export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost}:ProjectCardProps){
 
 
 
@@ -693,12 +731,46 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
        {
         role === Role.client
         &&
-       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src='/team-discussion.gif' width={250} height={200} alt='project' />
+       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={reviewed ?'/ideas.gif':'/team-discussion.gif'} width={250} height={200} alt='project' />
 
        }
   
   
-       <code className="text-xs bg-indigo-700  text-white p-1 rounded-sm">{role === Role.client? 'TerraTinge Team Reviewing' :'Awaiting Review'}</code>
+       <code className="text-xs bg-indigo-700  text-white p-1 rounded-sm">
+        
+       
+
+        {
+        (()=>{
+
+          switch (role) {
+            case Role.client:{
+               if(reviewed){
+                return 'Reviewed'
+               }
+
+               return 'TerraTinge Team Reviewing'
+            }
+
+
+            case Role.developer:{
+              if(reviewed){
+                return 'Reviewed'
+               }
+
+               return 'Awaiting Review'
+            }
+              
+         
+          
+            
+          }
+
+        })()
+        
+        }
+
+       </code>
 
 
       
@@ -721,6 +793,10 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
         (()=>{
           switch (role) {
             case Role.client:{
+
+              if(reviewed){
+                return (<p className='text-sm max-w-xs mt-4'>Hello! Your project has passed our review. An email with our insights has been sent to you. We&apos;re excited to collaborate and innovate with you, combining your vision and our expertise for great results.</p>)
+              }
               return( <p className='text-sm max-w-xs mt-4'>Thank you for entrusting us with your project! Our dedicated team is currently reviewing the details with great care. We understand how important this is for you. Please expect an email from us within the next 24 hours as we gather our insights and feedback. We appreciate your patience and look forward to moving ahead together!</p>)
             }
 
@@ -728,7 +804,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
             case Role.developer:{
               return (
                 <div className='flex flex-row justify-around items-center space-x-4 my-12'>
-                  <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail}/>
+                  <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail} reviewed={reviewed}/>
                   <EditProject appName={appName}  appDetail={appDetail} projectId={projectId}/>
                   <MuiServerProvider>
                    <Button variant="text" className='p-1 text-red-600' onClick={()=>{
@@ -743,7 +819,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
               
           
             default:
-              break;
+              throw Error(`${role} has been received which is unusual,please email us so that we can fix this unexpected issue`)
           }
         })()
       }

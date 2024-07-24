@@ -129,7 +129,9 @@ export type ReviewedProjectType = {
   appName:string,
   paymentStatus:ProjectPayment,
   appCost:number,
-  appDetail:string
+  appDetail:string,
+  reviewed:boolean,
+  paymentAmount:number
 
 }
 

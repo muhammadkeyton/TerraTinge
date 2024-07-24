@@ -4,7 +4,7 @@
 'use server'
 import { db} from "@/app/firebase/firebase";
 
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData } from "firebase/firestore";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,setDoc,deleteField, updateDoc } from "firebase/firestore";
 import { Project, ReviewedProjectType } from "@/app/lib/definitions";
 
 //we are trying to fetch all data for developer to view,we have to make this better this is just a starting function
@@ -18,7 +18,7 @@ export const fetchAllProjects = async():Promise<null| DocumentData[]> => {
         let project = {
             ...doc.data(),
             projectId:projectId
-        } as Project;
+        } 
 
 
 
@@ -45,15 +45,27 @@ export const fetchAllProjects = async():Promise<null| DocumentData[]> => {
 
 export const updateProject = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
     
-    console.log('inside database project update');
 
 
-    console.log({
-        ...newData,
-        projectId
-    });
+    try{
+        const docRef = doc(db, "projects", projectId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            await updateDoc(docRef,{
+                ...newData,
+                appBudget: deleteField(),
+
+            })
+
+            return true;
+        }
+    }catch(e){
+        console.log(e);
+    }
+   
     
-    return true;
+    return false;
 }
 
 

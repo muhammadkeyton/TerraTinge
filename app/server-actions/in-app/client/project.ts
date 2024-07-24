@@ -43,8 +43,8 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
     const userId = session?.user?.id as string;
     const userEmail = session?.user?.email as string;
     const userProfileImage = session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}` as string;
-
-    const newProjectCreated = await addNewProject(userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
+    const reviewed = false;
+    const newProjectCreated = await addNewProject(reviewed,userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
 
     if(newProjectCreated){
         revalidatePath('/dashboard/client')

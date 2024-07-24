@@ -37,9 +37,22 @@ export default function ProjectTabs({projects,role}: { projects:DocumentData[],r
 
                             switch (currentTab) {
                                 case 'In Review':{
+                                    
                                     return  (
                                     
-                                     <ProjectCard appName={projects[0]?.appName} clientEmail={projects[0]?.clientEmail} clientImage={projects[0]?.clientImage} createdAt={projects[0]?.createdAt} role={role} appBudget={projects[0]?.appBudget} appDetail={projects[0]?.appDetail} projectId={projects[0]?.projectId}/>
+                                     <ProjectCard 
+                                     appName={projects[0]?.appName} 
+                                     clientEmail={projects[0]?.clientEmail} 
+                                     clientImage={projects[0]?.clientImage} 
+                                     createdAt={projects[0]?.createdAt} 
+                                     role={role} 
+                                     appBudget={projects[0]?.appBudget} 
+                                     appDetail={projects[0]?.appDetail} 
+                                     projectId={projects[0]?.projectId}
+                                     reviewed = {projects[0]?.reviewed}
+                                     appCost={projects[0]?.appCost}
+                                     
+                                     />
                                    
                                     )
                                 }
