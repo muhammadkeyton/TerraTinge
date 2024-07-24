@@ -39,7 +39,7 @@ import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-wor
 
 
 
-
+//----------------------------------------developer functionality start-------------------------------------------------------
 function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
 
   const router = useRouter();
@@ -685,10 +685,214 @@ function ViewProject({appName,appBudget,appDetail,reviewed}:viewProjectPropTypes
 }
 
 
+//-------------------------------------developer functionality end------------------------------------------------------------
+
+
+//----------------------------------------payment functionality ------------------------------------------------------------
+
+
+type paymentProps = {
+  appName:string,
+  appCost:number,
+  paymentAmount:number,
+  appDetail:string
+  
+}
+
+
+function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
+
+  const cost = (appCost/100).toLocaleString();
+
+  const appDetailLines = appDetail.split('\n');
+  //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
+  useEffect(() => {
+    setIsDesktop(window.matchMedia("(min-width: 768px)"));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  },[]);
+
+  if(isDesktop?.matches || windowWidth >= 768){
+    return(
+     
+  
+                   <Dialog>
+                   <MuiServerProvider>
+                    <DialogTrigger asChild>
+                     
+                        <Button variant='contained' className={`${montserrat.className} p-3 bg-black text-white dark:bg-violet-700`}>
+                          proceed to payment
+                        </Button>
+                      
+                    </DialogTrigger>
+                    </MuiServerProvider>
+                  <DialogContent className="max-w-lg h-[80vh] flex flex-col bg-white dark:bg-black">
+                    <DialogHeader className='mb-4'>
+                      <DialogTitle className='mb-2'>{appName}</DialogTitle>
+                      <DialogDescription >
+                        Details And Payment 
+                      </DialogDescription>
+                    </DialogHeader>
+  
+  
+                    <div className='overflow-y-auto flex-grow flex flex-col gap-12'>
+                    
+                        <div>
+                          <h2 className='font-bold mb-2 text-sm'>{appName} Features:</h2>
+                          
+                           
+                          {appDetailLines.map((line, index) => (
+                            <p className='text-sm mt-4' key={index}>{line}</p>
+                          ))}
+         
+                        </div>
+
+
+                        <Divider className='dark:bg-slate-300'/>
+                        
+                        
+                        <div>
+                          <h2 className='font-bold mb-2 text-sm'>{appName} Payment:</h2>
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>Total Cost:</p>
+                            <code className="text-md bg-green-700  text-white p-1 rounded-sm">${cost} USD</code>
+
+                          </div>
+                          
+                        </div>
+                        
+                        
+                        
+                        
+                    
+                    
+                    </div>
+  
+                    
+                   
+    
+    
+    
+                     
+    
+                      
+                    
+                  
+  
+                   
+                  </DialogContent>
+                  </Dialog>
+  
+                 
+                  
+        
+  
+    )
+  }
+  
+    return(
+  
+     
+      <Sheet key='bottom'>
+      <MuiServerProvider>
+        <SheetTrigger asChild>
+          <Button variant='text' className={`${montserrat.className} p-3 bg-black text-white dark:bg-violet-700`}>
+          proceed to payment
+          </Button>
+        </SheetTrigger>
+      </MuiServerProvider>
+        <SheetContent side='bottom' className='h-[80vh] flex flex-col bg-white dark:bg-black border-none  rounded-t-xl'>
+          <SheetHeader className='mb-4'>
+            <SheetTitle className='mb-2'>{appName}</SheetTitle>
+            <SheetDescription>
+            Details And Payment 
+            </SheetDescription>
+          </SheetHeader>
+  
+          <div className='overflow-y-auto flex-grow flex flex-col gap-12'>
+                    
+                    <div>
+                      <h2 className='font-bold mb-2 text-sm'>{appName} Features:</h2>
+                      
+                       
+                      {appDetailLines.map((line, index) => (
+                        <p className='text-sm mt-4' key={index}>{line}</p>
+                      ))}
+     
+                    </div>
+
+
+                    <Divider className='dark:bg-slate-300'/>
+                        
+                        
+                    <div>
+                      <h2 className='font-bold mb-2 text-sm'>{appName} Payment:</h2>
+
+                      <div className='flex flex-row space-x-4 items-center'>
+                        <p>Total Cost:</p>
+                        <code className="text-sm bg-green-700  text-white p-1 rounded-sm">${cost} USD</code>
+
+                      </div>
+                      
+                    </div>
+                    
+                 
+                   
+                
+                
+                </div>
+          
+        
+        </SheetContent>
+      </Sheet>
+    
+      
+  
+    )
 
 
 
 
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------project card-------------------------------------------------------------------
 
 type ProjectCardProps = {
   appName:string,
@@ -701,15 +905,16 @@ type ProjectCardProps = {
   projectId:string
   reviewed:boolean
   appCost:number
+  paymentAmount:number
 }
 
 
-export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost}:ProjectCardProps){
+export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost,paymentAmount}:ProjectCardProps){
 
 
 
     
-  
+   const cost = (appCost/100).toLocaleString();
     
    
 
@@ -731,7 +936,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
        {
         role === Role.client
         &&
-       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={reviewed ?'/ideas.gif':'/team-discussion.gif'} width={250} height={200} alt='project' />
+       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={reviewed ?'/secure-payment.gif':'/team-discussion.gif'} width={250} height={200} alt='project' />
 
        }
   
@@ -746,16 +951,16 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
           switch (role) {
             case Role.client:{
                if(reviewed){
-                return 'Reviewed'
+                 return `$${cost} USD`
                }
 
-               return 'TerraTinge Team Reviewing'
+               return 'Awaiting Review'
             }
 
 
             case Role.developer:{
               if(reviewed){
-                return 'Reviewed'
+                return `$${cost} USD`
                }
 
                return 'Awaiting Review'
@@ -795,8 +1000,20 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
             case Role.client:{
 
               if(reviewed){
-                return (<p className='text-sm max-w-xs mt-4'>Hello! Your project has passed our review. An email with our insights has been sent to you. We&apos;re excited to collaborate and innovate with you, combining your vision and our expertise for great results.</p>)
+                return (
+                <>
+                 <p className='text-sm max-w-xs my-4'> we&apos;re ready to start your project once we receive payment. Excited to blend your ideas with our expertise for stellar results. Let&apos;s innovate together!</p>
+                 <Payment appCost={appCost} appName={appName} appDetail={appDetail} paymentAmount={paymentAmount}/>
+                </>
+              )
+
+
+
+
               }
+
+
+
               return( <p className='text-sm max-w-xs mt-4'>Thank you for entrusting us with your project! Our dedicated team is currently reviewing the details with great care. We understand how important this is for you. Please expect an email from us within the next 24 hours as we gather our insights and feedback. We appreciate your patience and look forward to moving ahead together!</p>)
             }
 
@@ -824,10 +1041,11 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
         })()
       }
 
-
-
+     <MuiServerProvider>
+     <Divider className='dark:bg-slate-300 my-6'/>
+     </MuiServerProvider>
       
-      <div className='flex flex-row items-center gap-4 mt-6'>
+      <div className='flex flex-row items-center gap-4'>
       <Image  className="rounded-full" src={clientImage} width={40} height={40} alt='user profile' />
 
       <div>
