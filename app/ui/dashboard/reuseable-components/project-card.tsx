@@ -849,6 +849,11 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
                       
                     </div>
                     
+
+
+
+                
+                    
                  
                    
                 
