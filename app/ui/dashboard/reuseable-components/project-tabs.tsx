@@ -51,7 +51,8 @@ export default function ProjectTabs({projects,role}: { projects:DocumentData[],r
                                      projectId={projects[0]?.projectId}
                                      reviewed = {projects[0]?.reviewed}
                                      appCost={projects[0]?.appCost}
-                                     paymentAmount={projects[0]?.appCost}
+                                     paymentAmount={projects[0]?.paymentAmount}
+                                     paymentStatus={projects[0]?.paymentStatus}
                                      
                                      />
                                    

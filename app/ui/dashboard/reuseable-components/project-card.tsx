@@ -28,7 +28,7 @@ import {
 } from "../shadcn-components/sheet"
 
 import Image from 'next/image';
-import { AppDataFrontend, Role } from '@/app/lib/definitions';
+import { AppDataFrontend, ProjectPayment, Role } from '@/app/lib/definitions';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '../../mui-providers/mui-server-provider';
 import { montserrat } from '../../fonts';
@@ -688,23 +688,25 @@ function ViewProject({appName,appBudget,appDetail,reviewed}:viewProjectPropTypes
 //-------------------------------------developer functionality end------------------------------------------------------------
 
 
-//----------------------------------------payment functionality ------------------------------------------------------------
+//----------------------------------------client functionality start ------------------------------------------------------------
 
 
-type paymentProps = {
+type clientViewProjectProps = {
   appName:string,
   appCost:number,
   paymentAmount:number,
-  appDetail:string
+  appDetail:string,
+  status:ProjectPayment
   
 }
 
-
-function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
+function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clientViewProjectProps){
   const [windowWidth, setWindowWidth] = useState(0);
   const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
 
   const cost = (appCost/100).toLocaleString();
+  const initialPayment = (paymentAmount/100).toLocaleString();
+  const balance = ((appCost - paymentAmount)/100).toLocaleString();
 
   const appDetailLines = appDetail.split('\n');
   //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
@@ -732,8 +734,8 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
                    <MuiServerProvider>
                     <DialogTrigger asChild>
                      
-                        <Button variant='contained' className={`${montserrat.className} p-3 bg-black text-white dark:bg-violet-700`}>
-                          proceed to payment
+                        <Button variant='text' className={`${montserrat.className} p-3 text-indigo-600 dark:text-indigo-500`}>
+                          View App Details
                         </Button>
                       
                     </DialogTrigger>
@@ -742,12 +744,88 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
                     <DialogHeader className='mb-4'>
                       <DialogTitle className='mb-2'>{appName}</DialogTitle>
                       <DialogDescription >
-                        Details And Payment 
+                        Features And Payment Status
                       </DialogDescription>
                     </DialogHeader>
   
   
                     <div className='overflow-y-auto flex-grow flex flex-col gap-12'>
+
+                    <div className='flex flex-col gap-4'>
+                          <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>total cost:</p>
+                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                          </div>
+
+
+
+                          {
+                          status === ProjectPayment.initial &&
+                          <>
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>initial payment:</p>
+                            <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
+
+                          </div>
+
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>remaining balance:</p>
+                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+
+                          </div>
+                          </>
+
+
+                         }
+
+
+
+
+
+
+
+
+
+
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>payment status:</p>
+
+                            {(()=>{
+
+                              switch (status) {
+                                case ProjectPayment.pending:{
+                                  return ( <code className="text-md bg-orange-600  text-white p-1 rounded-sm">{status}</code>)
+                                }
+
+                                case ProjectPayment.initial:{
+                                  return ( <code className="text-md bg-indigo-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
+
+                                case ProjectPayment.paid:{
+                                  return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
+                                  
+                                 
+                              
+                                default:
+                                  throw new Error(`${status} is unrecognized,this is unexpected`)
+                              }
+
+                            })()
+                            
+                            }
+                            
+
+                          </div>
+                          
+                        </div>
+
+                        <Divider className='dark:bg-slate-300'/>
                     
                         <div>
                           <h2 className='font-bold mb-2 text-sm'>{appName} Features:</h2>
@@ -760,19 +838,10 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
                         </div>
 
 
-                        <Divider className='dark:bg-slate-300'/>
                         
                         
-                        <div>
-                          <h2 className='font-bold mb-2 text-sm'>{appName} Payment:</h2>
-
-                          <div className='flex flex-row space-x-4 items-center'>
-                            <p>Total Cost:</p>
-                            <code className="text-md bg-green-700  text-white p-1 rounded-sm">${cost} USD</code>
-
-                          </div>
-                          
-                        </div>
+                        
+                       
                         
                         
                         
@@ -809,45 +878,110 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
       <Sheet key='bottom'>
       <MuiServerProvider>
         <SheetTrigger asChild>
-          <Button variant='text' className={`${montserrat.className} p-3 bg-black text-white dark:bg-violet-700`}>
-          proceed to payment
-          </Button>
+
+        <Button variant='text' className={`${montserrat.className} p-3 text-indigo-600 dark:text-indigo-500`}>
+          View App Details
+        </Button>
+          
         </SheetTrigger>
       </MuiServerProvider>
         <SheetContent side='bottom' className='h-[80vh] flex flex-col bg-white dark:bg-black border-none  rounded-t-xl'>
           <SheetHeader className='mb-4'>
             <SheetTitle className='mb-2'>{appName}</SheetTitle>
             <SheetDescription>
-            Details And Payment 
+            Features And Payment Status
             </SheetDescription>
           </SheetHeader>
   
           <div className='overflow-y-auto flex-grow flex flex-col gap-12'>
                     
-                    <div>
-                      <h2 className='font-bold mb-2 text-sm'>{appName} Features:</h2>
-                      
-                       
-                      {appDetailLines.map((line, index) => (
-                        <p className='text-sm mt-4' key={index}>{line}</p>
-                      ))}
-     
-                    </div>
+                     <div className='flex flex-col gap-4'>
+                          <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>total cost:</p>
+                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                          </div>
+
+                         
 
 
-                    <Divider className='dark:bg-slate-300'/>
+                         {
+                          status === ProjectPayment.initial &&
+                          <>
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>initial payment:</p>
+                            <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
+
+                          </div>
+
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>remaining balance:</p>
+                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+
+                          </div>
+                          </>
+
+
+                         }
+
+
+
+
+
+
+
+
+
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>payment status:</p>
+
+                            {(()=>{
+
+                              switch (status) {
+                                case ProjectPayment.pending:{
+                                  return ( <code className="text-md bg-orange-600  text-white p-1 rounded-sm">{status}</code>)
+                                }
+
+                                case ProjectPayment.initial:{
+                                  return ( <code className="text-md bg-indigo-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
+
+                                case ProjectPayment.paid:{
+                                  return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
+                                  
+                                 
+                              
+                                default:
+                                  throw new Error(`${status} is unrecognized,this is unexpected`)
+                              }
+
+                            })()
+                            
+                            }
+                            
+
+                          </div>
+                          
+                        </div>
+
+                        <Divider className='dark:bg-slate-300'/>
+                    
+                        <div>
+                          <h2 className='font-bold mb-2 text-sm'>{appName} Features:</h2>
+                          
+                           
+                          {appDetailLines.map((line, index) => (
+                            <p className='text-sm mt-4' key={index}>{line}</p>
+                          ))}
+         
+                        </div>
+
                         
-                        
-                    <div>
-                      <h2 className='font-bold mb-2 text-sm'>{appName} Payment:</h2>
-
-                      <div className='flex flex-row space-x-4 items-center'>
-                        <p>Total Cost:</p>
-                        <code className="text-sm bg-green-700  text-white p-1 rounded-sm">${cost} USD</code>
-
-                      </div>
-                      
-                    </div>
                     
 
 
@@ -858,7 +992,7 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
                    
                 
                 
-                </div>
+              </div>
           
         
         </SheetContent>
@@ -876,28 +1010,15 @@ function Payment({appName,appCost,paymentAmount,appDetail}:paymentProps){
 
 }
 
+//--------------------------------------------client functionality end--------------------------
 
 
 
 
 
 
+//--------------------------------shared project card for both client and developer--------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------project card-------------------------------------------------------------------
 
 type ProjectCardProps = {
   appName:string,
@@ -911,10 +1032,11 @@ type ProjectCardProps = {
   reviewed:boolean
   appCost:number
   paymentAmount:number
+  paymentStatus:ProjectPayment
 }
 
 
-export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost,paymentAmount}:ProjectCardProps){
+export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost,paymentAmount,paymentStatus}:ProjectCardProps){
 
 
 
@@ -1008,7 +1130,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
                 return (
                 <>
                  <p className='text-sm max-w-xs my-4'> we&apos;re ready to start your project once we receive payment. Excited to blend your ideas with our expertise for stellar results. Let&apos;s innovate together!</p>
-                 <Payment appCost={appCost} appName={appName} appDetail={appDetail} paymentAmount={paymentAmount}/>
+                 <ClientViewProject appCost={appCost} appName={appName} appDetail={appDetail} paymentAmount={paymentAmount} status={paymentStatus}/>
                 </>
               )
 
@@ -1045,6 +1167,16 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
           }
         })()
       }
+
+     <MuiServerProvider>
+     <Divider className='dark:bg-slate-300 my-6'/>
+     </MuiServerProvider>
+
+     <MuiServerProvider>
+      <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+        proceed to payment
+      </Button>
+    </MuiServerProvider>
 
      <MuiServerProvider>
      <Divider className='dark:bg-slate-300 my-6'/>
