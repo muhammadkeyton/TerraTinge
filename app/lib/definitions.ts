@@ -20,6 +20,15 @@ export enum ProjectPayment {
 }
 
 
+export enum PaymentOption{
+  full = 'full',
+  third = 'third',
+}
+
+
+
+
+
 //Frontend Developer Application DataType
 export type ApplicationData = {
   name:{
@@ -117,7 +126,7 @@ export type AppDataFrontend = {
 
 
 
-//server clients project DataType
+//server project DataType
 export type AppDataServer = {
   appName:string,
   appDetail:string,
@@ -141,17 +150,25 @@ export type ReviewedProjectType = {
 
 
 
-//--------------------------database data received definitions start--------------------------------------------------------------
+//--------------------------data received from database definitions start--------------------------------------------------------------
 
 
 export type Project = {
+  //the project id is added as we fetch data from the database
   projectId:string,
+
   appName:string,
   appDetail:string,
-  appBudget:string,
+  appCost:number,
   clientId:string,
   clientEmail:string,
-  status:ProjectPayment
+  clientImage:string,
+  paymentStatus:ProjectPayment,
+  createdAt:string,
+  paymentAmount:number,
+  reviewed:boolean,
+
+  
 }
 
 

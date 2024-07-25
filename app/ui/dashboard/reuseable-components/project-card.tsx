@@ -27,8 +27,10 @@ import {
   SheetTrigger
 } from "../shadcn-components/sheet"
 
+
+
 import Image from 'next/image';
-import { AppDataFrontend, ProjectPayment, Role } from '@/app/lib/definitions';
+import { AppDataFrontend, PaymentOption, ProjectPayment, Role } from '@/app/lib/definitions';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '../../mui-providers/mui-server-provider';
 import { montserrat } from '../../fonts';
@@ -37,7 +39,7 @@ import TerraTextField from '../../reusable-components/terra-textfield';
 import clsx from 'clsx';
 import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-work';
 
-
+import StripePaymentComponent from '../client-dashboard/stripe-payment/stripe-element';
 
 //----------------------------------------developer functionality start-------------------------------------------------------
 function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
@@ -1010,6 +1012,119 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
 
 }
 
+
+
+function ClientProceedToPayment({projectId,appName}:{projectId:string,appName:string}){
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
+
+  
+  
+
+  //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
+  useEffect(() => {
+    setIsDesktop(window.matchMedia("(min-width: 768px)"));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  },[]);
+
+  if(isDesktop?.matches || windowWidth >= 768){
+  return(
+   
+
+                 <Dialog>
+                 <MuiServerProvider>
+                  <DialogTrigger asChild>
+                   
+                  <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+                    proceed to payment
+                  </Button>
+                    
+                  </DialogTrigger>
+                  </MuiServerProvider>
+                <DialogContent className="max-w-lg h-[80vh] flex flex-col bg-white dark:bg-black">
+                  <DialogHeader className='mb-4'>
+                    <DialogTitle className='mb-2 text-center'>{appName}</DialogTitle>
+                    <DialogDescription className='text-center' >
+                      Project Payment
+                    </DialogDescription>
+                  </DialogHeader>
+
+
+                  <div className='overflow-y-auto flex-grow  p-4'>
+                  
+                     <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/> 
+                  
+                  
+                  </div>
+
+                  
+                 
+  
+  
+  
+                   
+  
+                    
+                  
+                
+
+                 
+                </DialogContent>
+                </Dialog>
+
+               
+                
+      
+
+  )
+}
+
+  return(
+
+   
+    <Sheet key='bottom'>
+    <MuiServerProvider>
+      <SheetTrigger asChild>
+      <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+        proceed to payment
+      </Button>
+      </SheetTrigger>
+    </MuiServerProvider>
+      <SheetContent side='bottom' className='h-[80vh] flex flex-col bg-white dark:bg-black border-none  rounded-t-xl'>
+        <SheetHeader className='mb-4 text-center'>
+          <SheetTitle className='mb-2'>{appName}</SheetTitle>
+          <SheetDescription>
+           Project Payment
+          </SheetDescription>
+        </SheetHeader>
+
+        <div className='overflow-y-auto flex-grow p-4'>
+                  
+                  
+         <StripePaymentComponent paymentOption={PaymentOption.third} projectId={projectId}/>
+              
+        </div>
+        
+      
+      </SheetContent>
+    </Sheet>
+  
+    
+
+  )
+}
+
 //--------------------------------------------client functionality end--------------------------
 
 
@@ -1172,11 +1287,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
      <Divider className='dark:bg-slate-300 my-6'/>
      </MuiServerProvider>
 
-     <MuiServerProvider>
-      <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
-        proceed to payment
-      </Button>
-    </MuiServerProvider>
+     <ClientProceedToPayment appName={appName} projectId={projectId}/>
 
      <MuiServerProvider>
      <Divider className='dark:bg-slate-300 my-6'/>
