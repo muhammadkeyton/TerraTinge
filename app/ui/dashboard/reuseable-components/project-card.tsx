@@ -1109,11 +1109,11 @@ function ClientProceedToPayment({projectId,appName}:{projectId:string,appName:st
           </SheetDescription>
         </SheetHeader>
 
-        <div className='overflow-y-auto flex-grow p-4'>
+        <div className='overflow-y-auto flex-grow  p-4'>
+                  
+          <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/> 
                   
                   
-         <StripePaymentComponent paymentOption={PaymentOption.third} projectId={projectId}/>
-              
         </div>
         
       
