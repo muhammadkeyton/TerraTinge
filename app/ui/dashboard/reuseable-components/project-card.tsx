@@ -1283,11 +1283,21 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
         })()
       }
 
-     <MuiServerProvider>
-     <Divider className='dark:bg-slate-300 my-6'/>
-     </MuiServerProvider>
+     
 
-     {(role === Role.client && reviewed) &&<ClientProceedToPayment appName={appName} projectId={projectId}/>}
+     {(role === Role.client && reviewed) &&
+
+     <>
+      <MuiServerProvider>
+        <Divider className='dark:bg-slate-300 my-6'/>
+      </MuiServerProvider>
+      <ClientProceedToPayment appName={appName} projectId={projectId}/>
+     </>
+     
+     
+     
+     
+     }
 
      <MuiServerProvider>
      <Divider className='dark:bg-slate-300 my-6'/>
