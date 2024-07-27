@@ -12,13 +12,18 @@ import { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { Button } from "@mui/material";
 import { montserrat } from "@/app/ui/fonts";
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
 
-  const [message, setMessage] = useState<string | undefined>('');
+  const [message, setMessage] = useState({
+    error:false,
+    message:''
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -37,16 +42,16 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case "succeeded":
-          setMessage("Payment succeeded!");
+          setMessage({error:false,message:"Payment succeeded!"});
           break;
         case "processing":
-          setMessage("Your payment is processing.");
+          setMessage({error:false,message:"Your payment is processing."});
           break;
         case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
+          setMessage({error:true,message:"Your payment was not successful, please try again."});
           break;
         default:
-          setMessage("Something went wrong.");
+          setMessage({error:true,message:"Something went wrong."});
           break;
       }
     });
@@ -67,7 +72,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "https://terra-tinge.vercel.app/dashboard",
+        return_url: "https://terra-tinge.vercel.app/dashboard/client",
       },
     });
 
@@ -76,10 +81,10 @@ export default function CheckoutForm() {
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
+    if (error.type === "card_error") {
+      setMessage({error:true,message:error.message as string});
+    } else if(error.type !== "validation_error"){
+      setMessage({error:true,message:"An unexpected error occurred."});
     }
 
     setIsLoading(false);
@@ -92,16 +97,34 @@ export default function CheckoutForm() {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
 
+      {/* Show any error or success messages */}
+      {message && 
+        <div id="payment-message">
+          <p className={` text-center mb-4 font-medium ${message.error?'text-red-500':'text-green-500'}`}>{message.message}</p>
+          
+        </div>
+      }
+
       <PaymentElement id="payment-element" options={paymentElementOptions} />
        
        <MuiServerProvider>
-        <Button disabled={isLoading || !stripe || !elements} id="submit" variant='contained' className={`${montserrat.className} mt-4 p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+        <Button type='submit' disabled={isLoading || !stripe || !elements} id="submit" variant='contained' className={`${montserrat.className} mt-4 p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
         {isLoading ? 'processing payment...' : "Pay now"}
         </Button>
       </MuiServerProvider>
+
+      
+      
+
+      <MuiServerProvider>
+        <Divider className='dark:bg-slate-300 my-6'/>
+      </MuiServerProvider>
+
+      <div className='text-center'>
+        <p className='text-gray-400'>TerraTinge Secure Payment</p>
+      </div>
      
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      
     </form>
   );
 }

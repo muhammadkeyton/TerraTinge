@@ -7,6 +7,9 @@ import { useTheme } from 'next-themes';
 import CheckoutForm from "./checkout-form";
 import { PaymentOption } from "@/app/lib/definitions";
 
+import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
+import CircularProgress from '@mui/material/CircularProgress';
+
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
@@ -40,12 +43,27 @@ export default function StripePaymentComponent({projectId,paymentOption}:{projec
   };
 
   return (
-    <div className="App">
-      {clientSecret && (
+    <div className="">
+      {clientSecret?
+      
+    
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />
         </Elements>
-      )}
+
+
+       :
+
+       <MuiServerProvider>
+          <div className='h-[200px] flex justify-center items-center my-12'>
+          <CircularProgress className='text-indigo-700' size={60}/>
+          </div>
+       </MuiServerProvider>
+
+  
+      
+      
+      }
     </div>
   );
 }
