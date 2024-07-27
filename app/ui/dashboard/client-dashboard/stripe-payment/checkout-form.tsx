@@ -15,6 +15,8 @@ import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 
+import { StripePaymentStatus } from "@/app/lib/definitions";
+
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
@@ -25,6 +27,8 @@ export default function CheckoutForm() {
     message:''
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const [status,setStatus] = useState<StripePaymentStatus>(StripePaymentStatus.unknown);
 
   useEffect(() => {
     if (!stripe) {
@@ -56,6 +60,8 @@ export default function CheckoutForm() {
       }
     });
   }, [stripe]);
+
+ 
 
   const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,19 +103,33 @@ export default function CheckoutForm() {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
 
+      
+
+      <PaymentElement id="payment-element" options={paymentElementOptions} />
+
+
       {/* Show any error or success messages */}
       {message && 
         <div id="payment-message">
-          <p className={` text-center mb-4 font-medium ${message.error?'text-red-500':'text-green-500'}`}>{message.message}</p>
+          <p className={` text-center my-4 font-medium ${message.error?'text-red-500':'text-green-500'}`}>{message.message}</p>
           
         </div>
       }
-
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
        
        <MuiServerProvider>
         <Button type='submit' disabled={isLoading || !stripe || !elements} id="submit" variant='contained' className={`${montserrat.className} mt-4 p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
-        {isLoading ? 'processing payment...' : "Pay now"}
+        {isLoading ?
+        
+      
+          <div className='flex flex-col justify-center items-center'>
+            <p className='mb-2'>Processing Payment</p>
+            <CircularProgress  className='text-white'/>
+          </div>
+      
+        
+        : "Pay now"
+        
+        }
         </Button>
       </MuiServerProvider>
 

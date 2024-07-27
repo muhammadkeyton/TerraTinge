@@ -26,6 +26,13 @@ export enum PaymentOption{
 }
 
 
+export enum StripePaymentStatus{
+  unknown = 'unknown',
+  success = 'success',
+  failure = 'failure'
+}
+
+
 
 
 
