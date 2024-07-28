@@ -1014,11 +1014,11 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
 
 
 
-function ClientProceedToPayment({projectId,appName}:{projectId:string,appName:string}){
+function ClientProceedToPayment({projectId,appName,appCost}:{projectId:string,appName:string,appCost:number}){
   const [windowWidth, setWindowWidth] = useState(0);
   const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
 
-  
+  const cost = (appCost/100).toLocaleString();
   
 
   //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
@@ -1056,7 +1056,7 @@ function ClientProceedToPayment({projectId,appName}:{projectId:string,appName:st
                   <DialogHeader className='mb-4'>
                     <DialogTitle className='mb-2 text-center'>{appName}</DialogTitle>
                     <DialogDescription className='text-center' >
-                      Project Payment
+                      {cost} USD
                     </DialogDescription>
                   </DialogHeader>
 
@@ -1105,7 +1105,7 @@ function ClientProceedToPayment({projectId,appName}:{projectId:string,appName:st
         <SheetHeader className='mb-4 text-center'>
           <SheetTitle className='mb-2'>{appName}</SheetTitle>
           <SheetDescription>
-           Project Payment
+          {cost} USD
           </SheetDescription>
         </SheetHeader>
 
@@ -1256,7 +1256,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
 
 
 
-              return( <p className='text-sm max-w-xs mt-4'>Thank you for entrusting us with your project! Our dedicated team is currently reviewing the details with great care. We understand how important this is for you. Please expect an email from us within the next 24 hours as we gather our insights and feedback. We appreciate your patience and look forward to moving ahead together!</p>)
+              return( <p className='text-sm max-w-xs mt-4'>Thank you for entrusting us with your project! A Terratinge team member is now assigned to work with you. They are currently reviewing the project details and will reach out to you via email within the next 24 hours. This will allow both of you to review the project together and schedule a virtual meeting. We appreciate your patience and look forward to collaborating with you!</p>)
             }
 
 
@@ -1291,7 +1291,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
       <MuiServerProvider>
         <Divider className='dark:bg-slate-300 my-6'/>
       </MuiServerProvider>
-      <ClientProceedToPayment appName={appName} projectId={projectId}/>
+      <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost}/>
      </>
      
      
