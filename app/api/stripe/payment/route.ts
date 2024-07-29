@@ -7,6 +7,7 @@ import { doc,getDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
 
 
+
 // This is your test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -18,9 +19,11 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  * @param {PaymentOption} paymentOption  - the option our client chose to pay with,whether full payment or a third of the total cost
  
  */
+
+
 const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<number|null> => {
 
-   console.log('database query');
+   
    const projectDocumentRef = doc(db, "projects", projectId);
 
    let amountToCharge:number;
@@ -81,6 +84,9 @@ try{
     automatic_payment_methods: {
       enabled: true,
     },
+    metadata:{
+      projectId:projectId
+    }
   });
 
   return NextResponse.json({

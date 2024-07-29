@@ -15,7 +15,7 @@ import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 
-import { StripePaymentStatus } from "@/app/lib/definitions";
+
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -32,7 +32,7 @@ export default function CheckoutForm() {
 
   useEffect(() => {
 
-    console.log(stripe)
+    
     if (!stripe) {
       return;
     }
@@ -48,10 +48,8 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case "succeeded":
-          setMessage({error:false,message:"Payment succeeded!"});
           break;
         case "processing":
-          setMessage({error:false,message:"Your payment is processing."});
           break;
         case "requires_payment_method":
           setMessage({error:true,message:"Your payment was not successful, please try again."});
@@ -80,7 +78,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/dashboard/client",
+        return_url: "https://terra-tinge.vercel.app/dashboard/client",
       },
     });
 
@@ -92,7 +90,7 @@ export default function CheckoutForm() {
     if (error.type === "card_error") {
       setMessage({error:true,message:error.message as string});
     } else if(error.type !== "validation_error"){
-      setMessage({error:true,message:"An unexpected error occurred."});
+      setMessage({error:true,message:"something went wrong! please try again"});
     }
 
     setIsLoading(false);

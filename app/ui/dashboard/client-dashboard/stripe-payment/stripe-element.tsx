@@ -26,10 +26,6 @@ export default function StripePaymentComponent({projectId,paymentOption}:{projec
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-
-    console.log('running')
-
-   
     fetch("/api/stripe/payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

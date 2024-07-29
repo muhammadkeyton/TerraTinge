@@ -1,6 +1,13 @@
 'use client';
 
 import { useState,useEffect, ChangeEvent } from 'react';
+
+import { useSearchParams } from 'next/navigation'
+
+import {
+  useStripe,
+} from "@stripe/react-stripe-js";
+
 import Divider from '@mui/material/Divider';
 
 import LockIcon from '@mui/icons-material/Lock';
@@ -737,7 +744,7 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
                     <DialogTrigger asChild>
                      
                         <Button variant='text' className={`${montserrat.className} p-3 text-indigo-600 dark:text-indigo-500`}>
-                          View App Details
+                        App Details & Payment Status
                         </Button>
                       
                     </DialogTrigger>
@@ -811,6 +818,10 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
                                 case ProjectPayment.paid:{
                                   return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{status}</code>)
                                 }
+
+                                case ProjectPayment.processing:{
+                                  return ( <code className="text-md bg-violet-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
                                   
                                  
                               
@@ -882,7 +893,7 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
         <SheetTrigger asChild>
 
         <Button variant='text' className={`${montserrat.className} p-3 text-indigo-600 dark:text-indigo-500`}>
-          View App Details
+          App Details & Payment Status
         </Button>
           
         </SheetTrigger>
@@ -955,6 +966,10 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
                                 case ProjectPayment.paid:{
                                   return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{status}</code>)
                                 }
+
+                                case ProjectPayment.processing:{
+                                  return ( <code className="text-md bg-violet-700  text-white p-1 rounded-sm">{status}</code>)
+                                }
                                   
                                  
                               
@@ -1014,7 +1029,7 @@ function ClientViewProject({appName,appCost,paymentAmount,appDetail,status}:clie
 
 
 
-function ClientProceedToPayment({projectId,appName,appCost}:{projectId:string,appName:string,appCost:number}){
+function ClientProceedToPayment({projectId,appName,appCost,paymentStatus}:{projectId:string,appName:string,appCost:number,paymentStatus:ProjectPayment}){
   const [windowWidth, setWindowWidth] = useState(0);
   const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
 
@@ -1047,7 +1062,7 @@ function ClientProceedToPayment({projectId,appName,appCost}:{projectId:string,ap
                   <DialogTrigger asChild>
                    
                   <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
-                    proceed to payment
+                    {paymentStatus === ProjectPayment.initial?'proceed to pay balance':'proceed to payment'}  
                   </Button>
                     
                   </DialogTrigger>
@@ -1097,7 +1112,7 @@ function ClientProceedToPayment({projectId,appName,appCost}:{projectId:string,ap
     <MuiServerProvider>
       <SheetTrigger asChild>
       <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
-        proceed to payment
+      {paymentStatus === ProjectPayment.initial?'proceed to pay balance':'proceed to payment'}
       </Button>
       </SheetTrigger>
     </MuiServerProvider>
@@ -1153,10 +1168,13 @@ type ProjectCardProps = {
 
 export default function ProjectCard({appName,role,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,reviewed,appCost,paymentAmount,paymentStatus}:ProjectCardProps){
 
-
-
+   const searchParams = useSearchParams();
     
    const cost = (appCost/100).toLocaleString();
+
+
+  
+
     
    
 
@@ -1291,7 +1309,20 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
       <MuiServerProvider>
         <Divider className='dark:bg-slate-300 my-6'/>
       </MuiServerProvider>
-      <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost}/>
+      {(paymentStatus !== ProjectPayment.paid && paymentStatus !== ProjectPayment.processing) &&
+      
+      
+      <>
+        <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost} paymentStatus={paymentStatus}/>
+        <MuiServerProvider>
+        <Divider className='dark:bg-slate-300 my-6'/>
+        </MuiServerProvider>
+      </>
+
+     
+      
+      
+      }
     
      </>
      
@@ -1300,9 +1331,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
      
      }
 
-     <MuiServerProvider>
-     <Divider className='dark:bg-slate-300 my-6'/>
-     </MuiServerProvider>
+   
       
       <div className='flex flex-row items-center gap-4'>
       <Image  className="rounded-full" src={clientImage} width={40} height={40} alt='user profile' />

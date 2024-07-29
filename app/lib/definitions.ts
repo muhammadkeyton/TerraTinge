@@ -16,7 +16,8 @@ export enum Role {
 export enum ProjectPayment {
   initial = 'initial',
   pending = 'pending',
-  paid = 'paid'
+  paid = 'paid!',
+  processing = 'processing'
 }
 
 
@@ -25,12 +26,6 @@ export enum PaymentOption{
   third = 'third',
 }
 
-
-export enum StripePaymentStatus{
-  unknown = 'unknown',
-  success = 'success',
-  failure = 'failure'
-}
 
 
 
