@@ -38,7 +38,7 @@ async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:string,
 }
 
 async function handlePaymentProcessing({projectId,paymentAmount}:{projectId:string,paymentAmount:number}){
-  revalidatePath('/dashboard/client');
+
 
   const projectDocumentRef = doc(db, "projects", projectId);
 
