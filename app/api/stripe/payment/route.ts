@@ -1,10 +1,11 @@
 
-import { NextResponse,NextRequest } from "next/server";
+import { NextRequest,NextResponse } from "next/server";
 
 import { Project,PaymentOption } from "@/app/lib/definitions";
 
 import { doc,getDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
+
 
 // This is your test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -18,6 +19,8 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  
  */
 const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<number|null> => {
+
+   console.log('database query');
    const projectDocumentRef = doc(db, "projects", projectId);
 
    let amountToCharge:number;
@@ -58,10 +61,14 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
 };
 
 export async function POST(req:NextRequest) {
+  const { projectId,paymentOption } = await req.json();
 
+  
+
+  
 
 try{
-    const { projectId,paymentOption } = await req.json();
+  
 
   const amountToCharge = await getProjectPaymentAmount(projectId,paymentOption);
 
@@ -78,15 +85,18 @@ try{
 
   return NextResponse.json({
     clientSecret: paymentIntent.client_secret,
-  });
+  },
+  {status:200});
 
 }catch(error){
     console.error('Internal Error:',error)
-    return NextResponse.json({
-        error:`internal server error:${error}`,
-        status:500
-    })
-}
+    return NextResponse.json({message:`internal server error:${error}`},{status:500});
   
 
-};
+}
+
+
+
+
+
+}

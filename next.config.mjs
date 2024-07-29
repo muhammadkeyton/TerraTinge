@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     
-
+   
     //allows us to use remote images in this case we are making use of vercel's random images or google user image
     images: {
         remotePatterns: [

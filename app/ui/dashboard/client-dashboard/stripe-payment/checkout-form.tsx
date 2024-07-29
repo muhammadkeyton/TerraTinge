@@ -28,9 +28,11 @@ export default function CheckoutForm() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const [status,setStatus] = useState<StripePaymentStatus>(StripePaymentStatus.unknown);
+ 
 
   useEffect(() => {
+
+    console.log(stripe)
     if (!stripe) {
       return;
     }
@@ -78,7 +80,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "https://terra-tinge.vercel.app/dashboard/client",
+        return_url: "http://localhost:3000/dashboard/client",
       },
     });
 
@@ -98,6 +100,7 @@ export default function CheckoutForm() {
 
   const paymentElementOptions:StripePaymentElementOptions = {
     layout: 'tabs',
+    
   };
 
   return (
@@ -105,7 +108,7 @@ export default function CheckoutForm() {
 
       
 
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
+      <PaymentElement  id="payment-element" options={paymentElementOptions} />
 
 
       {/* Show any error or success messages */}
@@ -121,9 +124,9 @@ export default function CheckoutForm() {
         {isLoading ?
         
       
-          <div className='flex flex-col justify-center items-center'>
-            <p className='mb-2'>Processing Payment</p>
-            <CircularProgress  className='text-white'/>
+          <div className='flex flex-col gap-2 justify-center items-center'>
+            <p>Processing Payment</p>
+            <CircularProgress  className='text-white' size={25}/>
           </div>
       
         

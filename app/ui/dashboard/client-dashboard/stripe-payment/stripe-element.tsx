@@ -10,6 +10,8 @@ import { PaymentOption } from "@/app/lib/definitions";
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 
+
+
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
@@ -24,19 +26,50 @@ export default function StripePaymentComponent({projectId,paymentOption}:{projec
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch("/api/stripe", {
+
+    console.log('running')
+
+   
+    fetch("/api/stripe/payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({projectId:projectId,paymentOption:paymentOption}),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, []);
 
+   
+
+
+  }, []);
+  
+ 
+  
   const appearance:Appearance = {
     theme: resolvedTheme === 'light'? 'stripe':'night',
+    variables:{
+      fontFamily:'Monospace, sans-serif',
+      colorPrimary: resolvedTheme === 'light'? '#030712':'#f1f5f9',
+    },
+    rules:{
+      '.Input': {
+      border: '0px',
+      backgroundColor:resolvedTheme === 'light' ?'#f1f5f9':'#334155'
+    },
+    '.Input:hover, .Input:focus':{
+      border: '1px solid var(--colorPrimary)',
+      boxShadow: '0px'
+      
+    }
+
+    }
+    
+    
+    
     
   };
+
+ 
   const options:StripeElementsOptions = {
     clientSecret,
     appearance,

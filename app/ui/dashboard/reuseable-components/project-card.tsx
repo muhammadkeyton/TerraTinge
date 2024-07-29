@@ -1054,7 +1054,7 @@ function ClientProceedToPayment({projectId,appName,appCost}:{projectId:string,ap
                   </MuiServerProvider>
                 <DialogContent className="max-w-lg h-[80vh] flex flex-col bg-white dark:bg-black">
                   <DialogHeader className='mb-4'>
-                    <DialogTitle className='mb-2 text-center'>{appName}</DialogTitle>
+                    <DialogTitle className='mb-2 text-center'>{appName} Expiry</DialogTitle>
                     <DialogDescription className='text-center' >
                       {cost} USD
                     </DialogDescription>
@@ -1292,6 +1292,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
         <Divider className='dark:bg-slate-300 my-6'/>
       </MuiServerProvider>
       <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost}/>
+    
      </>
      
      
