@@ -69,6 +69,7 @@ export default function StripePaymentComponent({projectId,paymentOption}:{projec
   const options:StripeElementsOptions = {
     clientSecret,
     appearance,
+  
   };
 
   return (

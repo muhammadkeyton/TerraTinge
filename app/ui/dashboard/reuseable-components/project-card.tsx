@@ -1173,6 +1173,19 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
    const cost = (appCost/100).toLocaleString();
 
 
+   const dynamicImage = (()=>{
+        
+      if(!reviewed && paymentStatus === ProjectPayment.pending){
+        return '/team-discussion.gif'
+      }else if(reviewed && paymentStatus === ProjectPayment.pending){
+        return '/secure-payment.gif'
+      }else{
+        return '/project-started.gif'
+      }
+
+   })();
+
+
   
 
     
@@ -1196,7 +1209,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
        {
         role === Role.client
         &&
-       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={reviewed ?'/secure-payment.gif':'/team-discussion.gif'} width={250} height={200} alt='project' />
+       <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={dynamicImage} width={250} height={200} alt='project' />
 
        }
   
@@ -1259,7 +1272,7 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
           switch (role) {
             case Role.client:{
 
-              if(reviewed){
+              if(reviewed && paymentStatus === ProjectPayment.pending){
                 return (
                 <>
                  <p className='text-sm max-w-xs my-4'> we&apos;re ready to start your project once we receive payment. Excited to blend your ideas with our expertise for stellar results. Let&apos;s innovate together!</p>
@@ -1269,6 +1282,14 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
 
 
 
+
+              }else if ((reviewed && paymentStatus === ProjectPayment.paid) || (reviewed && paymentStatus === ProjectPayment.initial)){
+                return (
+                  <>
+                   <p className='text-sm max-w-xs my-4'> Thank you for your payment. We&apos;re now diligently working on your project, striving for excellence. You can expect weekly progress updates via email, and we&apos;ll be seeking your approval at each feature milestone. Stay tuned!</p>
+                   <ClientViewProject appCost={appCost} appName={appName} appDetail={appDetail} paymentAmount={paymentAmount} status={paymentStatus}/>
+                  </>
+                )
 
               }
 
@@ -1303,34 +1324,42 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
 
      
 
-     {(role === Role.client && reviewed) &&
+     {(role === Role.client && reviewed && paymentStatus !== ProjectPayment.paid && paymentStatus !== ProjectPayment.processing) &&
 
-     <>
-      <MuiServerProvider>
-        <Divider className='dark:bg-slate-300 my-6'/>
-      </MuiServerProvider>
-      {(paymentStatus !== ProjectPayment.paid && paymentStatus !== ProjectPayment.processing) &&
+   
+         
+
+
+          <>
+           <MuiServerProvider>
+            <Divider className='dark:bg-slate-300 my-6'/>
+          </MuiServerProvider>
+            <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost} paymentStatus={paymentStatus}/>
+        
+          
+          </>
       
+       
       
-      <>
-        <ClientProceedToPayment appName={appName} projectId={projectId} appCost={appCost} paymentStatus={paymentStatus}/>
-        <MuiServerProvider>
-        <Divider className='dark:bg-slate-300 my-6'/>
-        </MuiServerProvider>
-      </>
 
      
       
       
       }
     
-     </>
      
      
      
      
-     }
+     
+   
+     
 
+
+
+     <MuiServerProvider>
+        <Divider className='dark:bg-slate-300 my-6'/>
+     </MuiServerProvider>
    
       
       <div className='flex flex-row items-center gap-4'>

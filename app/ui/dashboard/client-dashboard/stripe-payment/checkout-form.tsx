@@ -14,13 +14,14 @@ import { montserrat } from "@/app/ui/fonts";
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
+import { useRouter } from "next/navigation";
 
 
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
-
+  const router = useRouter();
 
   const [message, setMessage] = useState({
     error:false,
@@ -48,6 +49,7 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case "succeeded":
+         
           break;
         case "processing":
           break;
@@ -74,12 +76,19 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
+
+    
+
     const { error } = await stripe.confirmPayment({
+    
       elements,
       confirmParams: {
+        
+        
         // Make sure to change this to your payment completion page
-        return_url: "https://terra-tinge.vercel.app/dashboard/client",
+        return_url: "https://terra-tinge.vercel.app/dashboard",
       },
+
     });
 
     // This point will only be reached if there is an immediate error when
@@ -98,7 +107,7 @@ export default function CheckoutForm() {
 
   const paymentElementOptions:StripePaymentElementOptions = {
     layout: 'tabs',
-    
+
   };
 
   return (

@@ -3,8 +3,9 @@ import { NextRequest,NextResponse } from "next/server";
 
 import { Project,PaymentOption } from "@/app/lib/definitions";
 
-import { doc,getDoc} from "firebase/firestore";
+import { doc,getDoc,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
+
 
 
 
@@ -21,12 +22,19 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  */
 
 
-const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<number|null> => {
+
+type customerIdAndAmountToCharge = {
+  amountToCharge:number;
+  customerId:string;
+}
+
+const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<customerIdAndAmountToCharge|null> => {
 
    
    const projectDocumentRef = doc(db, "projects", projectId);
 
    let amountToCharge:number;
+   let customerId:string;
    
    try{
     const docSnap = await getDoc(projectDocumentRef);
@@ -50,7 +58,36 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
 
     })();
 
-    return amountToCharge;
+    const terraTingeUserRef = doc(db, "users", project.clientId);
+    const userdocSnap = await getDoc(terraTingeUserRef);
+
+    //if user doesn't exist return null
+    if (!userdocSnap.exists()) return null;
+    const user = userdocSnap.data();
+    const stripeCustomerId = user?.stripeCustomerId;
+    
+    //if user doesn't have a stripe customer id,create a new stripe customer
+    if(!stripeCustomerId){
+
+      const stripeCustomer = await stripe.customers.create({
+        name: user?.name ?? user?.email?.split('@')[0],
+        email: user?.email
+      });
+
+      await updateDoc(terraTingeUserRef,{stripeCustomerId:stripeCustomer.id});
+
+      customerId = stripeCustomer.id;
+    }else{
+      customerId = stripeCustomerId;
+    }
+
+    
+
+    
+    return <customerIdAndAmountToCharge>{
+      customerId,
+      amountToCharge
+    }
     
 
    }catch(e){
@@ -72,13 +109,14 @@ export async function POST(req:NextRequest) {
 
 try{
   
+  
+  const result = await getProjectPaymentAmount(projectId,paymentOption);
 
-  const amountToCharge = await getProjectPaymentAmount(projectId,paymentOption);
-
-
+  if (!result) return NextResponse.json({message:`bad request,terratinge server returned null for stripe payment amount and customerId`},{status:400});;
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: amountToCharge,
+    customer:result?.customerId,
+    amount: result?.amountToCharge,
     currency: "usd",
     // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
     automatic_payment_methods: {
@@ -86,8 +124,12 @@ try{
     },
     metadata:{
       projectId:projectId
+      
     }
   });
+
+
+  
 
   return NextResponse.json({
     clientSecret: paymentIntent.client_secret,
