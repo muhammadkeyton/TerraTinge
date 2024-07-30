@@ -49,7 +49,7 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case "succeeded":
-          router.push('/dashboard/client');
+          router.push('/dashboard');
           break;
         case "processing":
           break;
