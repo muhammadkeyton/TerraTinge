@@ -44,7 +44,7 @@ export default function StripePaymentComponent({projectId,paymentOption}:{projec
   const appearance:Appearance = {
     theme: resolvedTheme === 'light'? 'stripe':'night',
     variables:{
-      fontFamily:'Monospace, sans-serif',
+      fontFamily:'Montserrat, sans-serif',
       colorPrimary: resolvedTheme === 'light'? '#030712':'#f1f5f9',
     },
     rules:{

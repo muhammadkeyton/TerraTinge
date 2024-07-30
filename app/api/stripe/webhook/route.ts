@@ -1,11 +1,8 @@
 import { NextRequest,NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-import { ProjectPayment } from "@/app/lib/definitions";
 
-import { doc,getDoc,updateDoc} from "firebase/firestore";
-import { db } from "@/app/firebase/firebase";
-
+import { handlePaymentProcessing,handlePaymentSuccess } from '@/app/server-actions/in-app/client/payments';
 
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -15,50 +12,8 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET;
 
 
-async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:string,paymentAmount:number}){
 
 
-
-  const projectDocumentRef = doc(db, "projects", projectId);
-
-  try{
-    const docSnap = await getDoc(projectDocumentRef);
-
-    if (docSnap.exists()) {
-      await updateDoc(projectDocumentRef,{paymentAmount:paymentAmount,paymentStatus:ProjectPayment.paid});
-
-      //send confirmation email to client,email should contain project name,client name,and payment amount
-  } else {
-      return;
-  }
-
-  }catch(e){
-    console.error(e)
-  }
-}
-
-async function handlePaymentProcessing({projectId,paymentAmount}:{projectId:string,paymentAmount:number}){
-
-
-  const projectDocumentRef = doc(db, "projects", projectId);
-
-
-  try{
-    const docSnap = await getDoc(projectDocumentRef);
-
-    if (docSnap.exists()) {
-      await updateDoc(projectDocumentRef,{paymentStatus:ProjectPayment.processing});
-
-      //send confirmation email to client,email should contain project name,client name,and payment amount
-  } else {
-      return;
-  }
-
-  }catch(e){
-    console.error(e)
-  }
-
-}
 
 export async function POST(req: NextRequest) {
   const rawBody = await req.text(); // Get raw body as string stripe requires the raw body data
