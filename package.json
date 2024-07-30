@@ -24,6 +24,7 @@
     "@react-email/components": "0.0.19",
     "@stripe/react-stripe-js": "^2.7.3",
     "@stripe/stripe-js": "^4.1.0",
+    "@vercel/functions": "^1.4.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "file-saver": "^2.0.5",

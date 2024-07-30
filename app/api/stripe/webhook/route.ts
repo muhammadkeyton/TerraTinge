@@ -1,4 +1,6 @@
 import { NextRequest,NextResponse } from 'next/server';
+
+import { waitUntil } from '@vercel/functions';
 import { headers } from 'next/headers';
 
 
@@ -50,7 +52,7 @@ export async function POST(req: NextRequest) {
         const projectId = paymentIntent.metadata.projectId;
 
 
-        handlePaymentSuccess({projectId:projectId,paymentAmount:amountCharged});
+        waitUntil(handlePaymentSuccess({projectId:projectId,paymentAmount:amountCharged}));
 
         console.log(`PaymentIntent for ${paymentIntent.amount} and project id ${projectId} was successful!`);
         // Then define and call a method to handle the successful payment intent.
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
         const amountCharged = paymentIntent.amount;
         const projectId = paymentIntent.metadata.projectId;
 
-        handlePaymentProcessing({projectId:projectId,paymentAmount:amountCharged});
+        waitUntil(handlePaymentProcessing({projectId:projectId,paymentAmount:amountCharged}));
         console.log(`PaymentIntent for ${paymentIntent.amount} is currently processing!`);
         // Then define and call a method to handle the successful payment intent.
         // handlePaymentIntentSucceeded(paymentIntent);
