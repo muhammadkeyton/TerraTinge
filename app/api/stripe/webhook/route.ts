@@ -3,6 +3,7 @@ import { NextRequest,NextResponse } from 'next/server';
 import { waitUntil } from '@vercel/functions';
 import { headers } from 'next/headers';
 
+import { revalidatePath } from 'next/cache';
 
 import { handlePaymentProcessing,handlePaymentSuccess } from '@/app/server-actions/in-app/client/payments';
 
@@ -91,6 +92,8 @@ export async function POST(req: NextRequest) {
 
   
     }
+
+  revalidatePath('/dashboard/client');
 
   // Return a 200 response to acknowledge receipt of the event
   return  NextResponse.json({message:'Request successfully received'},{status:200});
