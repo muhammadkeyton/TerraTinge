@@ -48,6 +48,11 @@ export default function CheckoutForm() {
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
+        case "succeeded":
+          router.push('/dashboard/client');
+          break;
+        case "processing":
+          break;
         case "requires_payment_method":
           setMessage({error:true,message:"Your payment was not successful, please try again."});
           break;
@@ -81,7 +86,7 @@ export default function CheckoutForm() {
         
         
         // Make sure to change this to your payment completion page
-        return_url: "https://terra-tinge.vercel.app/dashboard/client",
+        return_url: "https://terra-tinge.vercel.app/dashboard",
       },
 
     });
