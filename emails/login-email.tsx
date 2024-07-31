@@ -1,4 +1,4 @@
-import { Html,Heading,Tailwind,Container,Text,Button,Row,Column,Section} from "@react-email/components";
+import { Html,Heading,Tailwind,Container,Text,Button,Row,Column,Section,Font} from "@react-email/components";
 import * as React from "react";
 
 type LoginEmail = {
@@ -11,6 +11,17 @@ export default function Email({url}:LoginEmail) {
     return (
     
       <Html lang="en">
+
+        <Font
+          fontFamily="Montserrat"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap",
+            format: "woff2",
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
       
         <Tailwind>
   

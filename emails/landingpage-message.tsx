@@ -1,4 +1,4 @@
-import { Html,Heading,Tailwind,Container,Text,Link,Section} from "@react-email/components";
+import { Html,Heading,Tailwind,Container,Text,Link,Section,Font} from "@react-email/components";
 import * as React from "react";
 
 
@@ -11,6 +11,17 @@ export default function Email(props:ClientInquiryEmail) {
   const { name,email,message } = props;
   return (
     <Html lang="en">
+
+       <Font
+          fontFamily="Montserrat"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap",
+            format: "woff2",
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
     
       <Tailwind>
 
