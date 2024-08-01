@@ -1,6 +1,6 @@
 'use server';
 
-import { AppDataServer } from "@/app/lib/definitions";
+import { AppDataServer, ProjectState } from "@/app/lib/definitions";
 
 import { NameSchema } from "@/app/lib/data-validation";
 
@@ -44,7 +44,8 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
     const userEmail = session?.user?.email as string;
     const userProfileImage = session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}` as string;
     const reviewed = false;
-    const newProjectCreated = await addNewProject(reviewed,userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
+    const projectState = ProjectState.inReview;
+    const newProjectCreated = await addNewProject(projectState,reviewed,userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
 
     if(newProjectCreated){
         revalidatePath('/dashboard/client')

@@ -1,11 +1,14 @@
 'use server';
 
 import { Resend } from 'resend';
-import { ProjectPayment } from "@/app/lib/definitions";
+import { ProjectPayment, ProjectState } from "@/app/lib/definitions";
 import { doc,getDoc,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
 
+
+
 import Email from '@/emails/payment-receipt';
+import { revalidatePath } from 'next/cache';
 const resend = new Resend(process.env.AUTH_RESEND_KEY);
 export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:string,paymentAmount:number}):Promise<void>{
 
@@ -17,8 +20,17 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
       const docSnap = await getDoc(projectDocumentRef);
   
       if (docSnap.exists()) {
-        await updateDoc(projectDocumentRef,{paymentAmount:paymentAmount,paymentStatus:ProjectPayment.paid});
 
+        try {
+          await updateDoc(projectDocumentRef, {
+              paymentAmount: paymentAmount,
+              paymentStatus: ProjectPayment.paid,
+              projectState: ProjectState.inProgress,
+          });
+      } catch (error) {
+          console.error("Error updating project document after success payment: ", error);
+      }
+      
         const clientRef = doc(db, "users", docSnap.data()?.clientId);
         
         const user = (await getDoc(clientRef)).data();
@@ -68,7 +80,7 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         }
 
 
-
+        revalidatePath('/dashboard/client');
      
         console.log(`updated project payment success for id:${projectId} successfully`)
         //send confirmation email to client,email should contain project name,client name,and payment amount
@@ -97,7 +109,7 @@ export async function handlePaymentProcessing({projectId,paymentAmount}:{project
         await updateDoc(projectDocumentRef,{paymentStatus:ProjectPayment.processing});
        
         console.log(`updated project payment processing for id:${projectId} successfully`)
-  
+        revalidatePath('/dashboard/client');
         //send confirmation email to client,email should contain project name,client name,and payment amount
     } else {
         return;

@@ -1,16 +1,16 @@
 
-import { Role } from '@/app/lib/definitions';
+import { Project, Role } from '@/app/lib/definitions';
 import ProjectTabs from '../../../reuseable-components/project-tabs';
 
-import { DocumentData } from 'firebase/firestore';
+import { ProjectsProvider } from '../../../reuseable-components/projects-context';    
 
-export default function AllWork({projects,role}: { projects: null | DocumentData[],role:Role }){
+export default function AllWork({projects,role}: { projects: null | Project[],role:Role }){
 
   
     return(
         
     
-              <>
+              <ProjectsProvider>
                    
 
 
@@ -32,7 +32,7 @@ export default function AllWork({projects,role}: { projects: null | DocumentData
                  
                   
 
-              </>
+              </ProjectsProvider>
               
                
 

@@ -5,16 +5,16 @@
 
 import { db} from "@/app/firebase/firebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData } from "firebase/firestore";
-import { AppDataServer,Project,ProjectPayment } from "@/app/lib/definitions";
+import { AppDataServer,Project,ProjectPayment, ProjectState } from "@/app/lib/definitions";
 
 
 
 
 
-export const getClientProjects = async(clientId:string):Promise<null | DocumentData[]>  => {
+export const getClientProjects = async(clientId:string):Promise<null | Project[]>  => {
 
     console.log('data fetching new request');
-    let clientProjects: DocumentData[] = [];
+    let clientProjects: Project[] = [];
     const userRef = doc(db, "users", clientId);
     
     const projectsCollectionRef = collection(db, "projects");
@@ -58,7 +58,7 @@ export const getClientProjects = async(clientId:string):Promise<null | DocumentD
  */
 
 
-export const addNewProject = async (reviewed:boolean,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
+export const addNewProject = async (projectState:ProjectState,reviewed:boolean,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
     console.log(data)
 
@@ -92,7 +92,7 @@ export const addNewProject = async (reviewed:boolean,userProfileImage:string,ema
            
                 
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate,reviewed:reviewed});
+            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate,reviewed:reviewed,projectState:projectState});
     
             projects.push(newProjectId);
     

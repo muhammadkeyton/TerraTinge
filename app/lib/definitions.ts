@@ -27,6 +27,13 @@ export enum PaymentOption{
 }
 
 
+export enum ProjectState{
+  inReview = 'inReview',
+  inProgress = 'inProgress',
+  done = 'done'
+}
+
+
 
 
 
@@ -169,6 +176,11 @@ export type Project = {
   createdAt:string,
   paymentAmount:number,
   reviewed:boolean,
+
+  projectState:ProjectState
+
+  //might need to remove this,beware
+  appBudget:string,
 
   
 }

@@ -1,7 +1,7 @@
 
 import Projects from "@/app/ui/dashboard/client-dashboard/components/projects/projects"
 import { getClientProjects } from "@/app/firebase/firestore/client/project";
-import { Role } from "@/app/lib/definitions";
+import {  Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
 
@@ -16,7 +16,7 @@ export default async function ClientProjects(){
 
 
     const userId = session?.user?.id as string;
-    const projects = await getClientProjects(userId)
+    const projects = await getClientProjects(userId);
 
 
     

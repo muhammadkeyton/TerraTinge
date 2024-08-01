@@ -1,40 +1,24 @@
 
+'use client';
 
 
 
-
-import { Role } from '@/app/lib/definitions';
+import { Project, Role } from '@/app/lib/definitions';
 import ProjectTabs from '../../../reuseable-components/project-tabs';
 import ProjectDrawerDialog from '../../components/projects/create-project';
-import { DocumentData } from 'firebase/firestore';
 
-
-     
-    
-    
-     
-     
-
-     
-    
-
-
-     
-     
-     
 
     
+import { ProjectsProvider } from '../../../reuseable-components/projects-context';    
+     
 
-
-
-export default function Projects({projects,role}: { projects: null | DocumentData[],role:Role }){
-
+export default function Projects({projects,role}: { projects: null | Project[],role:Role }){
 
   
     return(
         
     
-              <>
+              <ProjectsProvider>
                    
 
 
@@ -42,8 +26,10 @@ export default function Projects({projects,role}: { projects: null | DocumentDat
 
                    projects ?
                    
-                 
-                    <ProjectTabs projects={projects} role={role}/>
+                    
+                     <ProjectTabs projects={projects} role={role}/>
+                  
+
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>
@@ -57,7 +43,7 @@ export default function Projects({projects,role}: { projects: null | DocumentDat
                  
                   
 
-              </>
+              </ProjectsProvider>
               
                
 

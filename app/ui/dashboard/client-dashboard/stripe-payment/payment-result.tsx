@@ -35,7 +35,10 @@ function PaymentDetails() {
     const router = useRouter();
    
 
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState({
+      error:false,
+      message:''
+    });
 
     let clientSecret = new URLSearchParams(window.location.search).get(
         "payment_intent_client_secret"
@@ -61,17 +64,17 @@ function PaymentDetails() {
         stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
           switch (paymentIntent?.status) {
             case "succeeded":
-              setMessage(`🎊Your Payment of $${(paymentIntent?.amount/100).toLocaleString()}USD was processed successfully,your project is now in progress 🎊`);
+              setMessage({error:false,message:`🎊Your Payment of $${(paymentIntent?.amount/100).toLocaleString()}USD was processed successfully,your project is now in progress 🎊`});
               confettiSideCannons();
               break;
             case "processing":
-              setMessage(`Your Payment of $${(paymentIntent?.amount/100).toLocaleString()}USD is processing,your project will remain in review until your payment is confirmed by your financial institution`);
+              setMessage({error:false,message:`Your Payment of $${(paymentIntent?.amount/100).toLocaleString()}USD is processing,your project will remain in review until your payment is confirmed by your financial institution`});
               break;
             case "requires_payment_method":
-              setMessage("Your payment was not successful, please try again.");
+              setMessage({error:true,message:"Your payment was not successful, please try again."});
               break;
             default:
-              setMessage("Something went wrong while trying to process your payment,please try again");
+              setMessage({error:true,message:"Something went wrong while trying to process your payment,please try again"});
               break;
           }
         });
@@ -102,8 +105,8 @@ function PaymentDetails() {
           <h5 className="mb-6 text-xl font-bold tracking-tight text-gray-900 dark:text-white flex flex-row justify-center items-center gap-2">
             Your Payment Result
           </h5>
-          <div className="font-normal mb-6 text-green-600 dark:text-green-500">
-            {message}
+          <div className={`font-normal mb-6 ${message.error?'text-red-600':'text-green-600'} dark:text-green-500`}>
+            {message.message}
           </div>
        
           <Link href='/dashboard/client' tabIndex={-1} className='bg-red-500 w-36 h-10 rounded-full'>
