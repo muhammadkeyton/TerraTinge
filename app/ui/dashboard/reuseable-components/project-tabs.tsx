@@ -39,15 +39,12 @@ export default function ProjectTabs({projects,role}: { projects:Project[],role:R
         }
     }, [inReview, inProgress, done]);
     
-    console.log('done:', done);
-    console.log('inreview:', inReview);
-    console.log('inprogress:', inProgress);
-    console.log(currentTab);
+   
 
     
 
     return (
-        <Tabs defaultValue={currentTab} className="h-full overflow-y-auto p-2 md:py-4 flex flex-col gap-4 ">
+        <Tabs value={currentTab} className="h-full overflow-y-auto p-2 md:py-4 flex flex-col gap-4 ">
                       <TabsList className='shadow-lg bg-slate-100 py-6 md:px-3 dark:bg-slate-800 md:self-center md:gap-4'>
                     
                         <TabsTrigger className={`${currentTab === 'InReview' ? 'bg-white dark:bg-gray-500':'bg-none'}`} value="InReview" onClick={()=> setTab("InReview")}>{inReview.length > 0 && <span className='mr-2 bg-green-500 p-2 text-white rounded-full w-[25px] h-[25px] flex items-center justify-center'>{inReview.length}</span>} In Review</TabsTrigger>
@@ -99,7 +96,7 @@ export default function ProjectTabs({projects,role}: { projects:Project[],role:R
 
                                 return (
                                     <>
-                                    <h1 className='font-semibold text-md text-center'>Nothing InReview and You have a Project in progress</h1>
+                                    <h1 className='font-semibold text-md text-center'>Nothing In Review,Your Project is now In Progress</h1>
                                     
                                     </>
                                 )
@@ -138,7 +135,6 @@ export default function ProjectTabs({projects,role}: { projects:Project[],role:R
                                         return (
                                             <>
                                             <h1 className='font-semibold text-md text-center'>Nothing In Progress</h1>
-                                           
                                             </>
                                         )
                                     }
@@ -153,7 +149,14 @@ export default function ProjectTabs({projects,role}: { projects:Project[],role:R
 
 
                                 case 'done':{
-                                    return 'All Your Completed Apps Will Appear Here'
+                                    
+                                return (
+                    
+                                    <h1 className='font-semibold text-md text-center'>All Your Completed Apps Will Appear Here</h1>
+                               
+                                )
+                                   
+                                
                                 }
 
 

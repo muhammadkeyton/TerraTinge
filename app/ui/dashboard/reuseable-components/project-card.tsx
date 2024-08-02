@@ -49,7 +49,7 @@ import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-wor
 import StripePaymentComponent from '../client-dashboard/stripe-payment/stripe-element';
 
 //----------------------------------------developer functionality start-------------------------------------------------------
-function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
+function EditProject({appName,appDetail,projectId,appCost}:{appName:string,appDetail:string,projectId:string,appCost:string}){
 
   const router = useRouter();
   const [windowWidth, setWindowWidth] = useState(0);
@@ -91,14 +91,21 @@ function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:str
       appCost:{
           helperText:'',
           error:false,
-          text:'',
+          text:appCost??'',
       },
+
+      percentage:{
+        helperText:'',
+        error:false,
+        text:'',
+      },
+      
       
   });
 
 
   //used by the submit button if no appdata is available button is disabled
-  const emptyField = appData.appCost.text.length < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1;
+  const emptyField = appData.appCost.text.length < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1 || appData.percentage.text.length < 1;
 
   function trackAppData(event:ChangeEvent<HTMLInputElement>){
       const {name,value} = event.target;
@@ -175,6 +182,14 @@ function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:str
         }
 
         
+      }else if (name === 'percentage'){
+        setData({
+          ...appData,
+          percentage:{
+            ...appData.percentage,
+            text:value
+          }
+        })
       }
 
   }
@@ -330,6 +345,23 @@ function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:str
                    }
                   
                   />
+
+
+                <TerraTextField
+                  label='fee percentage?(enter numbers only)'
+                  type='text'
+                  name='percentage'
+                  onChange={trackAppData}
+                  error={appData.percentage.error}
+                  helperText={appData.percentage.helperText}
+                  value={appData.percentage.text}
+                  inputProps={
+                      {
+                          maxLength:3
+                      }
+                   }
+                  
+                /> 
 
 
 
@@ -1303,11 +1335,18 @@ export default function ProjectCard({appName,role,clientEmail,clientImage,create
               return (
                 <div className='flex flex-row justify-around items-center space-x-4 my-12'>
                   <ViewProject appName={appName} appBudget={appBudget} appDetail={appDetail} reviewed={reviewed}/>
-                  <EditProject appName={appName}  appDetail={appDetail} projectId={projectId}/>
+                  <EditProject appName={appName}  appDetail={appDetail} projectId={projectId} appCost={`${appCost/100}`}/>
                   <MuiServerProvider>
+                  <Button variant="contained" className={`${montserrat.className} text-base bg-green-600 text-white hover:bg-green-600  p-1   rounded-xl normal-case`} onClick={()=>{
+                    console.log('complete project');
+                   }}>done</Button>
+
+
                    <Button variant="text" className='p-1 text-red-600' onClick={()=>{
                     console.log('delete requested!');
                    }}>Delete</Button>
+
+                   
                   </MuiServerProvider>
                 </div>
                 

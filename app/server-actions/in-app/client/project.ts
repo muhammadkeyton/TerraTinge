@@ -1,14 +1,15 @@
 'use server';
 
-import { AppDataServer, ProjectState } from "@/app/lib/definitions";
+import { AppDataServer, Project, ProjectState } from "@/app/lib/definitions";
 
 import { NameSchema } from "@/app/lib/data-validation";
 
 import { auth } from "@/auth";
 
-import { addNewProject} from "@/app/firebase/firestore/client/project";
+import { addNewProject,getClientProjects} from "@/app/firebase/firestore/client/project";
 
 import { revalidatePath } from 'next/cache';
+import { Timestamp } from "firebase/firestore";
 
 
 
@@ -69,4 +70,58 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
    
 
     
+}
+
+
+export const getProjects = async(clientId:string):Promise<null | Project []> => {
+    const projects = await getClientProjects(clientId);
+
+
+
+
+    let modifiedDateProjects:Project[] = [];
+
+   
+
+
+    if(!projects){
+      return null;
+    }
+
+
+
+    // Function to convert Firestore timestamp to formatted date string
+    const formatTimestamp = (timestamp:Timestamp):string => {
+        const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+      
+        const options: Intl.DateTimeFormatOptions = { 
+            day: '2-digit', 
+            month: 'short', 
+            year: 'numeric' 
+        };
+        const formattedDate = date.toLocaleDateString('en-US', options);
+        return formattedDate;
+    };
+
+
+
+    modifiedDateProjects = projects.map((project)=>{
+        return {
+            ...project,
+            versions:project.versions.map((version)=>{
+                return {
+                    ...version,
+                    projectInfo:{
+                        ...version.projectInfo,
+                        createdAt:formatTimestamp(version.projectInfo.createdAt as Timestamp)
+                    }
+                }
+            })
+            
+        }
+      })
+
+    
+
+    return modifiedDateProjects;
 }

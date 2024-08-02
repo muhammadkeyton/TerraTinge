@@ -4,6 +4,7 @@ import { getClientProjects } from "@/app/firebase/firestore/client/project";
 import {  Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
+import { getProjects } from "@/app/server-actions/in-app/client/project";
 
 export default async function ClientProjects(){
     const session = await auth();
@@ -16,13 +17,15 @@ export default async function ClientProjects(){
 
 
     const userId = session?.user?.id as string;
-    const projects = await getClientProjects(userId);
+
+ 
+    const projects = await getProjects(userId)
 
 
-    
 
 
     return (
+        
         <Projects projects={projects} role={role}/>
     )
 }

@@ -4,10 +4,10 @@
 'use server';
 
 import { db} from "@/app/firebase/firebase";
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData } from "firebase/firestore";
-import { AppDataServer,Project,ProjectPayment, ProjectState } from "@/app/lib/definitions";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp } from "firebase/firestore";
+import { AppDataServer,Project, ProjectState,VersionStage } from "@/app/lib/definitions";
 
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -25,16 +25,20 @@ export const getClientProjects = async(clientId:string):Promise<null | Project[]
     
     if(!projects || projects.length === 0) return null;
 
-    const projectsQuery = query(projectsCollectionRef, where("clientId", "==", clientId));
+    const projectsQuery = query(projectsCollectionRef, where("clientInfo.clientId", "==", clientId));
 
     const projectsQuerySnapshot = (await getDocs(projectsQuery)).docs;
+   
 
     projectsQuerySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
+
+        
         let projectId = doc.id;
         
         let project = {
             ...doc.data(),
+            
             projectId:projectId
         } as Project;
       
@@ -42,6 +46,11 @@ export const getClientProjects = async(clientId:string):Promise<null | Project[]
 
         
     });
+
+
+    
+
+  
 
     return clientProjects;
 
@@ -60,7 +69,7 @@ export const getClientProjects = async(clientId:string):Promise<null | Project[]
 
 export const addNewProject = async (projectState:ProjectState,reviewed:boolean,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
-    console.log(data)
+  
 
     try {
         const userRef = doc(db, "users", id);
@@ -81,18 +90,39 @@ export const addNewProject = async (projectState:ProjectState,reviewed:boolean,u
             const newProjectId = doc(projectsCollection).id;
             
 
-            //we need the date when this project was created
-            const date = new Date();
-            const options: Intl.DateTimeFormatOptions = { 
-                day: '2-digit', 
-                month: 'short', 
-                year: 'numeric' 
-            };
-            const formattedDate = date.toLocaleDateString('en-US', options);
+            
            
                 
             // Create the new project within the transaction
-            transaction.set(doc(projectsCollection, newProjectId), { ...data, clientId: user.id,paymentStatus:ProjectPayment.pending,clientEmail:email,clientImage:userProfileImage,createdAt:formattedDate,reviewed:reviewed,projectState:projectState});
+            transaction.set(doc(projectsCollection, newProjectId), { 
+           
+                appName:data.appName,
+
+                versions:[
+                    {  
+
+                        versionId:uuidv4(),
+                        versionStage:VersionStage.stage1,
+                        projectInfo:{
+                            ...data,
+                            projectState,
+                            reviewed:reviewed,
+                            createdAt:Timestamp.fromDate(new Date())
+                            
+                        },
+
+                        
+                    }
+                ],
+                clientInfo:{
+                    clientEmail:email,
+                    clientImage:userProfileImage,
+                    clientId:id
+                }
+
+               
+               
+            });
     
             projects.push(newProjectId);
     

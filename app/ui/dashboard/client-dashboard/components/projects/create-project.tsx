@@ -222,6 +222,10 @@ export default function ProjectDrawerDialog(){
                     const appDataOk = validateAppData(appData);
 
                     if(appDataOk){
+                        if(!navigator.onLine){
+                            alert('please connect your device to the internet,your project cannot be submitted without internet connection!');
+                            return;
+                        }
                         setLoading(true);
                         const responseOk = await createNewProject({
                             appName:appData.appName.text,
@@ -364,8 +368,13 @@ export default function ProjectDrawerDialog(){
                      const appDataOk = validateAppData(appData);
  
                      if(appDataOk){
-                         setLoading(true);
-                         const responseOk = await createNewProject({
+                        if(!navigator.onLine){
+                            alert('please connect your device to the internet,your project cannot be submitted without internet connection!');
+                            return;
+                        }
+
+                        setLoading(true);
+                        const responseOk = await createNewProject({
                              appName:appData.appName.text,
                              appDetail:appData.appDetail.text,
                              appBudget:appData.appBudget.text

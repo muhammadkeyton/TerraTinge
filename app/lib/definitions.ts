@@ -2,6 +2,8 @@
 
 //-----------------client and server definitions start------------------------------------------------------------------
 
+import { Timestamp } from "firebase/firestore";
+
 
 //used to extend our sessions,tokens,users
 export enum Role {
@@ -31,6 +33,15 @@ export enum ProjectState{
   inReview = 'inReview',
   inProgress = 'inProgress',
   done = 'done'
+}
+
+
+export enum VersionStage{
+  stage1 = 'stage1',
+  stage2 = 'stage2',
+  stage3 = 'stage3',
+  stage4 = 'stage4'
+
 }
 
 
@@ -162,28 +173,63 @@ export type ReviewedProjectType = {
 //--------------------------data received from database definitions start--------------------------------------------------------------
 
 
-export type Project = {
-  //the project id is added as we fetch data from the database
+
+export type VersionStage1 = {
+  versionId:string,
+  versionStage:VersionStage,
+  projectInfo:{
+    projectState:ProjectState
+    appName:string,
+    appDetail:string,
+    appBudget:string,
+    reviewed:boolean,
+    createdAt:Timestamp | string
+  }
+}
+
+export type ProjectVersions = VersionStage1
+
+export type Project={
+
+  //project id is being added as we fetch the data
   projectId:string,
 
+
   appName:string,
-  appDetail:string,
-  appCost:number,
-  clientId:string,
-  clientEmail:string,
-  clientImage:string,
-  paymentStatus:ProjectPayment,
-  createdAt:string,
-  paymentAmount:number,
-  reviewed:boolean,
+  versions:ProjectVersions[],
+  clientInfo:{
+    clientEmail:string,
+    clientImage:string,
+    clientId:string
+  }
+}
 
-  projectState:ProjectState
 
-  //might need to remove this,beware
-  appBudget:string,
+
+
+
+// export type Project = {
+//   //the project id is added as we fetch data from the database
+//   projectId:string,
+
+//   appName:string,
+//   appDetail:string,
+//   appCost:number,
+//   clientId:string,
+//   clientEmail:string,
+//   clientImage:string,
+//   paymentStatus:ProjectPayment,
+//   createdAt:string,
+//   paymentAmount:number,
+//   reviewed:boolean,
+
+//   projectState:ProjectState
+
+//   //might need to remove this,beware
+//   appBudget:string,
 
   
-}
+// }
 
 
 
