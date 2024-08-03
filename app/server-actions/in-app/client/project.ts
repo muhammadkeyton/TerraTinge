@@ -1,6 +1,6 @@
 'use server';
 
-import { AppDataServer, Project, ProjectState } from "@/app/lib/definitions";
+import { AppDataServer, Project, ProjectState,clientProjectsType } from "@/app/lib/definitions";
 
 import { NameSchema } from "@/app/lib/data-validation";
 
@@ -27,7 +27,7 @@ import { Timestamp } from "firebase/firestore";
  */
 export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
 
-    // console.log(data);
+   
 
     const session = await auth();
     
@@ -44,9 +44,9 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
     const userId = session?.user?.id as string;
     const userEmail = session?.user?.email as string;
     const userProfileImage = session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}` as string;
-    const reviewed = false;
+    
     const projectState = ProjectState.inReview;
-    const newProjectCreated = await addNewProject(projectState,reviewed,userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
+    const newProjectCreated = await addNewProject(projectState,userProfileImage,userEmail,userId,{appName:appNameResult.data.name,appDetail,appBudget});
 
     if(newProjectCreated){
         revalidatePath('/dashboard/client')
@@ -73,15 +73,14 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
 }
 
 
-export const getProjects = async(clientId:string):Promise<null | Project []> => {
+
+
+
+
+
+
+export const getProjects = async(clientId:string):Promise<null | clientProjectsType> => {
     const projects = await getClientProjects(clientId);
-
-
-
-
-    let modifiedDateProjects:Project[] = [];
-
-   
 
 
     if(!projects){
@@ -90,7 +89,8 @@ export const getProjects = async(clientId:string):Promise<null | Project []> => 
 
 
 
-    // Function to convert Firestore timestamp to formatted date string
+    // Function to convert Firestore timestamp to formatted date string,reason why we stored as timestamp in db 
+    //is to allow flexibility for future date calculations
     const formatTimestamp = (timestamp:Timestamp):string => {
         const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
       
@@ -104,24 +104,35 @@ export const getProjects = async(clientId:string):Promise<null | Project []> => 
     };
 
 
-
-    modifiedDateProjects = projects.map((project)=>{
+    //time complexity of o(n)
+    const modifiedDateProjects: Project[] = projects.map((project) => {
+        const modifiedVersions = project.versions.map((version) => ({
+            ...version,
+            projectInfo: {
+                ...version.projectInfo,
+                createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp)
+            }
+        }));
+    
         return {
             ...project,
-            versions:project.versions.map((version)=>{
-                return {
-                    ...version,
-                    projectInfo:{
-                        ...version.projectInfo,
-                        createdAt:formatTimestamp(version.projectInfo.createdAt as Timestamp)
-                    }
-                }
-            })
-            
-        }
-      })
+            versions: modifiedVersions
+        };
+    });
+
+
+    const inReview = modifiedDateProjects.find((project) => project.projectState === ProjectState.inReview) ?? null;
+
+    const inProgress = modifiedDateProjects.find((project) => project.projectState === ProjectState.inProgress) ?? null;
+
+    const done = modifiedDateProjects.filter((project) => project.projectState === ProjectState.done);
+    
 
     
 
-    return modifiedDateProjects;
+    return <clientProjectsType>{
+        inReview,
+        inProgress,
+        done
+    }
 }

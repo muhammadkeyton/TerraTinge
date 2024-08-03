@@ -3,22 +3,25 @@
 
 
 
-import { Project, Role } from '@/app/lib/definitions';
-import ProjectTabs from '../../../reuseable-components/project-tabs';
-import ProjectDrawerDialog from '../../components/projects/create-project';
+import { clientProjectsType } from '@/app/lib/definitions';
+
+import CreateOrEditProject from './stage1/middle-section/create-edit-project';
+import ClientProjectTabs from './client-project-tabs';
 
 
     
-import { ProjectsProvider } from '../../../reuseable-components/projects-context';    
+
      
 
-export default function Projects({projects,role}: { projects: null | Project[],role:Role }){
-
+export default function ClientProjects({projects}: { projects: null | clientProjectsType }){
+   
+   
   
     return(
         
     
-              <ProjectsProvider>
+         
+                   <>
                    
 
 
@@ -27,23 +30,23 @@ export default function Projects({projects,role}: { projects: null | Project[],r
                    projects ?
                    
                     
-                     <ProjectTabs projects={projects} role={role}/>
+                     <ClientProjectTabs projects={projects}/>
                   
 
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>
                        <h1 className='font-semibold text-md text-center'>Welcome to TerraTinge, We&apos;re ready for your app development journey.</h1>
-                       <ProjectDrawerDialog /> 
+                       <CreateOrEditProject /> 
                     </div>
 
                     }
-
+                    </>
 
                  
                   
 
-              </ProjectsProvider>
+       
               
                
 

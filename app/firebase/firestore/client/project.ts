@@ -67,7 +67,7 @@ export const getClientProjects = async(clientId:string):Promise<null | Project[]
  */
 
 
-export const addNewProject = async (projectState:ProjectState,reviewed:boolean,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
+export const addNewProject = async (projectState:ProjectState,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
 
   
 
@@ -89,7 +89,7 @@ export const addNewProject = async (projectState:ProjectState,reviewed:boolean,u
             // Generate a unique ID for the new project
             const newProjectId = doc(projectsCollection).id;
             
-
+            const newVersionId = uuidv4();
             
            
                 
@@ -97,16 +97,16 @@ export const addNewProject = async (projectState:ProjectState,reviewed:boolean,u
             transaction.set(doc(projectsCollection, newProjectId), { 
            
                 appName:data.appName,
+                projectState:projectState,
 
                 versions:[
                     {  
 
-                        versionId:uuidv4(),
+                        versionId:newVersionId,
                         versionStage:VersionStage.stage1,
                         projectInfo:{
                             ...data,
                             projectState,
-                            reviewed:reviewed,
                             createdAt:Timestamp.fromDate(new Date())
                             
                         },

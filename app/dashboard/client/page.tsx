@@ -1,6 +1,5 @@
 
-import Projects from "@/app/ui/dashboard/client-dashboard/components/projects/projects"
-import { getClientProjects } from "@/app/firebase/firestore/client/project";
+import Projects from "@/app/ui/dashboard/client-dashboard/project-card-stages-ui/client-projects"
 import {  Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
@@ -21,11 +20,11 @@ export default async function ClientProjects(){
  
     const projects = await getProjects(userId)
 
-
+    
 
 
     return (
         
-        <Projects projects={projects} role={role}/>
+        <Projects projects={projects}/>
     )
 }

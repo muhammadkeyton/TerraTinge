@@ -165,6 +165,16 @@ export type ReviewedProjectType = {
 }
 
 
+
+
+//client fetch projects server action mutation response
+export type clientProjectsType = {
+  inReview:Project | null,
+  inProgress:Project | null,
+  done:Project[] | null
+}
+
+
 //-----------------client and server definitions end------------------------------------------------------------------
 
 
@@ -196,6 +206,7 @@ export type Project={
 
 
   appName:string,
+  projectState:ProjectState,
   versions:ProjectVersions[],
   clientInfo:{
     clientEmail:string,

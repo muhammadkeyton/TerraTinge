@@ -22,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../shadcn-components/dialog';
+} from '../../../shadcn-components/dialog';
 
 import {
   Sheet,
@@ -32,21 +32,21 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger
-} from "../shadcn-components/sheet"
+} from "../../../shadcn-components/sheet"
 
 
 
 import Image from 'next/image';
 import { AppDataFrontend, PaymentOption, ProjectPayment, Role } from '@/app/lib/definitions';
 import Button from '@mui/material/Button';
-import MuiServerProvider from '../../mui-providers/mui-server-provider';
-import { montserrat } from '../../fonts';
+import MuiServerProvider from '../../../../mui-providers/mui-server-provider';
+import { montserrat } from '../../../../fonts';
 import { NameSchema,AppCostSchema } from '@/app/lib/data-validation';
-import TerraTextField from '../../reusable-components/terra-textfield';
+import TerraTextField from '../../../../reusable-components/terra-textfield';
 import clsx from 'clsx';
 import {submitUpdateProject} from '@/app/server-actions/in-app/developer/all-work';
 
-import StripePaymentComponent from '../client-dashboard/stripe-payment/stripe-element';
+import StripePaymentComponent from '../../stripe-payment/stripe-element';
 
 //----------------------------------------developer functionality start-------------------------------------------------------
 function EditProject({appName,appDetail,projectId,appCost}:{appName:string,appDetail:string,projectId:string,appCost:string}){

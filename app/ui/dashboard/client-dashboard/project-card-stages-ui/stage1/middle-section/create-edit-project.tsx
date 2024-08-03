@@ -1,10 +1,10 @@
 'use client';
 
-import { useState,useEffect, ChangeEvent } from 'react';
+import { useState,ChangeEvent } from 'react';
 
 import TerraTextField from '@/app/ui/reusable-components/terra-textfield';
 
-import MuiServerProvider from '../../../../mui-providers/mui-server-provider';
+import MuiServerProvider from '../../../../../mui-providers/mui-server-provider';
 
 import Button from '@mui/material/Button';
 
@@ -22,7 +22,9 @@ import { createNewProject } from '@/app/server-actions/in-app/client/project';
 
 import { AppDataFrontend } from '@/app/lib/definitions';
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+
+import useWindowWidth from '../../../../reuseable-components/hooks/detect-window-width';
 
 import clsx from 'clsx';
 
@@ -34,7 +36,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger
-  } from "../../../shadcn-components/sheet"
+  } from "../../../../shadcn-components/sheet"
   
   import {
     Dialog,
@@ -44,51 +46,42 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter
-  } from '../../../shadcn-components/dialog'
+  } from '../../../../shadcn-components/dialog'
 
 
 
-export default function ProjectDrawerDialog(){
 
+type CreateEditProps = {
+    appName?:string,
+    appDetail?:string,
+    appBudget?:string,
+    projectId?:string
+}
+
+export default function CreateOrEditProject({appName,appDetail,appBudget,projectId}:CreateEditProps){
+    console.log(projectId)
     const router = useRouter();
-    const [windowWidth, setWindowWidth] = useState(0);
-    const [isDesktop,setIsDesktop] = useState<MediaQueryList>();
-  
-    //this checks if we are in desktop or mobile and allows us to render either dialog or sheet
-    useEffect(() => {
-      setIsDesktop(window.matchMedia("(min-width: 768px)"));
-  
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-        
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      // Cleanup function
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
+
+    const {isDesktop,windowWidth} = useWindowWidth()
 
 
     const [loading,setLoading] = useState(false);
    
     const [appData,setData] = useState<AppDataFrontend>({
         appName:{
-            text:'',
+            text:appName ?? '',
             error:false,
             helperText:''
         },
         appDetail:{
-            text:'',
+            text:appDetail || '',
             error:false,
             helperText:''
         },
         appBudget:{
             helperText:'',
             error:false,
-            text:'',
+            text:appBudget ?? '',
         },
         
     });
@@ -191,7 +184,7 @@ export default function ProjectDrawerDialog(){
     }
   
   
-    if(isDesktop?.matches || windowWidth >= 768){
+    if(isDesktop || windowWidth >= 768){
       return (
              
   
@@ -202,14 +195,14 @@ export default function ProjectDrawerDialog(){
                   <DialogTrigger asChild>
                    
                       <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500  p-4  font-app rounded-xl normal-case`}>
-                        Submit App Description
+                        {projectId?'Edit':'Submit App Description'}
                       </Button>
                     
                   </DialogTrigger>
                   </MuiServerProvider>
                 <DialogContent className="sm:max-w-[425px] bg-white dark:bg-black">
                   <DialogHeader className='mb-4'>
-                    <DialogTitle className='mb-2'>App Description</DialogTitle>
+                    <DialogTitle className='mb-2'>{projectId?'Edit App Description':'App Description'}</DialogTitle>
                     <DialogDescription >
                       Tell us abit about your App and your budget
                     </DialogDescription>
@@ -446,7 +439,7 @@ export default function ProjectDrawerDialog(){
                   
                   />
             <SheetFooter>
-              {/* <SheetClose asChild> */}
+            
                   <MuiServerProvider>
                   <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
@@ -462,7 +455,7 @@ export default function ProjectDrawerDialog(){
                     >Submit For Review
                      </Button>
                   </MuiServerProvider>
-              {/* </SheetClose> */}
+         
             </SheetFooter>
             </form>
              :
