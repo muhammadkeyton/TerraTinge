@@ -5,11 +5,11 @@ import { useState,useEffect} from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn-components/tabs"
 
 
+import { isVersionStage1 } from '../../type-guards';
 
 
-
-import { clientProjectsType, VersionStage } from '@/app/lib/definitions';
-import ProjectCardStage1 from './stage1/project-card-stage1';
+import { clientProjectsType} from '@/app/lib/definitions';
+import ProjectCardStage1 from './stage1/client-project-card';
 
 
 
@@ -31,8 +31,6 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
     }, []);
     
    
-   console.log(inProgress)
-console.log(currentTab)
 
     return (
         <Tabs value={currentTab} className="h-full overflow-y-auto p-2 md:py-4 flex flex-col gap-4 ">
@@ -52,15 +50,14 @@ console.log(currentTab)
 
                             switch (currentTab) {
                                 case 'InReview':{
+                                  
                                     const version = inReview?.versions[inReview?.versions.length - 1];
                                     
-                                    if(version?.versionStage === VersionStage.stage1){
-                                        return <ProjectCardStage1 projectId={inReview?.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={inReview?.clientInfo.clientEmail as string} clientImage={inReview?.clientInfo.clientImage as string} createdAt={version.projectInfo.createdAt as string}/>
+                                    if(version && isVersionStage1(version)){
+                                        return <ProjectCardStage1  projectId={inReview?.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={inReview?.clientInfo.clientEmail as string} clientImage={inReview?.clientInfo.clientImage as string} createdAt={version.projectInfo.createdAt as string}/>
                                     }
 
 
-                                    return 'this is not stage 1 need to check the code';
-                                    
 
                                 
                                 }

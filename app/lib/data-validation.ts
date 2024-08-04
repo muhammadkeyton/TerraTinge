@@ -47,6 +47,20 @@ export const AppCostSchema = z.object({
 });
 
 
+export const PercentageSchema = z.object({
+    percentage: z.string()
+    .min(1,{ message: 'percentage is required to cover payment processing fees' })
+    .transform(text => {
+        // This matches any character that is not a number
+        let regex = /[^0-9]/g;
+        let cleanedText = text.replace(regex, '');
+
+        // Then return the cleaned percentage as a number
+        return cleanedText;
+    }),
+});
+
+
 
 
 

@@ -4,8 +4,8 @@
 'use server';
 
 import { db} from "@/app/firebase/firebase";
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp } from "firebase/firestore";
-import { AppDataServer,Project, ProjectState,VersionStage } from "@/app/lib/definitions";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc } from "firebase/firestore";
+import { AppDataServer,clientProjectsType,Project, ProjectState,VersionStage } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -164,6 +164,56 @@ export const addNewProject = async (projectState:ProjectState,userProfileImage:s
 
 
     
+}
+
+
+export const updateNewProject = async (projectId:string,appName:string,appDetail:string,appBudget:string):Promise<boolean> =>{
+    const projectDocumentRef = doc(db, "projects", projectId);
+
+    try{
+        const docSnap = await getDoc(projectDocumentRef);
+
+        if (docSnap.exists()) {
+    
+            let projectData = docSnap.data() as Project;
+            let versions = projectData.versions
+    
+            if(versions.length > 0){
+            let lastVersion = versions[versions.length - 1];
+            lastVersion.projectInfo.appName = appName;
+            lastVersion.projectInfo.appDetail = appDetail;
+            lastVersion.projectInfo.appBudget = appBudget
+    
+    
+            versions[versions.length - 1] = lastVersion;
+    
+            try {
+                await updateDoc(projectDocumentRef, {
+                    ...projectData,
+                    appName:appName,
+                    versions:versions
+                });
+
+
+                console.log('client project details updated successfully')
+    
+                return true;
+            } catch (error) {
+                console.error("Error updating project document after success payment: ", error);
+            }
+            }
+        }
+    
+    
+             
+
+    }catch(e){
+        console.error('could not find this document  to update',e)
+    }
+
+   
+   return false;
+        
 }
 
 

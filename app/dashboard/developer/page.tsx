@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
 
 
-import AllWork from "@/app/ui/dashboard/developer-dashboard/components/work/all-work";
+import AllWork from "@/app/ui/dashboard/developer-dashboard/project-card-stages-ui/developer-projects"
 
 import { getAllProjects } from "@/app/server-actions/in-app/developer/all-work";
 
@@ -22,6 +22,6 @@ export default async function DeveloperProjects(){
     
 
     return (
-        <AllWork projects={allProjects} role={role}/>
+        <AllWork projects={allProjects}/>
     )
 }

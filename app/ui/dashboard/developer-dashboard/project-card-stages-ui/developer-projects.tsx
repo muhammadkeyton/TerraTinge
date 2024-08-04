@@ -1,25 +1,25 @@
 
-import { Project, Role } from '@/app/lib/definitions';
-import ProjectTabs from '../../../reuseable-components/project-tabs';
+import { developerProjectsType} from '@/app/lib/definitions';
+import ProjectTabs from './developer-projects-tabs';
+ 
 
-import { ProjectsProvider } from '../../../reuseable-components/projects-context';    
-
-export default function AllWork({projects,role}: { projects: null | Project[],role:Role }){
+export default function AllWork({projects}: { projects: null | developerProjectsType}){
 
   
     return(
         
     
-              <ProjectsProvider>
-                   
 
+                   
+                 <>
+                
 
                    {
 
                    projects?
                    
                  
-                    <ProjectTabs projects={projects} role={role}/>
+                    <ProjectTabs projects={projects}/>
                     :
 
                     <div className=' h-full px-2 flex flex-col items-center justify-center gap-6'>
@@ -29,10 +29,12 @@ export default function AllWork({projects,role}: { projects: null | Project[],ro
                     }
 
 
+                   </>
+
+
                  
                   
 
-              </ProjectsProvider>
               
                
 

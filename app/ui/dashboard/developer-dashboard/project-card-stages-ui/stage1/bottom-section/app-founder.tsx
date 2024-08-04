@@ -16,15 +16,15 @@ export default function AppFounder({clientImage,clientEmail}:AppFounderProps){
             <Divider className='dark:bg-slate-300 my-4'/>
             </MuiServerProvider>
         
-            <div className='flex flex-row items-center gap-4'>
+            <div className='flex flex-row items-center gap-2'>
             <Image  className="rounded-full" src={clientImage} width={40} height={40} alt='user profile' />
     
             <div>
             <h3 className='text-xs font-light mb-2'>App Founder</h3>
-            <p className='text-sm font-semibold'>{clientEmail.split('@')[0]}</p>
+            <p className='text-sm font-semibold'>{clientEmail}</p>
             </div>
         
             </div>
-        </>
+       </>
     )
 }

@@ -6,7 +6,7 @@ import { NameSchema } from "@/app/lib/data-validation";
 
 import { auth } from "@/auth";
 
-import { addNewProject,getClientProjects} from "@/app/firebase/firestore/client/project";
+import { addNewProject,getClientProjects,updateNewProject} from "@/app/firebase/firestore/client/project";
 
 import { revalidatePath } from 'next/cache';
 import { Timestamp } from "firebase/firestore";
@@ -74,7 +74,16 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
 
 
 
+export const updateNewClientProject = async({projectId,appName,appDetail,appBudget}:{projectId:string,appName:string,appDetail:string,appBudget:string}):Promise<boolean> =>{
+    const updated = await updateNewProject(projectId,appName,appDetail,appBudget);
 
+
+    if(updated){
+        revalidatePath('/dashboard/client')
+        
+    }
+    return updated;
+}
 
 
 

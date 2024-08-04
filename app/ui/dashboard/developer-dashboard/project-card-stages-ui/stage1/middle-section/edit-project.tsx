@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { NameSchema } from "@/app/lib/data-validation";
+import { AppCostSchema, NameSchema,PercentageSchema } from "@/app/lib/data-validation";
 
 import { montserrat } from '@/app/ui/fonts';
 
@@ -18,9 +18,7 @@ import { montserrat } from '@/app/ui/fonts';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
-import { createNewProject,updateNewClientProject  } from '@/app/server-actions/in-app/client/project';
 
-import { AppDataFrontend } from '@/app/lib/definitions';
 
 import { useRouter } from 'next/navigation';
 
@@ -47,55 +45,53 @@ import {
     DialogTrigger,
     DialogFooter
   } from '../../../../shadcn-components/dialog'
+import { submitUpdateProject } from '@/app/server-actions/in-app/developer/all-work';
 
 
+export default function EditProject({appName,appDetail,projectId}:{appName:string,appDetail:string,projectId:string}){
 
-
-type CreateEditProps = {
-    appName?:string,
-    appDetail?:string,
-    appBudget?:string,
-    projectId?:string
-}
-
-export default function CreateOrEditProject({appName,appDetail,appBudget,projectId}:CreateEditProps){
-   
     const router = useRouter();
-
     const {isDesktop,windowWidth} = useWindowWidth()
-
-
+  
+  
     const [loading,setLoading] = useState(false);
    
-    const [appData,setData] = useState<AppDataFrontend>({
+    const [appData,setData] = useState({
         appName:{
             text:appName ?? '',
             error:false,
             helperText:''
         },
         appDetail:{
-            text:appDetail || '',
+            text:appDetail ?? '',
             error:false,
             helperText:''
         },
-        appBudget:{
+        appCost:{
             helperText:'',
             error:false,
-            text:appBudget ?? '',
+            text:'',
+        },
+  
+        percentage:{
+          helperText:'',
+          error:false,
+          text:'',
         },
         
+        
     });
-
-
+  
+  
     //used by the submit button if no appdata is available button is disabled
-    const emptyField = appData.appBudget.text.length < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1;
-
+    const emptyField = appData.appCost.text.length < 1 || appData.appName.text.length < 1 || appData.appDetail.text.length < 1 || appData.percentage.text.length < 1;
+  
     function trackAppData(event:ChangeEvent<HTMLInputElement>){
         const {name,value} = event.target;
-
+  
         
-
-        if(name === 'appBudget' || name === 'appDetail'){
+  
+        if(name === 'appDetail'){
             let limitReached = false;
             if(value.length >= 4000) {
                 limitReached = true;
@@ -112,7 +108,7 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
         } else if(name === 'appName'){
           
             const {data,success,error} = NameSchema.safeParse({name:value});
-
+  
             if(success){
                 setData({
                     ...appData,
@@ -120,7 +116,7 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                         error:false,
                         text:data.name,
                         helperText:''
-
+  
                     }
                 });
             }else{
@@ -130,41 +126,97 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                         text:value,
                         error:true,
                         helperText:error.errors[0].message
-
+  
                     }
                 });
-
+  
             }
             
+        }else if (name === 'appCost'){
+          const {data,success,error} = AppCostSchema.safeParse({appCost:value});
+  
+          if(success){
+            setData({
+                ...appData,
+                appCost:{
+                    error:false,
+                    text:data.appCost,
+                    helperText:''
+  
+                }
+            });
+  
+  
+          }else{
+            setData({
+              ...appData,
+              appCost:{
+                  text:value,
+                  error:true,
+                  helperText:error.errors[0].message
+  
+              }
+          });
+  
+          }
+  
+          
+        }else if (name === 'percentage'){
+          const {data,success,error} = PercentageSchema.safeParse({percentage:value});
+
+          if(success){
+            setData({
+              ...appData,
+              percentage:{
+                error:false,
+                helperText:'',
+                text:data.percentage
+              }
+            })
+            
+          }else{
+            setData({
+              ...appData,
+              percentage:{
+                  text:value,
+                  error:true,
+                  helperText:error.errors[0].message
+  
+              }
+          });
+          }
+         
         }
-
+  
     }
-
-
+  
+  
     const validateAppData = (data:any):boolean=>{
         
         const nameResult = NameSchema.safeParse({name:data.appName.text});
-
+  
         const emptyAppDetail = data.appDetail.text.length < 1;
         
-        const emptyAppBudget = data.appBudget.text.length < 1;
-        
-        
+        const AppCostResult = AppCostSchema.safeParse({appCost:data.appCost.text})
 
+        const percentageResult = PercentageSchema.safeParse({percentage:data.percentage.text})
+        
+        
+  
        
-
-
-       if(!emptyAppDetail && !emptyAppBudget && nameResult.success){
+  
+  
+       if(!emptyAppDetail && AppCostResult.success && nameResult.success && percentageResult.success){
          return true;
        }else{
             setData({
                 ...data,
-                appBudget:{
+                appCost:{
                     ...data.appBudget,
-                    error:emptyAppBudget,
-                    helperText: emptyAppBudget?'this field is required':''
+                    error:!AppCostResult.success,
+                    helperText: AppCostResult.success?'':AppCostResult.error.errors[0].message
                 },
-                appDetail:{
+                features:{
                     ...data.appDetail,
                     error:emptyAppDetail,
                     helperText: emptyAppDetail?'this field is required':''
@@ -175,9 +227,9 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                     error:!nameResult.success,
                     helperText: nameResult.success?'':nameResult.error.errors[0].message
                 }
-
+  
             })
-
+  
             
         }
         return false
@@ -194,66 +246,52 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                   <MuiServerProvider>
                   <DialogTrigger asChild>
                    
-                      <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500  p-4  font-app rounded-xl normal-case`}>
-                        {projectId?'Edit':'Submit App Description'}
+                      <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500  p-1   rounded-xl normal-case`}>
+                        Edit
                       </Button>
                     
                   </DialogTrigger>
                   </MuiServerProvider>
-                <DialogContent className="sm:max-w-[425px] bg-white dark:bg-black">
+                <DialogContent className="max-w-lg bg-white dark:bg-black">
                   <DialogHeader className='mb-4'>
-                    <DialogTitle className='mb-2'>{projectId?'Edit App Description':'App Description'}</DialogTitle>
+                    <DialogTitle className='mb-2'>{appData.appName.text}</DialogTitle>
                     <DialogDescription >
-                      Tell us abit about your App and your budget
+                      Edit Client Project Detail and Enable Payment
                     </DialogDescription>
                   </DialogHeader>
                    
-                   {!loading ?
-                   <form onSubmit={async(event)=>{
+                   {
+                    !loading?
+                  
+                   <form onSubmit={ async(event)=>{
                     event.preventDefault();
-
+  
                     const appDataOk = validateAppData(appData);
-
-                    if(appDataOk){
-                        if(!navigator.onLine){
-                            alert('please connect your device to the internet,your project cannot be submitted without internet connection!');
-                            return;
-                        }
-                        setLoading(true);
-
-                        let responseOk:boolean;
-
-                        if(projectId){
-                            responseOk = await updateNewClientProject ({
-                                projectId:projectId,
-                                appName:appData.appName.text,
-                                appDetail:appData.appDetail.text,
-                                appBudget:appData.appBudget.text
-                            });
-                        }else{
-                            responseOk = await createNewProject({
-                                appName:appData.appName.text,
-                                appDetail:appData.appDetail.text,
-                                appBudget:appData.appBudget.text
-                            });
-                        }
-                        
-
-                        console.log(responseOk)
-
-                        if(!responseOk){
-                            setLoading(false);
-                            validateAppData(appData);
-                            alert('something went wrong while trying to create the project,try again later')
-                        }else{
-                            router.push('/dashboard');
-                        }
-                            
-                       
-
-                    }
+  
+                   
+   
+                      if(appDataOk){
+                           setLoading(true);
+                           const responseOk = await submitUpdateProject(projectId,{
+                               appName:appData.appName.text,
+                               appDetail:appData.appDetail.text,
+                               appCost:appData.appCost.text,
+                               percentage:appData.percentage.text
+                           });
+   
+                           console.log(responseOk)
+   
+                           if(!responseOk){
+                               setLoading(false);
+                               validateAppData(appData);
+                               alert('something went wrong while trying to update the project,try again')
+                           }else{
+                               router.push('/dashboard');
+                           }
+                      }
+                   
                    }}>
-
+  
                    
                     <TerraTextField
                     label='App Name'
@@ -291,21 +329,38 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
   
   
                    <TerraTextField
-                    label='what is your budget?'
+                    label='total cost of project?(enter numbers only)'
                     type='text'
-                    name='appBudget'
+                    name='appCost'
                     onChange={trackAppData}
-                    error={appData.appBudget.error}
-                    helperText={appData.appBudget.helperText}
-                    value={appData.appBudget.text}
+                    error={appData.appCost.error}
+                    helperText={appData.appCost.helperText}
+                    value={appData.appCost.text}
                     multiline={true}
                     inputProps={
                         {
-                            maxLength:4000
+                            maxLength:7
                         }
                      }
                     
                     />
+  
+  
+                  <TerraTextField
+                    label='fee percentage?(enter numbers only)'
+                    type='text'
+                    name='percentage'
+                    onChange={trackAppData}
+                    error={appData.percentage.error}
+                    helperText={appData.percentage.helperText}
+                    value={appData.percentage.text}
+                    inputProps={
+                        {
+                            maxLength:3
+                        }
+                     }
+                    
+                  /> 
   
   
   
@@ -316,7 +371,7 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                 
                   <DialogFooter>
                     <MuiServerProvider>
-
+  
                     <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
                         clsx(
@@ -328,21 +383,26 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                         )
                    
                     }
-                    >{projectId?'Save Changes':'Submit For Review'}
+                    >Save & Enable Payment
                      </Button>
                       
                     </MuiServerProvider>
                   </DialogFooter>
                   </form>
-
+  
                   :
-                    <MuiServerProvider>
-                        <div className='flex justify-center items-center my-12'>
-                        <CircularProgress className='text-indigo-700' size={60}/>
-                        </div>
-                    </MuiServerProvider>
-
-                }
+  
+                  <MuiServerProvider>
+                    <div className='flex justify-center items-center my-12'>
+                    <CircularProgress className='text-indigo-700' size={60}/>
+                    </div>
+                  </MuiServerProvider>
+  
+  
+  
+                  }
+  
+                
                  
                 </DialogContent>
               </Dialog>
@@ -353,54 +413,48 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
         <Sheet key='bottom'>
         <MuiServerProvider>
           <SheetTrigger asChild>
-                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 p-4  font-app rounded-xl normal-case`}>
-                    {projectId?'Edit':'Submit App Description'}
+                    <Button className={`${montserrat.className} text-base bg-indigo-700 text-white hover:bg-indigo-500 p-1 rounded-xl normal-case`}>
+                    Edit
                     </Button>
           </SheetTrigger>
         </MuiServerProvider>
           <SheetContent side='bottom' className='bg-white dark:bg-black border-none rounded-t-xl'>
             <SheetHeader className='mb-4'>
-              <SheetTitle className='mb-2'>{projectId?'Edit App Description':'App Description'}</SheetTitle>
+              <SheetTitle className='mb-2'>{appData.appName.text}</SheetTitle>
               <SheetDescription>
-              Tell us abit about your App and your budget
+              Edit Client Project Detail and Enable Payment
               </SheetDescription>
             </SheetHeader>
-
+  
+         
             {!loading ?
-
             <form onSubmit={async(event)=>{
-                     event.preventDefault();
-
-                     const appDataOk = validateAppData(appData);
- 
-                     if(appDataOk){
-                        if(!navigator.onLine){
-                            alert('please connect your device to the internet,your project cannot be submitted without internet connection!');
-                            return;
-                        }
-
-                        setLoading(true);
-                        const responseOk = await createNewProject({
-                             appName:appData.appName.text,
-                             appDetail:appData.appDetail.text,
-                             appBudget:appData.appBudget.text
-                         });
- 
-                         console.log(responseOk)
- 
-                         if(!responseOk){
-                             setLoading(false);
-                             validateAppData(appData);
-                             alert('something went wrong while trying to create the project,try again later')
-                         }else{
-                             router.push('/dashboard');
-                         }
-                             
-                        
- 
-                     }
-                   }}>
-            <TerraTextField
+              event.preventDefault();
+  
+              const appDataOk = validateAppData(appData);
+  
+              if(appDataOk){
+                setLoading(true);
+                const responseOk = await submitUpdateProject(projectId,{
+                    appName:appData.appName.text,
+                    appDetail:appData.appDetail.text,
+                    appCost:appData.appCost.text,
+                    percentage:appData.percentage.text
+                });
+  
+                console.log(responseOk)
+  
+                if(!responseOk){
+                    setLoading(false);
+                    validateAppData(appData);
+                    alert('something went wrong while trying to update the project,try again')
+                }else{
+                    router.push('/dashboard');
+                }
+            }
+          }}>
+            
+               <TerraTextField
                   label='App Name'
                   type='text'
                   autoFocus={true}
@@ -415,44 +469,63 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                       }
                    }
                   
+                />
+  
+                  <TerraTextField
+                    label='Detailed App Description'
+                    type='text'
+                    name='appDetail'
+                    error={appData.appDetail.error}
+                    onChange={trackAppData}
+                    helperText={appData.appDetail.helperText}
+                    value={appData.appDetail.text}
+                    multiline={true}
+                    inputProps={
+                        {
+                            maxLength:4000
+                        }
+                    }
                   />
+  
+  
+  
+                 
+                  <TerraTextField
+                    label='total cost of project?(enter numbers only)'
+                    type='text'
+                    name='appCost'
+                    onChange={trackAppData}
+                    error={appData.appCost.error}
+                    helperText={appData.appCost.helperText}
+                    value={appData.appCost.text}
+                    multiline={true}
+                    inputProps={
+                        {
+                            maxLength:7
+                        }
+                     }
+                    
+                  />
+
 
                   <TerraTextField
-                  label='Detailed App Description'
-                  type='text'
-                  name='appDetail'
-                  error={appData.appDetail.error}
-                  onChange={trackAppData}
-                  helperText={appData.appDetail.helperText}
-                  value={appData.appDetail.text}
-                  multiline={true}
-                  inputProps={
-                      {
-                          maxLength:4000
-                      }
-                   }
-                  />
-
-
-
-                 <TerraTextField
-                  label='what is your budget?'
-                  type='text'
-                  name='appBudget'
-                  onChange={trackAppData}
-                  error={appData.appBudget.error}
-                  helperText={appData.appBudget.helperText}
-                  value={appData.appBudget.text}
-                  multiline={true}
-                  inputProps={
-                      {
-                          maxLength:4000
-                      }
-                   }
-                  
-                  />
+                    label='fee percentage?(enter numbers only)'
+                    type='text'
+                    name='percentage'
+                    onChange={trackAppData}
+                    error={appData.percentage.error}
+                    helperText={appData.percentage.helperText}
+                    value={appData.percentage.text}
+                    inputProps={
+                        {
+                            maxLength:3
+                        }
+                     }
+                    
+                  /> 
+  
             <SheetFooter>
-            
+         
                   <MuiServerProvider>
                   <Button disabled={emptyField} type='submit' variant="contained"  startIcon={emptyField?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
@@ -465,24 +538,30 @@ export default function CreateOrEditProject({appName,appDetail,appBudget,project
                         )
                    
                     }
-                    >{projectId?'Save Changes':'Submit For Review'}
+                    >Save & Enable Payment
                      </Button>
                   </MuiServerProvider>
-         
+            
             </SheetFooter>
             </form>
-             :
-             <MuiServerProvider>
-                 <div className='flex justify-center items-center my-12'>
-                 <CircularProgress className='text-indigo-700' size={60}/>
-                 </div>
-             </MuiServerProvider>
-
-         }
+  
+            :
+  
+  
+            <MuiServerProvider>
+                <div className='flex justify-center items-center my-12'>
+                <CircularProgress className='text-indigo-700' size={60}/>
+                </div>
+            </MuiServerProvider>
+  
+  
+           }
+             
+      
           </SheetContent>
         </Sheet>
     )
-
-
-}
- 
+  
+  
+  }
+  

@@ -159,18 +159,23 @@ export type ReviewedProjectType = {
   paymentStatus:ProjectPayment,
   appCost:number,
   appDetail:string,
-  reviewed:boolean,
   paymentAmount:number
 
 }
-
-
 
 
 //client fetch projects server action mutation response
 export type clientProjectsType = {
   inReview:Project | null,
   inProgress:Project | null,
+  done:Project[] | null
+}
+
+
+//developer fetch projects server action mutation response
+export type developerProjectsType = {
+  inReview:Project[] | null,
+  inProgress:Project[] | null,
   done:Project[] | null
 }
 
@@ -192,12 +197,26 @@ export type VersionStage1 = {
     appName:string,
     appDetail:string,
     appBudget:string,
-    reviewed:boolean,
     createdAt:Timestamp | string
   }
 }
 
-export type ProjectVersions = VersionStage1
+
+export type VersionStage2 = {
+  versionId:string,
+  versionStage:VersionStage,
+  projectInfo:{
+    projectState:ProjectState
+    appName:string,
+    appDetail:string,
+    paymentStatus:ProjectPayment,
+    appCost:number,
+    paymentAmount:number,
+    createdAt:Timestamp | string
+  }
+}
+
+export type ProjectVersions = VersionStage1 | VersionStage2
 
 export type Project={
 
