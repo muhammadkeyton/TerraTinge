@@ -114,7 +114,7 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
 
 
     //time complexity of o(n)
-    const modifiedDateProjects: Project[] = projects.map((project) => {
+    const modifiedDateProjects = projects.map((project) => {
         const modifiedVersions = project.versions.map((version) => ({
             ...version,
             projectInfo: {

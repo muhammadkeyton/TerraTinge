@@ -159,7 +159,8 @@ export type ReviewedProjectType = {
   paymentStatus:ProjectPayment,
   appCost:number,
   appDetail:string,
-  paymentAmount:number
+  paymentAmount:number,
+  percentage:number
 
 }
 
@@ -210,6 +211,7 @@ export type VersionStage2 = {
     appName:string,
     appDetail:string,
     paymentStatus:ProjectPayment,
+    feePercentage:number,
     appCost:number,
     paymentAmount:number,
     createdAt:Timestamp | string

@@ -1,6 +1,6 @@
 'use server';
 
-import { fetchAllProjects, updateProject } from "@/app/firebase/firestore/developer/all-work";
+import { fetchAllProjects, updateProject,DeleteProject } from "@/app/firebase/firestore/developer/all-work";
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
 import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType } from "@/app/lib/definitions";
 import { Timestamp } from "firebase/firestore";
@@ -126,4 +126,16 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
 
 
     return projectUpdateResult;
+}
+
+
+
+export const deleteProject = async (projectId:string,clientId:string):Promise<boolean> => {
+    const deleteResult = await DeleteProject(projectId,clientId);
+
+    if(deleteResult){
+        revalidatePath('/dashboard/developer')
+    }
+
+    return deleteResult;
 }

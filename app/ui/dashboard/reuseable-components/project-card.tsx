@@ -1085,7 +1085,7 @@ function ClientProceedToPayment({projectId,appName,appCost,paymentStatus}:{proje
     };
   },[]);
 
-  if(isDesktop?.matches || windowWidth >= 768){
+  if(isDesktop || windowWidth >= 768){
   return(
    
 
@@ -1101,7 +1101,7 @@ function ClientProceedToPayment({projectId,appName,appCost,paymentStatus}:{proje
                   </MuiServerProvider>
                 <DialogContent className="max-w-lg h-[80vh] flex flex-col bg-white dark:bg-black">
                   <DialogHeader className='mb-4'>
-                    <DialogTitle className='mb-2 text-center'>{appName} Expiry</DialogTitle>
+                    <DialogTitle className='mb-2 text-center'>{appName}</DialogTitle>
                     <DialogDescription className='text-center' >
                       {cost} USD
                     </DialogDescription>

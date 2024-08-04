@@ -182,7 +182,11 @@ export const updateNewProject = async (projectId:string,appName:string,appDetail
             let lastVersion = versions[versions.length - 1];
             lastVersion.projectInfo.appName = appName;
             lastVersion.projectInfo.appDetail = appDetail;
+
+             // Type guard to check if appBudget exists
+            if ('appBudget' in lastVersion.projectInfo) {
             lastVersion.projectInfo.appBudget = appBudget
+            }
     
     
             versions[versions.length - 1] = lastVersion;

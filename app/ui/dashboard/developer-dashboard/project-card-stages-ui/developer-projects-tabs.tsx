@@ -63,7 +63,7 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                                 let version = project.versions[project.versions.length - 1]
 
                                                 if(isVersionStage1(version)){
-                                                    return <DeveloperProjectCardStage1 key={i} projectId={project.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
+                                                    return <DeveloperProjectCardStage1 key={i} clientId={project.clientInfo.clientId} projectId={project.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
                                                 }
                                             })
                                         }
