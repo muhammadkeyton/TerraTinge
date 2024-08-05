@@ -42,7 +42,7 @@ export default function ProjectCardStage2({appName,clientEmail,clientImage,creat
 
           <div className='flex flex-col my-4 gap-4 px-4'>
            <ViewProjectDetails appCost={appCost} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
-           <ProceedToPayment  appCost={appCost} appName={appName} projectId={projectId}/>
+           {/* <ProceedToPayment  appCost={appCost} appName={appName} projectId={projectId}/> */}
             
           </div>
 
