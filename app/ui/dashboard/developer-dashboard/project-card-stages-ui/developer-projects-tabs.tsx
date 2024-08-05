@@ -4,12 +4,13 @@ import { useState,useEffect} from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn-components/tabs"
 
-import { isVersionStage1 } from '../../type-guards';
+import { isVersionStage1,isVersionStage2 } from '../../type-guards';
 
 
 
-import { developerProjectsType, ProjectVersions, VersionStage, VersionStage1 } from '@/app/lib/definitions';
+import { developerProjectsType } from '@/app/lib/definitions';
 import DeveloperProjectCardStage1 from './stage1/developer-project-card';
+import DeveloperProjectCardStage2 from './stage2/developer-project-card-stage2';
 
 
 
@@ -47,7 +48,7 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
 
 
 
-                      <TabsContent className='grow w-full grid grid-cols-1 justify-items-center content-center bg-green-500' value={currentTab}>
+                      <TabsContent className='grow w-full grid grid-cols-1 justify-items-center content-center' value={currentTab}>
 
                       {
                         (()=>{
@@ -64,6 +65,8 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
 
                                                 if(isVersionStage1(version)){
                                                     return <DeveloperProjectCardStage1 key={i} clientId={project.clientInfo.clientId} projectId={project.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
+                                                }else if (isVersionStage2(version)){
+                                                    return <DeveloperProjectCardStage2 key={i} appCost={version.projectInfo.appCost} appDetail={version.projectInfo.appDetail} appName={project.appName} clientEmail={project.clientInfo.clientEmail} clientId={project.clientInfo.clientId} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string} feePercentage={version.projectInfo.feePercentage} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus} projectId={project.projectId}/>
                                                 }
                                             })
                                         }

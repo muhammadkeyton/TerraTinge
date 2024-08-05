@@ -4,7 +4,7 @@
 'use server';
 
 import { db} from "@/app/firebase/firebase";
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc } from "firebase/firestore";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField } from "firebase/firestore";
 import { AppDataServer,clientProjectsType,Project, ProjectState,VersionStage } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -219,5 +219,40 @@ export const updateNewProject = async (projectId:string,appName:string,appDetail
    return false;
         
 }
+
+
+
+export const ClientDeleteProject = async(projectId:string,clientId:string):Promise<boolean>=>{
+    const projectRef = doc(db, "projects", projectId);
+    const clientRef = doc(db, "users", clientId);
+
+    try{
+
+        await runTransaction(db, async (transaction) => {
+            const user = await transaction.get(clientRef);
+            const project = await transaction.get(projectRef);
+    
+            if (!user.exists() || !project.exists()) return;
+
+            let projects: string[] = user.data()?.projects;
+
+            let updatedProjects = projects.filter((project:string) => project !== projectId);
+
+            transaction.delete(projectRef)
+
+            transaction.update(clientRef, { projects: updatedProjects.length > 0 ? updatedProjects : deleteField() });
+        })
+
+        console.log(`delete transaction for project with id:${projectId} deleted for client with id:${clientId} was successfull`)
+
+        return true;
+
+    }catch(e){
+        console.log('delete transaction failed')
+    }
+
+    return false;
+}
+
 
 

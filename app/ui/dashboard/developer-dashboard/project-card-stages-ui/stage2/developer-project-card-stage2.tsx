@@ -3,17 +3,18 @@
 
 
 
+import { useRouter } from 'next/navigation';
 
 
-import AppNameImageDateFeedBackText from './top-section/AppNameImageDateFeedBackText'
-import CreateOrEditProject from './middle-section/create-edit-project';
+import AppNameDate from './top-section/AppNameDate'
+import EditProject from './middle-section/edit-project';
 import ViewSubmittedDetails from './middle-section/view-submitted-details';
 import AppFounder from './bottom-section/app-founder';
-
-
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
-
+import { montserrat } from '@/app/ui/fonts';
+import { deleteProject } from '@/app/server-actions/in-app/developer/all-work';
 
 
 import {
@@ -27,9 +28,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../../../shadcn-components/alert-dialog';
-import { montserrat } from '@/app/ui/fonts';
-import { useRouter } from 'next/navigation';
-import { clientDeleteProject } from '@/app/server-actions/in-app/client/project';
+import { ProjectPayment } from '@/app/lib/definitions';
 
 
 type ProjectCardProps = {
@@ -37,21 +36,20 @@ type ProjectCardProps = {
   clientEmail:string,
   clientImage:string,
   createdAt:string,
-  appBudget:string,
   appDetail:string,
   projectId:string,
-  clientId:string
+  clientId:string,
+  appCost:number,
+  feePercentage:number,
+  paymentAmount:number,
+  paymentStatus:ProjectPayment
+
  
   
 }
 
 
-
-
-
-
-
-function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,clientId:string}){
+function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,clientId:string}){
   const router = useRouter();
   return(
 
@@ -69,7 +67,8 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
     <AlertDialogHeader>
       <AlertDialogTitle>Do you really want to delete this project?</AlertDialogTitle>
       <AlertDialogDescription>
-      Are you sure you want to delete this project? This action cannot be undone and will permanently remove all associated data from our database.
+        This action cannot be undone. This will permanently delete this project
+        and remove it's data from our database.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
@@ -79,17 +78,17 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
         <Button className={`${montserrat.className} text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl normal-case`}
           onClick={async()=>{
             if(!navigator.onLine){
-              alert('hello,please connect your device to the internet,project deletion needs internet connection!');
+              alert('hey developer,please connect your device to the internet,project deletion needs internet connection!');
               return;
             }
       
   
-            const deleteResult = await clientDeleteProject(projectId,clientId)
+            const deleteResult = await deleteProject(projectId,clientId)
   
             if(deleteResult){
               router.push('/dashboard');
             }else{
-              alert('hello,project could not be deleted!,try again');
+              alert('hey developer,project could not be deleted!');
          
             }
           }}
@@ -107,7 +106,9 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
 }
 
 
-export default function ProjectCardStage1({appName,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,clientId}:ProjectCardProps){
+export default function DeveloperProjectCardStage2({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId}:ProjectCardProps){
+    
+    
 
     return (
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
@@ -115,15 +116,26 @@ export default function ProjectCardStage1({appName,clientEmail,clientImage,creat
 
         
                 
-          <AppNameImageDateFeedBackText appName={appName} createdAt={createdAt}/>
+      <AppNameDate feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
+      
 
-          <div className='flex flex-row my-4 justify-between'>
-           <ViewSubmittedDetails appBudget={appBudget} appDetail={appDetail} appName={appName} />
-          <CreateOrEditProject appBudget={appBudget} appDetail={appDetail} appName={appName} projectId={projectId}/>
-          <ClientDeleteProjectStage1 clientId={clientId} projectId={projectId}/>
-          </div>
+     
+        
+      <div className='flex flex-row my-4 justify-between space-x-4'>
 
-          <AppFounder clientEmail={clientEmail} clientImage={clientImage} />
+        
+        <ViewSubmittedDetails paymentStatus={paymentStatus} appCost={appCost} paymentAmount={paymentAmount} appDetail={appDetail} appName={appName} />
+        <EditProject appCost={`${appCost/100}`} percentage={`${ Math.round(((feePercentage-1)*100))}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>
+
+
+
+        <DeveloperDeleteProjectStage1 projectId={projectId} clientId={clientId}/>
+        
+      </div>
+
+      
+
+      <AppFounder clientEmail={clientEmail} clientImage={clientImage} />
                  
                 
 

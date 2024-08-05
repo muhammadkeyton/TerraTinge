@@ -6,7 +6,7 @@ import { NameSchema } from "@/app/lib/data-validation";
 
 import { auth } from "@/auth";
 
-import { addNewProject,getClientProjects,updateNewProject} from "@/app/firebase/firestore/client/project";
+import { addNewProject,getClientProjects,updateNewProject, ClientDeleteProject} from "@/app/firebase/firestore/client/project";
 
 import { revalidatePath } from 'next/cache';
 import { Timestamp } from "firebase/firestore";
@@ -144,4 +144,17 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
         inProgress,
         done
     }
+}
+
+
+
+
+export const clientDeleteProject = async (projectId:string,clientId:string):Promise<boolean> => {
+    const deleteResult = await ClientDeleteProject(projectId,clientId);
+
+    if(deleteResult){
+        revalidatePath('/dashboard/client')
+    }
+
+    return deleteResult;
 }
