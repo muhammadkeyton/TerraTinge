@@ -63,7 +63,7 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
       <AlertDialogTitle>Do you really want to delete this project?</AlertDialogTitle>
       <AlertDialogDescription>
         This action cannot be undone. This will permanently delete this project
-        and remove it's data from our database.
+        and remove it&apos;s data from our database.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
