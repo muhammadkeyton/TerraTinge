@@ -57,7 +57,7 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
                                     if(version && isVersionStage1(version)){
                                         return <ProjectCardStage1 clientId={inReview.clientInfo.clientId}  projectId={inReview?.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={inReview?.clientInfo.clientEmail as string} clientImage={inReview?.clientInfo.clientImage as string} createdAt={version.projectInfo.createdAt as string}/>
                                     } else if (version && isVersionStage2(version)){
-                                        return <ProjectCardStage2 appCost={version.projectInfo.appCost} appDetail={version.projectInfo.appDetail} appName={inReview.appName} clientEmail={inReview.clientInfo.clientEmail} clientImage={inReview.clientInfo.clientImage} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus} createdAt={version.projectInfo.createdAt as string} projectId={inReview.projectId}/>
+                                        return <ProjectCardStage2 appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} appName={inReview.appName} clientEmail={inReview.clientInfo.clientEmail} clientImage={inReview.clientInfo.clientImage} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus} createdAt={version.projectInfo.createdAt as string} projectId={inReview.projectId}/>
                                     }
 
 

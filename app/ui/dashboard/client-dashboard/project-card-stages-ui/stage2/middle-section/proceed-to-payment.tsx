@@ -27,9 +27,9 @@ import { PaymentOption } from "@/app/lib/definitions";
 
 
 
-export default function ProceedToPayment({appCost,projectId,appName}:{appCost:number,projectId:string,appName:string}){
+export default function ProceedToPayment({appCostAndFee,projectId,appName}:{appCostAndFee:number,projectId:string,appName:string}){
     const {isDesktop,windowWidth} = useWindowWidth();
-    const cost = (appCost/100).toLocaleString();
+    const cost = (appCostAndFee/100).toLocaleString();
 
 
 

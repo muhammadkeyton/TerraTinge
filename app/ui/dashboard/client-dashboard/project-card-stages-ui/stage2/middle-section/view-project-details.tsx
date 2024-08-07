@@ -26,19 +26,19 @@ import { ProjectPayment } from "@/app/lib/definitions";
 
 type ViewProjectDetails = {
     appName:string,
-    appCost:number,
+    appCostAndFee:number,
     paymentAmount:number,
     appDetail:string,
     paymentStatus:ProjectPayment
     
 }
 
-export default function ViewProjectDetails({appName,appCost,paymentAmount,appDetail,paymentStatus}:ViewProjectDetails){
+export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,appDetail,paymentStatus}:ViewProjectDetails){
   const {isDesktop,windowWidth} = useWindowWidth();
 
-  const cost = (appCost/100).toLocaleString();
+  const cost = (appCostAndFee/100).toLocaleString();
   const initialPayment = (paymentAmount/100).toLocaleString();
-  const balance = ((appCost - paymentAmount)/100).toLocaleString();
+  const balance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
 
   const appDetailLines = appDetail.split('\n');
   

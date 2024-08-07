@@ -9,17 +9,26 @@ type  AppNameImageDateFeedBackTextProps = {
     appName:string,
     createdAt:string,
     appCost:number,
-    feePercentage:number
+    feePercentage:number,
+    appCostAndFee:number
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee}:AppNameImageDateFeedBackTextProps){
     return(
         <>
             <div>
                 <h2 className='text-xl font-bold '>{appName}</h2>
                 <p className='text-sm my-4 font-medium'>Date: {createdAt}</p>
-                <code className="text-xs bg-indigo-700  text-white p-1 rounded-sm">Project Cost: {(appCost/100).toLocaleString()} USD</code>
-                <p className='text-sm my-4 font-medium'>Fee Charged: {Math.round(((feePercentage-1)*100))}%</p>
+
+                
+                <p className='text-sm my-4 font-medium'>
+                 Total including Fees: <span><code className="text-lg bg-indigo-700  text-white p-1 rounded-sm">{(appCostAndFee/100).toLocaleString()} USD</code></span>
+                </p>
+
+                <p className='text-sm my-4 font-medium'>Payment Processing Fee: {Math.round(((feePercentage-1)*100))}%</p>
+                <p className='text-sm my-4 font-medium'>
+                 Total excluding Fees: {(appCost/100).toLocaleString()} USD
+                </p>
             </div>
 
             <MuiServerProvider>

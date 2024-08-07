@@ -8,12 +8,11 @@ type Detail = {
     projectId:string,
     versionId:string
     totalCost:string,
-    balance:string,
     paymentStatus:string,
     date:string
 }
 
-export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmail,projectName,projectId,versionId,totalCost,balance,paymentStatus,date}:Detail) {
+export default function PaymentProcessingEmail({clientName,paymentAmount,clientEmail,projectName,projectId,versionId,totalCost,paymentStatus,date}:Detail) {
 
     return (
     
@@ -35,7 +34,7 @@ export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmai
   
         
         <Heading as="h2" className='mb-4 text-slate-900 font-bold text-3xl bg-indigo-700 text-white p-3 rounded-md inline-block'>TerraTinge</Heading>
-        <Text className='mb-4 text-sm'>Hello {clientName},your payment of <span className='text-md text-green-700 font-bold'>{paymentAmount} has been processed successfully</span></Text>
+        <Text className='mb-4 text-sm'>Hello {clientName},your payment of <span className='text-md font-bold'>{paymentAmount} is currently being processed</span></Text>
   
         <Section className=' p-6 rounded border-solid border-2 border-stone-200 mb-6'>
          
@@ -44,11 +43,11 @@ export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmai
         
         <Text className='mb-12 text-sm'>Date: <span className='ml-2'>{date}</span></Text>
 
-        <Text className='mb-2 text-md font-bold'>Billed To:</Text>
+        <Text className='mb-2 text-md font-bold'>To:</Text>
         <Text className='mb-2 text-sm'>{clientName}</Text>
         <Text className='mb-12 text-sm'>{clientEmail}</Text>
 
-        <Text className='mb-2 text-md font-bold'>Payment Detail:</Text>
+        <Text className='mb-2 text-md font-bold'>Details:</Text>
         <Text className='mb-2'>Project Name:<span className='ml-2'>{projectName}</span></Text>
         <Text className='mb-2'>Project Id:<span className='ml-2'>{projectId}</span></Text>
         <Text className='mb-2'>Version Id:<span className='ml-2'>{versionId}</span></Text>
@@ -57,7 +56,6 @@ export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmai
 
         <Text className='mb-2'>Amount Paid:<span className='ml-2'>{paymentAmount}</span></Text>
 
-        <Text className='mb-2'>Balance:<span className='ml-2 font-semibold'>{balance}</span></Text>
 
 
         <Text className='mb-2'>Project Payment Status:<span className='ml-2 text-green-700 font-bold'>{paymentStatus}</span></Text>
@@ -65,8 +63,7 @@ export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmai
         
         
         </Section>
-        <Text className='text-xs text-center'>please keep this email for your records and make note of your project Id</Text>
-        <Text className='text-center'>Thank you {clientName} for your Payment!</Text>
+        <Text className='text-center'>Thank you {clientName},we will send you another email to inform you if the payment processing succeeded or failed</Text>
   
         </Container>
   
@@ -76,5 +73,4 @@ export default function PaymentSuccessEmail({clientName,paymentAmount,clientEmai
       
     );
 }
-  
   

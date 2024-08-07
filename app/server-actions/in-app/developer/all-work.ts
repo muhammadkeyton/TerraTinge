@@ -110,7 +110,8 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
         appName,
         appDetail,
         percentage:dynamicPercentage,
-        appCost:Math.round(cost * dynamicPercentage),
+        appCostAndFee:Math.round(cost * dynamicPercentage),
+        appCost:Math.round(cost),
         paymentAmount:0,
     }
 

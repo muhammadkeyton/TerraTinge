@@ -44,7 +44,7 @@ export const fetchAllProjects = async():Promise<null| Project[]> => {
 
 
 export const updateProject = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
-    const {appCost,appDetail,appName,paymentAmount,paymentStatus,percentage} = newData;
+    const {appCost,appDetail,appName,paymentAmount,paymentStatus,percentage,appCostAndFee} = newData;
 
 
     try{
@@ -66,7 +66,8 @@ export const updateProject = async ({projectId,newData}:{projectId:string,newDat
                 appDetail,
                 paymentAmount,
                 paymentStatus,
-                feePercentage:percentage
+                feePercentage:percentage,
+                appCostAndFee
                 
             }
 
