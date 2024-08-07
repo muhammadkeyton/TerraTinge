@@ -32,14 +32,18 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
       if (docSnap.exists()) {
         const project = docSnap.data() as Project;
         const latestVersion = project.versions[project.versions.length - 1];
+
+        
         
 
         if(isVersionStage1(latestVersion)) return;
 
+        let remainingBalance = latestVersion.projectInfo.appCostAndFee - paymentAmount;
+
         latestVersion.projectInfo = {
           ...latestVersion.projectInfo,
           paymentAmount:paymentAmount,
-          paymentStatus: ProjectPayment.paid,
+          paymentStatus: remainingBalance === 0? ProjectPayment.paid:ProjectPayment.initial,
           projectState: ProjectState.inProgress,
           
 

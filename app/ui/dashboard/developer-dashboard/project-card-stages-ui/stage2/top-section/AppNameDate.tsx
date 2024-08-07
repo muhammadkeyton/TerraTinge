@@ -1,5 +1,5 @@
 
-import Image from 'next/image';
+
 
 import Divider from '@mui/material/Divider';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
@@ -10,15 +10,18 @@ type  AppNameImageDateFeedBackTextProps = {
     createdAt:string,
     appCost:number,
     feePercentage:number,
-    appCostAndFee:number
+    appCostAndFee:number,
+    paymentAmount:number,
+    paymentDate: string
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate}:AppNameImageDateFeedBackTextProps){
     return(
         <>
             <div>
                 <h2 className='text-xl font-bold '>{appName}</h2>
-                <p className='text-sm my-4 font-medium'>Date: {createdAt}</p>
+                <p className='text-sm my-4 font-medium'>Submission Date: {createdAt}</p>
+                <p className='text-sm my-4 font-medium'>Payment Date: {paymentDate}</p>
 
                 
                 <p className='text-sm my-4 font-medium'>
@@ -29,6 +32,8 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
                 <p className='text-sm my-4 font-medium'>
                  Total excluding Fees: {(appCost/100).toLocaleString()} USD
                 </p>
+
+                <p className='text-sm my-4 font-medium'>Payment Amount: {(paymentAmount/100).toLocaleString()} USD</p>
             </div>
 
             <MuiServerProvider>

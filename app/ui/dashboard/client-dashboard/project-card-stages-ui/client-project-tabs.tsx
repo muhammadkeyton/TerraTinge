@@ -5,12 +5,13 @@ import { useState,useEffect} from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn-components/tabs"
 
 
-import { isVersionStage1,isVersionStage2 } from '../../type-guards';
+import { isVersionStage1,isVersionStage2,isVersionStage3 } from '../../type-guards';
 
 
 import { clientProjectsType} from '@/app/lib/definitions';
 import ProjectCardStage1 from './stage1/client-project-card';
 import ProjectCardStage2 from './stage2/client-project-card-stage2';
+import ProjectCardStage3 from './stage3/client-project-card-stage3';
 
 
 
@@ -61,12 +62,22 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
                                     }
 
 
+                                    return 'nothing in review'
+
+
 
                                 
                                 }
 
 
                                 case 'InProgress':{
+                                   const version = inProgress?.versions[inProgress?.versions.length - 1];
+
+                                   if(version && isVersionStage3(version)){
+                                    return <ProjectCardStage3 appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} projectLink={version.projectInfo.projectLink} appName={inProgress.appName} clientEmail={inProgress.clientInfo.clientEmail} clientImage={inProgress.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus}/>
+                                   }
+
+
                                    return 'nothing in progress'
                                 }
 

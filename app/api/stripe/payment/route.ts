@@ -58,7 +58,7 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
                
                 
                 if(!isVersionStage1(latestVersion)){
-                    return latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount;
+                    return Math.round(latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount);
                 }
 
 

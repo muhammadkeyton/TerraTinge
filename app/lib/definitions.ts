@@ -220,7 +220,25 @@ export type VersionStage2 = {
   }
 }
 
-export type ProjectVersions = VersionStage1 | VersionStage2
+
+export type VersionStage3 = {
+  versionId:string,
+  versionStage:VersionStage,
+  projectInfo:{
+    projectState:ProjectState
+    appName:string,
+    appDetail:string,
+    paymentStatus:ProjectPayment,
+    feePercentage:number,
+    appCost:number,
+    appCostAndFee:number,
+    paymentAmount:number,
+    projectLink:string | null,
+    createdAt:Timestamp | string
+  }
+}
+
+export type ProjectVersions = VersionStage1 | VersionStage2 | VersionStage3
 
 export type Project={
 
