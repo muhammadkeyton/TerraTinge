@@ -114,7 +114,7 @@ export default function DeveloperProjectCardStage3({appName,clientEmail,clientIm
     
 
     return (
-      <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
+      <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md my-6'>
 
 
         
