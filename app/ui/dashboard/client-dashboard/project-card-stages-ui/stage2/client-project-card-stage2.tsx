@@ -24,13 +24,12 @@ type ProjectCardProps = {
   appDetail:string,
   projectId:string,
   paymentStatus:ProjectPayment
-  paymentAmount:number
  
   
 }
 
 
-export default function ProjectCardStage2({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,projectId,paymentAmount,paymentStatus}:ProjectCardProps){
+export default function ProjectCardStage2({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,projectId,paymentStatus}:ProjectCardProps){
 
     return (
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
@@ -41,7 +40,7 @@ export default function ProjectCardStage2({appName,clientEmail,clientImage,creat
           <AppNameImageDateFeedBackText appCostAndFee={appCostAndFee} appName={appName} createdAt={createdAt}/>
 
           <div className='flex flex-col my-4 gap-4 px-4'>
-           <ViewProjectDetails appCostAndFee={appCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
+           <ViewProjectDetails appCostAndFee={appCostAndFee}  paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
            <ProceedToPayment  appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
             
           </div>

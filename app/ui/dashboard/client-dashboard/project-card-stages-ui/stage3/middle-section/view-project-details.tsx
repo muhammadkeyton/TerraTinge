@@ -80,7 +80,7 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
 
                           {
-                           paymentStatus === ProjectPayment.initial &&
+                           paymentStatus !== ProjectPayment.pending &&
                           <>
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>initial payment:</p>
@@ -229,7 +229,7 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
 
                          {
-                           paymentStatus === ProjectPayment.initial &&
+                           paymentStatus !== ProjectPayment.pending &&
                           <>
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>initial payment:</p>

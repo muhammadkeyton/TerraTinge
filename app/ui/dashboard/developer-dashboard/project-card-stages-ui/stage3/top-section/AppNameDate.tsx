@@ -12,14 +12,17 @@ type  AppNameImageDateFeedBackTextProps = {
     feePercentage:number,
     appCostAndFee:number,
     paymentAmount:number,
+    paymentDate:string,
+    projectLink:string | null
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate,projectLink}:AppNameImageDateFeedBackTextProps){
     return(
         <>
             <div>
                 <h2 className='text-xl font-bold '>{appName}</h2>
                 <p className='text-sm my-4 font-medium'>Submission Date: {createdAt}</p>
+                <p className='text-sm my-4 font-medium'>Start Date: {paymentDate}</p>
 
                 
                 <p className='text-sm my-4 font-medium'>
@@ -32,6 +35,20 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
                 </p>
 
                 <p className='text-sm my-4 font-medium'>Payment Amount: {(paymentAmount/100).toLocaleString()} USD</p>
+
+                {
+                    projectLink?
+                    <a className='text-sm underline italic text-blue-600 dark:text-blue-400' href={projectLink} target='_blank'>View WebApp</a>
+
+                    :
+
+                    <code className="text-xs bg-green-600 text-white p-1 rounded-sm">
+                    '👩🏿‍💻inProgress🧑‍💻'
+                    </code>
+                    
+                 }
+
+                
             </div>
 
             <MuiServerProvider>

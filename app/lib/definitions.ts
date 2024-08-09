@@ -166,6 +166,16 @@ export type ReviewedProjectType = {
 }
 
 
+export type ReviewedProjectTypeStage3 = {
+  appName:string,
+  appCost:number,
+  appCostAndFee:number,
+  appDetail:string,
+  percentage:number,
+  projectLink: string | null
+}
+
+
 //client fetch projects server action mutation response
 export type clientProjectsType = {
   inReview:Project | null,
@@ -234,6 +244,7 @@ export type VersionStage3 = {
     appCostAndFee:number,
     paymentAmount:number,
     projectLink:string | null,
+    paymentDate: Timestamp | string,
     createdAt:Timestamp | string
   }
 }

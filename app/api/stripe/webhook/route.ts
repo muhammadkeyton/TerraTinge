@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
         const errorMessage = paymentIntent.last_payment_error.message;
 
 
-        console.log(paymentIntent)
+        
 
         waitUntil(handlePaymentFailed({projectId:projectId,paymentAmount:amountCharged,message:errorMessage}));
         // Then define and call a method to handle the successful payment intent.

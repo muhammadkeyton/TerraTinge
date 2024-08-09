@@ -1,8 +1,8 @@
 'use server';
 
-import { fetchAllProjects, updateProject,DeleteProject } from "@/app/firebase/firestore/developer/all-work";
+import { fetchAllProjects, updateProjectStage2,updateProjectStage3,DeleteProject } from "@/app/firebase/firestore/developer/all-work";
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
-import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType } from "@/app/lib/definitions";
+import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3 } from "@/app/lib/definitions";
 import { Timestamp } from "firebase/firestore";
 
 import { revalidatePath } from "next/cache";
@@ -41,16 +41,36 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
     };
 
 
+  
+    //type guard
+    const isVersionStage3 = (version:ProjectVersions): version is VersionStage3 =>{
+        return version.versionStage === VersionStage.stage3;
+    }
+
+
     //time complexity of o(n)
     const modifiedDateProjects = projects.map((project) => {
-        const modifiedVersions = project.versions.map((version) => ({
-            ...version,
-            projectInfo: {
-                ...version.projectInfo,
-                createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp)
+        const modifiedVersions = project.versions.map((version) => {
+            if (isVersionStage3(version)) {
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                        paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                    }
+                };
+            } else {
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                    }
+                };
             }
-        }));
-    
+        });
+
         return {
             ...project,
             versions: modifiedVersions
@@ -89,8 +109,11 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
 
 
 export const submitUpdateProject = async (id:string,projectData:any):Promise<boolean> =>{
-    const {appName,appCost,appDetail,percentage} = projectData;
+    const {appName,appCost,appDetail,percentage,projectLink,versionStage} = projectData;
 
+    
+
+  
 
 
     const appNameResult = NameSchema.safeParse({name:appName});
@@ -103,20 +126,53 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
     let cost = Number(appCostResult.data.appCost)*100;
     let dynamicPercentage = (Number(percentage)/100)+1;
 
-   //It's usually good practice to store monetary values in cents in your database to eliminate JavaScript floating-point errors and ensure greater accuracy
-   //thats why we have to change appCost from dollar amount to cents
-    let projectUpdate = <ReviewedProjectType>{
+
+
+    // Function to calculate total charge
+    function calculateTotalCharge(desiredAmount:number, percentage:number):number {
+        let processingFeePercentage = percentage / 100;
+        return desiredAmount / (1 - processingFeePercentage);
+    }
+    
+   let projectUpdate;
+
+   let projectUpdateResult;
+
+   let totalCharge = calculateTotalCharge(cost,percentage);
+
+   if(versionStage && (versionStage === VersionStage.stage3)){
+      
+      projectUpdate = <ReviewedProjectTypeStage3>{
+        appName,
+        appDetail,
+        percentage:dynamicPercentage,
+        appCostAndFee:Math.round(totalCharge),
+        appCost:Math.round(cost),
+        projectLink: projectLink.length > 0 ? projectLink : null
+      }
+
+      projectUpdateResult = await updateProjectStage3({projectId:id,newData:projectUpdate});
+   }else{
+    projectUpdate = <ReviewedProjectType>{
         paymentStatus:ProjectPayment.pending,
         appName,
         appDetail,
         percentage:dynamicPercentage,
-        appCostAndFee:Math.round(cost * dynamicPercentage),
+        appCostAndFee:Math.round(totalCharge),
         appCost:Math.round(cost),
         paymentAmount:0,
     }
+    projectUpdateResult = await updateProjectStage2({projectId:id,newData:projectUpdate});
+
+   }
+    
+
+   //It's usually good practice to store monetary values in cents in your database to eliminate JavaScript floating-point errors and ensure greater accuracy
+   //thats why we have to change appCost from dollar amount to cents
+    
 
 
-    const projectUpdateResult = await updateProject({projectId:id,newData:projectUpdate});
+   
 
     if(projectUpdateResult){
         revalidatePath('/dashboard/developer')

@@ -36,14 +36,18 @@ type ViewSubmittedDetailsPropStage2 = {
   appName:string,
   appCostAndFee:number,
   appDetail:string,
-  paymentStatus:ProjectPayment
+  paymentStatus:ProjectPayment,
+  paymentAmount:number,
 }
 
 
-export default function DeveloperViewSubmittedDetailsStage2({appName,appDetail,appCostAndFee,paymentStatus}:ViewSubmittedDetailsPropStage2){
+export default function DeveloperViewSubmittedDetailsStage3({appName,appDetail,appCostAndFee,paymentStatus,paymentAmount}:ViewSubmittedDetailsPropStage2){
   const {isDesktop,windowWidth} = useWindowWidth();
 
   const cost = (appCostAndFee/100).toLocaleString();
+
+  const initialPayment = (paymentAmount/100).toLocaleString();
+  const balance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
  
 
   const appDetailLines = appDetail.split('\n');
@@ -82,6 +86,28 @@ if(isDesktop || windowWidth >= 768){
                <div className="text-md p-1 rounded-sm">${cost} USD</div>
 
              </div>
+
+
+
+              {
+                      (paymentStatus === ProjectPayment.initial || (appCostAndFee - paymentAmount !== 0)) &&
+                    <>
+                    <div className='flex flex-row space-x-4 items-center'>
+                      <p>initial payment:</p>
+                      <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
+
+                    </div>
+
+
+                    <div className='flex flex-row space-x-4 items-center'>
+                      <p>remaining balance:</p>
+                      <div className="text-md p-1 rounded-sm">${balance} USD</div>
+
+                    </div>
+                    </>
+
+
+              }
 
 
 
@@ -212,6 +238,31 @@ if(isDesktop || windowWidth >= 768){
                             <div className="text-md p-1 rounded-sm">${cost} USD</div>
 
                           </div>
+
+
+                          {
+                           (paymentStatus === ProjectPayment.initial || (appCostAndFee - paymentAmount !== 0)) &&
+                          <>
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>initial payment:</p>
+                            <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
+
+                          </div>
+
+
+                          <div className='flex flex-row space-x-4 items-center'>
+                            <p>remaining balance:</p>
+                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+
+                          </div>
+                          </>
+
+
+                         }
+
+
+
+                          
 
                          
 

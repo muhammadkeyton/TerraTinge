@@ -2,7 +2,7 @@
 
 import { Resend } from 'resend';
 import { Project, ProjectPayment, ProjectState, ProjectVersions, VersionStage, VersionStage1 } from "@/app/lib/definitions";
-import { doc,getDoc,updateDoc} from "firebase/firestore";
+import { doc,getDoc,Timestamp,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
 
 
@@ -45,6 +45,7 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
           paymentAmount:paymentAmount,
           paymentStatus: remainingBalance === 0? ProjectPayment.paid:ProjectPayment.initial,
           projectState: ProjectState.inProgress,
+          paymentDate:Timestamp.fromDate(new Date())
           
 
         }
@@ -239,18 +240,40 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
       const project = docSnap.data() as Project;
       const latestVersion = project.versions[project.versions.length - 1];
       
-
+      if(isVersionStage1(latestVersion)) return;
      
 
     
       const clientRef = doc(db, "users", project.clientInfo.clientId);
+
+      let dynamicPaymentStatus = (()=>{
+        if((latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount) === 0){
+            return ProjectPayment.paid
+        }else if ((latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount) === latestVersion.projectInfo.appCostAndFee){
+            return ProjectPayment.pending;
+        }else{
+            return ProjectPayment.initial;
+        }
+      })();
+
+      latestVersion.projectInfo.paymentStatus = dynamicPaymentStatus;
+
+      project.versions[project.versions.length - 1] = latestVersion;
+
+
+      try {
+        await updateDoc(projectDocumentRef,project);
+    } catch (error) {
+        console.error("Error updating project document after success payment: ", error);
+    }
       
       const user = (await getDoc(clientRef)).data();
 
+      
+
 
       let clientName = user?.name ?? user?.email?.split('@')[0];
-      let clientEmail = user?.email;
-      let paymentStatus = ProjectPayment.pending;
+      let clientEmail = user?.email; 
       let projectName = project.appName;
       let appId = projectId;
       let amountPaid = `$${(paymentAmount/100).toLocaleString()}USD`;
@@ -273,7 +296,7 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
            clientEmail:clientEmail,
            date:formattedDate,
            paymentAmount:amountPaid,
-           paymentStatus:paymentStatus,
+           paymentStatus:dynamicPaymentStatus,
            projectId:appId,
            projectName:projectName,
            versionId:latestVersion.versionId,

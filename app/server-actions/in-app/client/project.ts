@@ -1,6 +1,6 @@
 'use server';
 
-import { AppDataServer, Project, ProjectState,clientProjectsType } from "@/app/lib/definitions";
+import { AppDataServer, ProjectState,ProjectVersions,VersionStage,VersionStage3,clientProjectsType } from "@/app/lib/definitions";
 
 import { NameSchema } from "@/app/lib/data-validation";
 
@@ -10,7 +10,6 @@ import { addNewProject,getClientProjects,updateNewProject, ClientDeleteProject} 
 
 import { revalidatePath } from 'next/cache';
 import { Timestamp } from "firebase/firestore";
-
 
 
 
@@ -113,16 +112,37 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
     };
 
 
+    //type guard
+    const isVersionStage3 = (version:ProjectVersions): version is VersionStage3 =>{
+        return version.versionStage === VersionStage.stage3;
+    }
+
+
     //time complexity of o(n)
+
+   // Modified projects with formatted dates
     const modifiedDateProjects = projects.map((project) => {
-        const modifiedVersions = project.versions.map((version) => ({
-            ...version,
-            projectInfo: {
-                ...version.projectInfo,
-                createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp)
+        const modifiedVersions = project.versions.map((version) => {
+            if (isVersionStage3(version)) {
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                        paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                    }
+                };
+            } else {
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                    }
+                };
             }
-        }));
-    
+        });
+
         return {
             ...project,
             versions: modifiedVersions

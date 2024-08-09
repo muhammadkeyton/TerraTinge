@@ -27,7 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../../../shadcn-components/alert-dialog';
-import { ProjectPayment } from '@/app/lib/definitions';
+import { ProjectPayment, VersionStage } from '@/app/lib/definitions';
 
 
 type ProjectCardProps = {
@@ -42,7 +42,10 @@ type ProjectCardProps = {
   feePercentage:number,
   appCostAndFee:number,
   paymentAmount:number,
-  paymentStatus:ProjectPayment
+  paymentStatus:ProjectPayment,
+  projectLink:string | null,
+  paymentDate:string,
+  versionStage:VersionStage
 
  
   
@@ -106,7 +109,7 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
 }
 
 
-export default function DeveloperProjectCardStage2({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee}:ProjectCardProps){
+export default function DeveloperProjectCardStage3({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage}:ProjectCardProps){
     
     
 
@@ -116,7 +119,7 @@ export default function DeveloperProjectCardStage2({appName,clientEmail,clientIm
 
         
                 
-      <AppNameDate paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
+      <AppNameDate paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
       
 
      
@@ -124,12 +127,15 @@ export default function DeveloperProjectCardStage2({appName,clientEmail,clientIm
       <div className='flex flex-row my-4 justify-between space-x-4'>
 
         
-        <ViewSubmittedDetails paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
-        <EditProject appCost={`${appCost/100}`} percentage={`${ Math.round(((feePercentage-1)*100))}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>
+        <ViewSubmittedDetails paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
+        
+        
+        
+        {paymentStatus !== ProjectPayment.processing && <EditProject versionStage={versionStage} projectLink={projectLink} appCost={`${appCost/100}`} percentage={`${ Math.round(((feePercentage-1)*100))}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>}
 
 
 
-        <DeveloperDeleteProjectStage1 projectId={projectId} clientId={clientId}/>
+        {paymentStatus !== ProjectPayment.processing && <DeveloperDeleteProjectStage1 projectId={projectId} clientId={clientId}/>}
         
       </div>
 

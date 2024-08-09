@@ -5,7 +5,7 @@
 import { db} from "@/app/firebase/firebase";
 
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,setDoc,deleteField, updateDoc} from "firebase/firestore";
-import { Project, ReviewedProjectType, VersionStage } from "@/app/lib/definitions";
+import { Project, ProjectPayment, ReviewedProjectType, ReviewedProjectTypeStage3, VersionStage } from "@/app/lib/definitions";
 
 //we are trying to fetch all data for developer to view,we have to make this better this is just a starting function
 export const fetchAllProjects = async():Promise<null| Project[]> => {
@@ -40,10 +40,81 @@ export const fetchAllProjects = async():Promise<null| Project[]> => {
 }
 
 
+export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectTypeStage3}):Promise<boolean> =>{
+    console.log('in function update stage 3')
+    const {appCost,appDetail,appName,percentage,appCostAndFee,projectLink} = newData;
+
+
+    try{
+        const docRef = doc(db, "projects", projectId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+
+            let docData = docSnap.data() as Project;
+            let versions = docData.versions;
+            let lastVersion = versions[versions.length - 1];
+            let dynamicPaymentStatus:ProjectPayment;
+            //type guard
+            if('appCostAndFee' in lastVersion.projectInfo){
+                dynamicPaymentStatus = (()=>{
+                    if((lastVersion.projectInfo.appCostAndFee - lastVersion.projectInfo.paymentAmount) === 0){
+                        return ProjectPayment.paid
+                    }else if ((lastVersion.projectInfo.appCostAndFee - lastVersion.projectInfo.paymentAmount) === lastVersion.projectInfo.appCostAndFee){
+                        return ProjectPayment.pending;
+                    }else{
+                        return ProjectPayment.initial;
+                    }
+
+                    
+                })(); 
+            
+            
+
+            docData.appName = appName;
+            lastVersion.projectInfo = {
+                ...lastVersion.projectInfo,
+                appCost,
+                appDetail,
+                feePercentage:percentage,
+                appCostAndFee,
+                projectLink,
+                paymentStatus:dynamicPaymentStatus
+                
+            }
+
+           }
+
+            
+
+
+            versions[versions.length - 1] = lastVersion;
+
+
+            await updateDoc(docRef,{
+                ...docData,
+                versions:versions
+
+            })
+
+            return true;
+        }
+    }catch(e){
+        console.log(e);
+    }
+   
+    
+    return false;
 
 
 
-export const updateProject = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
+}
+
+
+export const updateProjectStage2 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
+    
+    
+    
     const {appCost,appDetail,appName,paymentAmount,paymentStatus,percentage,appCostAndFee} = newData;
 
 

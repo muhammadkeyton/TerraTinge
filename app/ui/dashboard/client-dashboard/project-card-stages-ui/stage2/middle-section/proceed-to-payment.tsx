@@ -34,7 +34,7 @@ import { PaymentOption } from "@/app/lib/definitions";
 export default function ProceedToPayment({appCostAndFee,projectId,appName}:{appCostAndFee:number,projectId:string,appName:string}){
     const {isDesktop,windowWidth} = useWindowWidth();
     const cost = (appCostAndFee/100).toLocaleString();
-    const thirdCost = (Math.round((appCostAndFee / 100)/3)).toLocaleString();
+    const thirdCost = ((appCostAndFee / 100)/3).toFixed(2).toLocaleString();
 
     const [selectedPaymentOption,setOption] = useState<PaymentOption | null>(null);
 
@@ -115,7 +115,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName}:{appC
                               variant="contained" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col  p-4 md:p-6 `}>
                                 <StarHalfIcon className='mb-4 text-3xl sm:text-4xl '/>
                                 <p className='font-semibold mb-4'>Third payment</p>
-                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{(Math.round((appCostAndFee / 100)/3)).toLocaleString()} USD</p>
+                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{thirdCost} USD</p>
                               
                               </Button>
 
@@ -208,7 +208,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName}:{appC
                               variant="contained" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col  p-4 md:p-6 `}>
                                 <StarHalfIcon className='mb-4 text-3xl sm:text-4xl '/>
                                 <p className='font-semibold mb-4'>Third payment</p>
-                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{(Math.round((appCostAndFee / 100)/3)).toLocaleString()} USD</p>
+                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{thirdCost} USD</p>
                               
                               </Button>
 
