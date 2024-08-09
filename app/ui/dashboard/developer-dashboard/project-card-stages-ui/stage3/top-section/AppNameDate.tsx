@@ -43,7 +43,7 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
                     :
 
                     <code className="text-xs bg-green-600 text-white p-1 rounded-sm">
-                    '👩🏿‍💻inProgress🧑‍💻'
+                    &apos;👩🏿‍💻inProgress🧑‍💻&apos;
                     </code>
                     
                  }
