@@ -41,10 +41,25 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
     };
 
 
+    const formatMaintainanceDate = (date:Timestamp | null):Date|null => {
+        if(!date) return null;
+
+        return new Date(date.seconds * 1000 + date.nanoseconds / 1000000);
+    }
+
+
+    
+
+
   
-    //type guard
+    //type guard ,versionstage3 is the final version,stage4 is just to indicate its complete
     const isVersionStage3 = (version:ProjectVersions): version is VersionStage3 =>{
         return version.versionStage === VersionStage.stage3;
+    }
+
+
+    const isVersionStage4 = (version:ProjectVersions):version is VersionStage3 => {
+        return version.versionStage === VersionStage.stage4;
     }
 
 
@@ -58,8 +73,22 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
                         ...version.projectInfo,
                         createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
                         paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                        
                     }
                 };
+            } else if (isVersionStage4(version)){
+
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                        paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                        completionDate: formatTimestamp(version.projectInfo.completionDate as Timestamp)
+                        
+                    }
+                };
+
             } else {
                 return {
                     ...version,
@@ -71,10 +100,26 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
             }
         });
 
+
+        if(project.projectState === ProjectState.done){
+            return {
+                ...project,
+                versions: modifiedVersions,
+                maintainance:{
+                    ...project.maintainance,
+                    endDate:formatMaintainanceDate(project.maintainance.endDate as Timestamp | null)
+                }
+            };
+        }
+
+
+
         return {
             ...project,
-            versions: modifiedVersions
+            versions: modifiedVersions,
         };
+
+       
     });
 
 
@@ -109,7 +154,7 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
 
 
 export const submitUpdateProject = async (id:string,projectData:any):Promise<boolean> =>{
-    const {appName,appCost,appDetail,percentage,projectLink,versionStage} = projectData;
+    const {appName,appCost,appDetail,percentage,projectLink,versionStage,completed} = projectData;
 
     
 
@@ -148,6 +193,7 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
         percentage:dynamicPercentage,
         appCostAndFee:Math.round(totalCharge),
         appCost:Math.round(cost),
+        completed:completed,
         projectLink: projectLink.length > 0 ? projectLink : null
       }
 

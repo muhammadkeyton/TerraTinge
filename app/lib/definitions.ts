@@ -172,7 +172,8 @@ export type ReviewedProjectTypeStage3 = {
   appCostAndFee:number,
   appDetail:string,
   percentage:number,
-  projectLink: string | null
+  projectLink: string | null,
+  completed:boolean
 }
 
 
@@ -245,9 +246,13 @@ export type VersionStage3 = {
     paymentAmount:number,
     projectLink:string | null,
     paymentDate: Timestamp | string,
-    createdAt:Timestamp | string
+    createdAt:Timestamp | string,
+    completionDate:Timestamp | string | null
   }
 }
+
+
+
 
 export type ProjectVersions = VersionStage1 | VersionStage2 | VersionStage3
 
@@ -264,12 +269,21 @@ export type Project={
     clientEmail:string,
     clientImage:string,
     clientId:string
+  },
+  maintainance:{
+    active:boolean,
+    endDate:Date | null | Timestamp
   }
 }
 
 
 
 
+
+
+
+
+//old database datastructure that failed,keeping it here commented to avoid repeating the same mistake in future projects
 
 // export type Project = {
 //   //the project id is added as we fetch data from the database

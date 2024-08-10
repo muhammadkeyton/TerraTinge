@@ -4,7 +4,7 @@ import { useState,useEffect} from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn-components/tabs"
 
-import { isVersionStage1,isVersionStage2, isVersionStage3 } from '../../type-guards';
+import { isVersionStage1,isVersionStage2, isVersionStage3,isVersionStage4 } from '../../type-guards';
 
 
 
@@ -12,6 +12,8 @@ import { developerProjectsType } from '@/app/lib/definitions';
 import DeveloperProjectCardStage1 from './stage1/developer-project-card';
 import DeveloperProjectCardStage2 from './stage2/developer-project-card-stage2';
 import DeveloperProjectCardStage3 from './stage3/developer-project-card-stage3';
+import DeveloperProjectCardStage4 from './stage4/developer-project-card-stage4';
+import { Timestamp } from 'firebase-admin/firestore';
 
 
 
@@ -34,7 +36,9 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
     
    
     
-
+   console.log(inReview)
+   console.log(inProgress)
+   console.log(done)
    
    
 
@@ -114,7 +118,22 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                     
                                 return (
                     
-                                    <h1 className='font-semibold text-md text-center'>All Your Completed Apps Will Appear Here</h1>
+                                    <div>
+
+                                        {
+                                            done?.map((project,i)=>{
+                                                let version = project.versions[project.versions.length - 1]
+
+                                                if(isVersionStage4(version)){
+                                                    return <DeveloperProjectCardStage4 
+                                                    maintainance={project.maintainance} 
+                                                    
+                                                    completionDate={version.projectInfo.completionDate as string}   key={i} versionStage={version.versionStage} appCost={version.projectInfo.appCost} appCostAndFee={version.projectInfo.appCostAndFee} feePercentage={version.projectInfo.feePercentage} paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink} clientId={project.clientInfo.clientId} projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
+                                                }
+                                            })
+                                        }
+
+                                    </div>
                                
                                 )
                                    

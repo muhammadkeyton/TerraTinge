@@ -65,11 +65,11 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
     
     </AlertDialogTrigger>
   </MuiServerProvider>
-  <AlertDialogContent className='max-w-sm md:max-w-lg bg-white dark:bg-black '>
+  <AlertDialogContent className='max-w-sm md:max-w-lg  bg-white dark:bg-black '>
     <AlertDialogHeader>
       <AlertDialogTitle>Do you really want to delete this project?</AlertDialogTitle>
       <AlertDialogDescription>
-      Are you sure you want to delete this project? This action cannot be undone and will permanently remove all associated data from our database.
+      Are you sure you want to delete this project? This action cannot be undone and will permanently remove all associated data from our servers.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>

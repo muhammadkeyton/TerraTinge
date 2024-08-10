@@ -18,6 +18,11 @@ export const isVersionStage3 = (version:ProjectVersions): version is VersionStag
     return version.versionStage === VersionStage.stage3;
 }
 
+export const isVersionStage4 = (version:ProjectVersions): version is VersionStage3 =>{
+    return version.versionStage === VersionStage.stage4;
+}
+
+
 
 
 
