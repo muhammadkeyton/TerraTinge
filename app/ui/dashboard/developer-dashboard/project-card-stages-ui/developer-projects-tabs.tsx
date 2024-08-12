@@ -35,10 +35,7 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
     }, []);
     
    
-    
-   console.log(inReview)
-   console.log(inProgress)
-   console.log(done)
+   
    
    
 
@@ -110,6 +107,10 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                             })
                                         }
 
+                                         {
+                                         ( inProgress && inProgress?.length < 1) && <h1 className='font-semibold text-md text-center'>No Projects In Progress</h1>
+                                         }
+
                                     </div>)
                                 }
 
@@ -132,6 +133,11 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                                 }
                                             })
                                         }
+
+
+{
+                                         ( done && done?.length < 1) && <h1 className='font-semibold text-md text-center'>No Completed Projects Yet</h1>
+                                         }
 
                                     </div>
                                

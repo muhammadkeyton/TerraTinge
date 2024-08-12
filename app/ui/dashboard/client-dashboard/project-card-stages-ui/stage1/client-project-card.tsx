@@ -58,10 +58,10 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
   
   <AlertDialog>
   <MuiServerProvider>
-   <AlertDialogTrigger>
-   <Button className={`${montserrat.className} text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl normal-case`}>
+   <AlertDialogTrigger className='text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl'>
+   
    Delete
-   </Button>
+  
     
     </AlertDialogTrigger>
   </MuiServerProvider>
@@ -75,7 +75,7 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
       <MuiServerProvider>
-        <AlertDialogAction>
+       
         <Button className={`${montserrat.className} text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl normal-case`}
           onClick={async()=>{
             if(!navigator.onLine){
@@ -97,7 +97,7 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
           Delete
         </Button>
           
-        </AlertDialogAction>
+     
       </MuiServerProvider>
     </AlertDialogFooter>
   </AlertDialogContent>

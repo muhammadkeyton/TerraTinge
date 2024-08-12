@@ -60,17 +60,17 @@ type ProjectCardProps = {
 }
 
 
-function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,clientId:string}){
+function DeveloperDeleteProjectStage4({projectId,clientId}:{projectId:string,clientId:string}){
   const router = useRouter();
   return(
 
   
   <AlertDialog>
   <MuiServerProvider>
-   <AlertDialogTrigger>
-   <Button className={`${montserrat.className} text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl normal-case`}>
+   <AlertDialogTrigger className='text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl'>
+  
    Delete
-   </Button>
+
     
     </AlertDialogTrigger>
   </MuiServerProvider>
@@ -85,7 +85,8 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
       <MuiServerProvider>
-        <AlertDialogAction>
+       
+    
         <Button className={`${montserrat.className} text-base bg-red-700 text-white hover:bg-red-500  p-2   rounded-xl normal-case`}
           onClick={async()=>{
             if(!navigator.onLine){
@@ -107,7 +108,7 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
           Delete
         </Button>
           
-        </AlertDialogAction>
+        
       </MuiServerProvider>
     </AlertDialogFooter>
   </AlertDialogContent>
@@ -143,7 +144,7 @@ export default function DeveloperProjectCardStage4({appName,clientEmail,clientIm
 
 
 
-        {paymentStatus !== ProjectPayment.processing && <DeveloperDeleteProjectStage1 projectId={projectId} clientId={clientId}/>}
+        {paymentStatus !== ProjectPayment.processing && <DeveloperDeleteProjectStage4 projectId={projectId} clientId={clientId}/>}
         
       </div>
 

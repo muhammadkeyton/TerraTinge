@@ -49,7 +49,7 @@ import { submitUpdateProject } from '@/app/server-actions/in-app/developer/all-w
 import { VersionStage } from '@/app/lib/definitions';
 
 
-export default function EditProject({appName,appDetail,appCost,percentage,projectId,projectLink,versionStage}:{appName:string,appDetail:string,projectId:string,appCost:string,percentage:string,projectLink:string | null,versionStage:VersionStage}){
+export default function EditProject({appName,projectId,projectLink,versionStage}:{appName:string,appDetail:string,projectId:string,appCost:string,percentage:string,projectLink:string | null,versionStage:VersionStage}){
 
     const router = useRouter();
     const {isDesktop,windowWidth} = useWindowWidth()
@@ -172,7 +172,7 @@ export default function EditProject({appName,appDetail,appCost,percentage,projec
                   <DialogHeader className='mb-4'>
                     <DialogTitle className='mb-2'>{appData.appName.text}</DialogTitle>
                     <DialogDescription >
-                      Edit Client Project Detail and Payment
+                      Edit Client Project
                     </DialogDescription>
                   </DialogHeader>
                    
@@ -193,7 +193,9 @@ export default function EditProject({appName,appDetail,appCost,percentage,projec
                                
                                projectLink:appData.projectLink.text,
                              
-                               completed:appData.completed
+                               completed:appData.completed,
+                              
+                               versionStage:versionStage
                            });
    
                            console.log(responseOk)
@@ -315,7 +317,7 @@ export default function EditProject({appName,appDetail,appCost,percentage,projec
             <SheetHeader className='mb-4'>
               <SheetTitle className='mb-2'>{appData.appName.text}</SheetTitle>
               <SheetDescription>
-              Edit Client Project Detail and Payment
+              Edit Client Project
               </SheetDescription>
             </SheetHeader>
   
@@ -333,7 +335,9 @@ export default function EditProject({appName,appDetail,appCost,percentage,projec
                     
                     projectLink:appData.projectLink.text,
                    
-                    completed:appData.completed
+                    completed:appData.completed,
+
+                    versionStage:versionStage
                 });
   
                 console.log(responseOk)

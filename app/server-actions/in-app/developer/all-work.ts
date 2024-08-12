@@ -1,8 +1,8 @@
 'use server';
 
-import { fetchAllProjects, updateProjectStage2,updateProjectStage3,DeleteProject } from "@/app/firebase/firestore/developer/all-work";
+import { fetchAllProjects, updateProjectStage2,updateProjectStage3,DeleteProject, updateProjectStage4 } from "@/app/firebase/firestore/developer/all-work";
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
-import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3 } from "@/app/lib/definitions";
+import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4 } from "@/app/lib/definitions";
 import { Timestamp } from "firebase/firestore";
 
 import { revalidatePath } from "next/cache";
@@ -156,7 +156,7 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
 export const submitUpdateProject = async (id:string,projectData:any):Promise<boolean> =>{
     const {appName,appCost,appDetail,percentage,projectLink,versionStage,completed} = projectData;
 
-    
+    console.log('in submit and version is: ',versionStage)
 
   
 
@@ -164,11 +164,17 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
     const appNameResult = NameSchema.safeParse({name:appName});
     const appCostResult = AppCostSchema.safeParse({appCost:appCost});
 
-    if(!appNameResult.success || !appCostResult.success || appDetail.length < 1 || percentage.length < 1){
+
+    
+
+    if(versionStage !== VersionStage.stage4 && (!appNameResult.success || !appCostResult.success || appDetail.length < 1 || percentage.length < 1)){
         return false;
+        
     }
 
-    let cost = Number(appCostResult.data.appCost)*100;
+   
+
+    let cost = Number(appCostResult.data?.appCost)*100;
     let dynamicPercentage = (Number(percentage)/100)+1;
 
 
@@ -188,7 +194,7 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
    if(versionStage && (versionStage === VersionStage.stage3)){
       
       projectUpdate = <ReviewedProjectTypeStage3>{
-        appName,
+        appName:appNameResult.data?.name,
         appDetail,
         percentage:dynamicPercentage,
         appCostAndFee:Math.round(totalCharge),
@@ -198,6 +204,15 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
       }
 
       projectUpdateResult = await updateProjectStage3({projectId:id,newData:projectUpdate});
+   }else if(versionStage && (versionStage === VersionStage.stage4)){
+    console.log('in conditional version stage 4')
+     projectUpdate = <ReviewedProjectTypeStage4>{
+        appName,
+        completed:completed,
+        projectLink: projectLink.length > 0 ? projectLink : null
+      }
+
+      projectUpdateResult = await updateProjectStage4({projectId:id,newData:projectUpdate});
    }else{
     projectUpdate = <ReviewedProjectType>{
         paymentStatus:ProjectPayment.pending,

@@ -5,7 +5,7 @@
 import { db} from "@/app/firebase/firebase";
 
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,setDoc,deleteField, updateDoc, Timestamp} from "firebase/firestore";
-import { Project, ProjectPayment, ProjectState, ProjectVersions, ReviewedProjectType, ReviewedProjectTypeStage3, VersionStage, VersionStage3 } from "@/app/lib/definitions";
+import { Project, ProjectPayment, ProjectState, ProjectVersions, ReviewedProjectType, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4, VersionStage, VersionStage3 } from "@/app/lib/definitions";
 
 //we are trying to fetch all data for developer to view,we have to make this better this is just a starting function
 export const fetchAllProjects = async():Promise<null| Project[]> => {
@@ -40,9 +40,103 @@ export const fetchAllProjects = async():Promise<null| Project[]> => {
 }
 
 
+
+export const updateProjectStage4 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectTypeStage4}):Promise<boolean> =>{
+    console.log('in function update stage 4')
+    const {appName,projectLink,completed} = newData;
+
+    try{
+        const docRef = doc(db, "projects", projectId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+
+            let docData = docSnap.data() as Project;
+            let versions = docData.versions;
+            let lastVersion = versions[versions.length - 1];
+            
+
+
+            //type guard
+            const isVersionStage4 = (version:ProjectVersions): version is VersionStage3 =>{
+                return version.versionStage === VersionStage.stage4;
+            }
+
+            if(!isVersionStage4(lastVersion)) return false;
+          
+             
+            
+            
+
+            docData.appName = appName;
+            docData.projectState = completed ? ProjectState.done : ProjectState.inProgress;
+            lastVersion.versionStage = completed ? VersionStage.stage4 : VersionStage.stage3;
+            lastVersion.projectInfo = {
+                ...lastVersion.projectInfo,
+                projectLink,
+                appName: appName,
+                projectState:completed ? ProjectState.done : ProjectState.inProgress,
+                completionDate:completed? Timestamp.fromDate(new Date()) : null,
+
+
+                
+            }
+
+          
+
+            
+
+
+            versions[versions.length - 1] = lastVersion;
+
+            //include 3 months free maintainance for every new project created
+            const maintainanceStartDate = new Date();
+            const freeMaintainanceEndDate = new Date(maintainanceStartDate.getTime() + 90 * 24 * 60 * 60 * 1000);
+            const endFreeMaintainanceTimeStamp = Timestamp.fromDate(freeMaintainanceEndDate);
+
+            if(completed){
+                await updateDoc(docRef,{
+                    ...docData,
+                    versions:versions,
+                    maintainance: {
+                        active:true,
+                        endDate:endFreeMaintainanceTimeStamp
+                    } 
+                    
+    
+                });
+            }else{
+                await updateDoc(docRef,{
+                    ...docData,
+                    versions:versions,
+                    maintainance: deleteField()
+                }); 
+            }
+           
+
+            return true;
+        }
+
+
+
+    }catch(e){
+        console.log(e); 
+    }
+
+    return false;
+
+
+}
+
+
+
 export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectTypeStage3}):Promise<boolean> =>{
     console.log('in function update stage 3')
     const {appCost,appDetail,appName,percentage,appCostAndFee,projectLink,completed} = newData;
+
+
+
+    
 
 
     try{

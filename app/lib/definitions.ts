@@ -176,6 +176,12 @@ export type ReviewedProjectTypeStage3 = {
   completed:boolean
 }
 
+export type ReviewedProjectTypeStage4 = {
+  appName:string,
+  projectLink: string | null,
+  completed:boolean
+}
+
 
 //client fetch projects server action mutation response
 export type clientProjectsType = {

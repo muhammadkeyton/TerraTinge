@@ -107,10 +107,31 @@ if(isDesktop || windowWidth >= 768){
                       <div className="text-md p-1 rounded-sm">${balance} USD</div>
 
                     </div>
+
                     </>
+
+                    
 
 
               }
+
+
+              <div className='flex flex-row space-x-4 items-center'>
+                      <p>Release source code:</p>
+                     
+                        {
+                          (()=>{
+                            if((appCostAndFee - paymentAmount)=== 0){
+                              return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                            }else{
+                              return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                            }
+                          })()
+                        }
+                     
+
+              </div>
+                    
 
 
 
@@ -262,6 +283,24 @@ if(isDesktop || windowWidth >= 768){
 
 
                          }
+
+
+
+                         <div className='flex flex-row space-x-4 items-center'>
+                              <p>Release source code:</p>
+                            
+                                {
+                                  (()=>{
+                                    if((appCostAndFee - paymentAmount)=== 0){
+                                      return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                                    }else{
+                                      return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                                    }
+                                  })()
+                                }
+                                  
+
+                          </div>
 
 
 
