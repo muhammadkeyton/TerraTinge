@@ -5,13 +5,14 @@ import { useState,useEffect} from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn-components/tabs"
 
 
-import { isVersionStage1,isVersionStage2,isVersionStage3 } from '../../type-guards';
+import { isVersionStage1,isVersionStage2,isVersionStage3, isVersionStage4 } from '../../type-guards';
 
 
 import { clientProjectsType} from '@/app/lib/definitions';
 import ProjectCardStage1 from './stage1/client-project-card';
 import ProjectCardStage2 from './stage2/client-project-card-stage2';
 import ProjectCardStage3 from './stage3/client-project-card-stage3';
+import ProjectCardStage4 from './stage4/client-project-card-stage4';
 
 
 
@@ -92,9 +93,31 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
 
                                 case 'done':{
                                     
+
+                                    
                                 return (
                     
-                                    <h1 className='font-semibold text-md text-center'>All Your Completed Apps Will Appear Here</h1>
+                                    <div>
+
+                                    {
+                                        done?.map((project,i)=>{
+                                            let version = project.versions[project.versions.length - 1]
+
+                                            if(isVersionStage4(version)){
+                                                return <ProjectCardStage4
+                                                maintainance={project.maintainance} 
+                                                
+                                                completionDate={version.projectInfo.completionDate as string}   key={i}   appCostAndFee={version.projectInfo.appCostAndFee}  paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink}  projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
+                                            }
+                                        })
+                                    }
+
+
+{
+                                     ( done && done?.length < 1) && <h1 className='font-semibold text-md text-center'>No Completed Projects Yet</h1>
+                                     }
+
+                                </div>
                                
                                 )
                                    

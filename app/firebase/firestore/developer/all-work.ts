@@ -90,17 +90,17 @@ export const updateProjectStage4 = async ({projectId,newData}:{projectId:string,
             versions[versions.length - 1] = lastVersion;
 
             //include 3 months free maintainance for every new project created
-            const maintainanceStartDate = new Date();
-            const freeMaintainanceEndDate = new Date(maintainanceStartDate.getTime() + 90 * 24 * 60 * 60 * 1000);
-            const endFreeMaintainanceTimeStamp = Timestamp.fromDate(freeMaintainanceEndDate);
+            // const maintainanceStartDate = new Date();
+            // const freeMaintainanceEndDate = new Date(maintainanceStartDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+            // const endFreeMaintainanceTimeStamp = Timestamp.fromDate(freeMaintainanceEndDate);
 
             if(completed){
                 await updateDoc(docRef,{
                     ...docData,
                     versions:versions,
                     maintainance: {
-                        active:true,
-                        endDate:endFreeMaintainanceTimeStamp
+                        active:docData.maintainance.active,
+                        endDate:docData.maintainance.endDate
                     } 
                     
     
@@ -200,7 +200,7 @@ export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,
 
             //include 3 months free maintainance for every new project created
             const maintainanceStartDate = new Date();
-            const freeMaintainanceEndDate = new Date(maintainanceStartDate.getTime() + 90 * 24 * 60 * 60 * 1000);
+            const freeMaintainanceEndDate = new Date(maintainanceStartDate.getTime() + 30 * 24 * 60 * 60 * 1000);
             const endFreeMaintainanceTimeStamp = Timestamp.fromDate(freeMaintainanceEndDate);
 
             if(completed){

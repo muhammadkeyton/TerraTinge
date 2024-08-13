@@ -1,7 +1,7 @@
 'use server';
 
 import { Resend } from 'resend';
-import { Project, ProjectPayment, ProjectState, ProjectVersions, VersionStage, VersionStage1 } from "@/app/lib/definitions";
+import { Project, ProjectPayment, ProjectState, ProjectVersions, VersionStage, VersionStage1, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
 import { doc,getDoc,Timestamp,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/firebase";
 
@@ -19,6 +19,19 @@ const resend = new Resend(process.env.AUTH_RESEND_KEY);
 const isVersionStage1 = (version:ProjectVersions): version is VersionStage1 =>{
   return version.versionStage === VersionStage.stage1;
 }
+
+
+const isVersionStage2 = (version:ProjectVersions): version is VersionStage2 =>{
+  return version.versionStage === VersionStage.stage2;
+}
+
+
+const isVersionStage4 = (version:ProjectVersions): version is VersionStage3 =>{
+  return version.versionStage === VersionStage.stage4;
+}
+
+
+
 export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:string,paymentAmount:number}):Promise<void>{
   console.log('this is handle success function')
 
@@ -31,7 +44,10 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
   
       if (docSnap.exists()) {
         const project = docSnap.data() as Project;
-        const latestVersion = project.versions[project.versions.length - 1];
+        let latestVersion = project.versions[project.versions.length - 1];
+
+
+        
 
         
         
@@ -39,30 +55,62 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         if(isVersionStage1(latestVersion)) return;
 
         let remainingBalance = latestVersion.projectInfo.appCostAndFee - paymentAmount;
+        let firstpaymentAmount = latestVersion.projectInfo.paymentAmount;
 
-        latestVersion.projectInfo = {
-          ...latestVersion.projectInfo,
-          paymentAmount:paymentAmount,
-          paymentStatus: remainingBalance === 0? ProjectPayment.paid:ProjectPayment.initial,
-          projectState: ProjectState.inProgress,
-          paymentDate:Timestamp.fromDate(new Date())
-          
+        let secondPayment = paymentAmount;
+
+
+        if(isVersionStage2(latestVersion)){
+
+          latestVersion.projectInfo = {
+            ...latestVersion.projectInfo,
+            paymentAmount:secondPayment+firstpaymentAmount,
+            paymentStatus: remainingBalance === 0? ProjectPayment.paid:ProjectPayment.initial,
+            projectState: ProjectState.inProgress,
+            paymentDate:Timestamp.fromDate(new Date())
+            
+  
+          }
+  
+          latestVersion.versionStage = VersionStage.stage3;
+  
+          project.versions[project.versions.length - 1] = latestVersion;
+  
+          try {
+            await updateDoc(projectDocumentRef,{
+              ...project,
+              projectState:ProjectState.inProgress
+            });
+          } catch (error) {
+              console.error("Error updating project document after success payment: ", error);
+          }
+
 
         }
-
-        latestVersion.versionStage = VersionStage.stage3;
-
-        project.versions[project.versions.length - 1] = latestVersion;
-
-        try {
-          await updateDoc(projectDocumentRef,{
-            ...project,
-            projectState:ProjectState.inProgress
-          });
-      } catch (error) {
-          console.error("Error updating project document after success payment: ", error);
-      }
+        
+        if (isVersionStage4(latestVersion)){
+          latestVersion.projectInfo = {
+            ...latestVersion.projectInfo,
+            paymentAmount:firstpaymentAmount + secondPayment,
+            paymentStatus: ProjectPayment.paid,
       
+          }
+  
+          
+  
+          project.versions[project.versions.length - 1] = latestVersion;
+  
+          try {
+            await updateDoc(projectDocumentRef,project);
+          } catch (error) {
+              console.error("Error updating project document after success payment: ", error);
+          }
+          
+        }
+
+        
+
+        
         const clientRef = doc(db, "users", project.clientInfo.clientId);
         
         const user = (await getDoc(clientRef)).data();
@@ -70,8 +118,13 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
 
         let clientName = user?.name ?? user?.email?.split('@')[0];
         let clientEmail = user?.email;
-        let balance = (latestVersion.projectInfo.appCostAndFee - paymentAmount) === 0?'No Balance':`$${((latestVersion.projectInfo.appCostAndFee - paymentAmount)/100).toLocaleString()}USD`;
-        let paymentStatus = (latestVersion.projectInfo.appCostAndFee - paymentAmount) === 0?'Fully Paid!':'Initial Payment';
+
+
+        let balance = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'No Balance':`$${((latestVersion.projectInfo.appCostAndFee - paymentAmount)/100).toLocaleString()}USD`;
+        let paymentStatus = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'Fully Paid!':'Initial Payment';
+
+
+
         let totalCost = `$${((latestVersion.projectInfo.appCostAndFee)/100).toLocaleString()}USD`;
         let projectName = project.appName;
         let appId = projectId;
@@ -116,7 +169,7 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         revalidatePath('/dashboard/client');
      
         console.log(`updated project payment success for id:${projectId} successfully`)
-        //send confirmation email to client,email should contain project name,client name,and payment amount
+        
     } else {
         return;
     }

@@ -111,17 +111,27 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
         return formattedDate;
     };
 
+    const formatMaintainanceDate = (date:Timestamp | null):Date|null => {
+        if(!date) return null;
+
+        return new Date(date.seconds * 1000 + date.nanoseconds / 1000000);
+    }
+
 
     //type guard
     const isVersionStage3 = (version:ProjectVersions): version is VersionStage3 =>{
         return version.versionStage === VersionStage.stage3;
     }
 
+    const isVersionStage4 = (version:ProjectVersions):version is VersionStage3 => {
+        return version.versionStage === VersionStage.stage4;
+    }
+
 
     //time complexity of o(n)
 
    // Modified projects with formatted dates
-    const modifiedDateProjects = projects.map((project) => {
+   const modifiedDateProjects = projects.map((project) => {
         const modifiedVersions = project.versions.map((version) => {
             if (isVersionStage3(version)) {
                 return {
@@ -130,8 +140,22 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
                         ...version.projectInfo,
                         createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
                         paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                        
                     }
                 };
+            } else if (isVersionStage4(version)){
+
+                return {
+                    ...version,
+                    projectInfo: {
+                        ...version.projectInfo,
+                        createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
+                        paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
+                        completionDate: formatTimestamp(version.projectInfo.completionDate as Timestamp)
+                        
+                    }
+                };
+
             } else {
                 return {
                     ...version,
@@ -143,10 +167,26 @@ export const getProjects = async(clientId:string):Promise<null | clientProjectsT
             }
         });
 
+
+        if(project.projectState === ProjectState.done){
+            return {
+                ...project,
+                versions: modifiedVersions,
+                maintainance:{
+                    ...project.maintainance,
+                    endDate:formatMaintainanceDate(project.maintainance.endDate as Timestamp | null)
+                }
+            };
+        }
+
+
+
         return {
             ...project,
-            versions: modifiedVersions
+            versions: modifiedVersions,
         };
+
+   
     });
 
 
