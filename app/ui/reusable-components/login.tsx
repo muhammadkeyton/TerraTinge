@@ -39,7 +39,25 @@ export default function AuthView({text}:AuthViewPropType){
         error:false,
         helperText:''
     });
-    const [loading,setLoading] = useState(false);
+
+
+    enum Loading{
+        magicLink = 'magicLink',
+        oAuth = 'oAuth',
+        unknown = 'unknown'
+    }
+
+    interface LoadingType{
+        state:boolean,
+        type:Loading
+    }
+   
+    const [loading,setLoading] = useState<LoadingType>({
+        state:false,
+        type:Loading.unknown
+    });
+
+    
 
     const validateEmailData = ():boolean =>{
         const {error,data,success} = EmailSchema.safeParse({email:email.text});
@@ -56,7 +74,7 @@ export default function AuthView({text}:AuthViewPropType){
 
         }else{
             setEmail({
-                ...email,
+                text:data.email,
                 error:false,
                 helperText:''
             });
@@ -68,8 +86,27 @@ export default function AuthView({text}:AuthViewPropType){
     }
     return (
         <>
-         <p className= 'mb-5 font-medium '>
-                  {loading && text !== undefined?'🪄Generating your magic login link🪄':`${text ?? ''}`}</p>
+                <p className= 'mb-5 font-medium my-4 '>
+                {
+                    (()=>{
+                        switch(loading.type){
+                            case Loading.unknown:{
+                                return text;
+                            }
+
+                            case Loading.magicLink:{
+                                return '🪄Generating your magic login link🪄';
+                            }
+
+                            case Loading.oAuth:{
+                                return 'Please wait...';
+                            }
+                        }
+                    })()
+                }
+                </p>
+         
+                 
                 <form onSubmit={async(event)=>{
                     event.preventDefault();
 
@@ -78,7 +115,10 @@ export default function AuthView({text}:AuthViewPropType){
                     if(!emailOk){
                         return;
                     }else{
-                        setLoading(true);
+                        setLoading({
+                            state:true,
+                            type:Loading.magicLink
+                        });
 
                         const result = await magicLink(email.text);
                         if(result){
@@ -107,7 +147,7 @@ export default function AuthView({text}:AuthViewPropType){
                >
 
                    {
-                    loading?
+                    loading.state?
                     
                              <MuiServerProvider>
                                 <div className='flex justify-center items-center my-12'>
@@ -147,13 +187,13 @@ export default function AuthView({text}:AuthViewPropType){
 
                     
                    <MuiServerProvider>
-                    <Button disabled={email.text.length < 1 || loading} type='submit' variant="contained"  startIcon={email.text.length < 1 || loading?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+                    <Button disabled={email.text.length < 1 || loading.state} type='submit' variant="contained"  startIcon={email.text.length < 1 || loading?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
                         clsx(
                             `my-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,
                             {
-                                'bg-slate-950 dark:bg-indigo-950 text-white':email.text.length > 0 && !loading,
-                                'bg-inherit': email.text.length < 1 || loading
+                                'bg-slate-950 dark:bg-indigo-950 text-white':email.text.length > 0 && !loading.state,
+                                'bg-inherit': email.text.length < 1 || loading.state
                             }
                         )
                    
@@ -190,8 +230,12 @@ export default function AuthView({text}:AuthViewPropType){
                 <div className="flex flex-col space-y-4 mb-6">
                     
                     
-                    <Button disabled={loading} onClick={async(event)=> {
+                    <Button disabled={loading.state} onClick={async(event)=> {
                         event.preventDefault()
+                        setLoading({
+                            state:true,
+                            type:Loading.oAuth
+                        });
                         await oAuthSignIn()
                         
                     }

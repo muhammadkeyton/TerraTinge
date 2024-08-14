@@ -15,6 +15,7 @@ import { montserrat } from '@/app/ui/fonts';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 
+import { logout } from "@/app/server-actions/authentication/logout";
 
 export default function NewUser(){
 
@@ -129,6 +130,17 @@ function SelectRole(){
                 </Button>
 
                 </div>
+
+
+                <Button onClick={async()=> {
+                        setLoading(true);
+                        await logout()
+                        
+                    }
+                        
+                }  variant="text" className={`${montserrat.className} my-6 text-black dark:text-white bg-slate-100 dark:bg-gray-800 w-full py-2 px-4 rounded-md`}>
+                    Log out & choose later
+                 </Button>
                 </MuiServerProvider>
 
 
@@ -136,7 +148,7 @@ function SelectRole(){
 
 
 
-              </div>
+              </div>   
 
 
 

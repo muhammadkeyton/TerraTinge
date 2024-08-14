@@ -64,11 +64,11 @@ function PaymentDetails() {
         stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
           switch (paymentIntent?.status) {
             case "succeeded":
-              setMessage({error:false,message:`🎊Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD was processed successfully,your project is now in progress 🎊`});
+              setMessage({error:false,message:`🎊Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD was processed successfully🎊`});
               confettiSideCannons();
               break;
             case "processing":
-              setMessage({error:false,message:`Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD is processing,your project will remain in review until your payment is confirmed by your financial institution`});
+              setMessage({error:false,message:`Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD is currently being processed!`});
               break;
             case "requires_payment_method":
               setMessage({error:true,message:"Your payment was not successful, please try again."});
