@@ -1,6 +1,8 @@
 import { Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation'
+
+import PartnerTabs from "@/app/ui/dashboard/partner-dashboard/partner-tabs";
 export default async function DeveloperWork(){
     
     const session = await auth()
@@ -10,5 +12,8 @@ export default async function DeveloperWork(){
         return redirect('/dashboard');
     }
 
-    return (<h1 className='text-center p-12'>Hi partner,welcome and advertise us!</h1>);
+    return (
+     <PartnerTabs/>
+
+    );
 }
