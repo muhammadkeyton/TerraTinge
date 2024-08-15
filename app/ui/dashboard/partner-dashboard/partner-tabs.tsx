@@ -14,15 +14,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shadcn-components/t
 
 
 import { montserrat } from '../../fonts';
+import { generateUniquePromoCode } from '@/app/server-actions/in-app/partner/promo-codes';
+import confettiSideCannons from '../../landing-page/magic-ui/confetti';
+import { CircularProgress } from '@mui/material';
 
 
 
 
-export default function PartnerTabs(){
+export default function PartnerTabs({promo}:{promo:string | null}){
     const [currentTab,setTab] = useState('Generate');
 
-    const [promoCode,setPromo] = useState<string|null>(null);
+    const [promoCode,setPromo] = useState<string|null>(promo);
     const [copied,setCopied] = useState(false);
+    const [loading,setLoading] = useState(false);
 
 
 
@@ -52,14 +56,42 @@ export default function PartnerTabs(){
                                         {
                                             !promoCode ?
 
-                                       
+                                        
+                                        (
+                                            !loading ?
+
+                                        
                                         <div className='flex flex-col items-center'>
                                         <h1 className='font-semibold text-md text-center mb-6'>Welcome to TerraTinge! Start earning now, generate and share your promo code!</h1>
                                             
                                             <MuiServerProvider>
                                                 <Button onClick={
-                                                    ()=>{
-                                                        setPromo('TerraTinge-56456njksahdsk')
+                                                    async()=>{
+
+
+
+                                                        if(!navigator.onLine){
+                                                            alert('Hello partner,please connect your device to the internet,we are unable to generate promocodes without internet connection!')
+                                                            return;
+                                                        }
+
+                                                        
+                                                        setLoading(true)
+                                                        const result = await generateUniquePromoCode();
+
+
+                                                        
+
+                                                        if(result.success){
+                                                            setPromo(result.promoCode);
+                                                            setLoading(false)
+                                                            confettiSideCannons()
+
+                                                        }else{
+                                                            alert('hey partner,something went wrong while trying to generate your promocode please try again and if this issue persists please email us,thank you for your patience');
+                                                            setPromo(result.promoCode);
+                                                            setLoading(false)
+                                                        }
                                                     }
                                                 } 
                                                 
@@ -68,6 +100,20 @@ export default function PartnerTabs(){
                                                 </Button>
                                             </MuiServerProvider>
                                         </div>
+                                        :
+                                        <MuiServerProvider>
+                                            <div className='flex flex-col justify-center items-center my-12'>
+                                            
+                                            <CircularProgress className='text-indigo-700' size={60}/>
+                                            <p className='text-xs font-medium my-4'>🪄Generating your unique PromoCode🪄</p>
+
+                                            </div>
+                                        </MuiServerProvider>
+                                       )
+
+
+
+
 
                                         :
 
@@ -90,7 +136,7 @@ export default function PartnerTabs(){
                                                   
                                                 }} 
                                                 aria-label="delete" className="p-3 bg-slate-100 dark:bg-gray-900">
-                                                    {!copied?<ContentCopyIcon />:<CheckCircleIcon className='text-green-600'/>}
+                                                    {!copied?<ContentCopyIcon />:<CheckCircleIcon className='text-green-600 dark:text-green-400'/>}
                                                 </IconButton>
 
                                                 </MuiServerProvider>
