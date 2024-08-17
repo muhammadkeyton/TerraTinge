@@ -231,6 +231,7 @@ export type VersionStage2 = {
     paymentStatus:ProjectPayment,
     feePercentage:number,
     appCost:number,
+    promoCodeId?:string,
     appCostAndFee:number,
     paymentAmount:number,
     createdAt:Timestamp | string

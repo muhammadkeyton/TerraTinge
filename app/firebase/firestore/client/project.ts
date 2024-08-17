@@ -4,8 +4,8 @@
 'use server';
 
 import { db} from "@/app/firebase/firebase";
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField } from "firebase/firestore";
-import { AppDataServer,clientProjectsType,Project, ProjectState,VersionStage } from "@/app/lib/definitions";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField, limit } from "firebase/firestore";
+import { AppDataServer,clientProjectsType,Project, ProjectState,ProjectVersions,VersionStage, VersionStage2 } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -222,6 +222,117 @@ export const updateNewProject = async (projectId:string,appName:string,appDetail
 
 
 
+
+
+
+interface UpdateClientPromoResponseType{
+    error:boolean,
+    message:string,
+    promoCodeId?:string
+}
+
+
+export const updateClientPromo = async({projectId,promoCode}:{projectId:string,promoCode:string}):Promise<UpdateClientPromoResponseType> =>{
+    const projectDocumentRef = doc(db, "projects", projectId);
+    const promoCodeDocumentRef = doc(db, "promoCodes",promoCode);
+  
+
+    let isVersion2 = (version:ProjectVersions): version is VersionStage2 =>{
+        return version.versionStage === VersionStage.stage2;
+    }
+
+    try{
+        
+
+
+        return await runTransaction(db, async (transaction) => {
+            
+            const project = await transaction.get(projectDocumentRef);
+            const promo = await transaction.get(promoCodeDocumentRef);
+    
+            if (!promo.exists() || !project.exists()) return {
+                error:true,
+                message:'This promo code is invalid. We recommend contacting the partner who provided it, or you can continue without a promo code.',
+            };
+
+           
+
+            let projectData = project.data() as Project;
+            let lastVersion = projectData.versions[projectData.versions.length - 1];
+
+            if(promo.data().used){
+                return {
+                    error:true,
+                    message:'This promo code has been used already. We recommend contacting the partner who provided it to give you a new one, or you can continue without a promo code.',
+                    
+                }
+            }
+
+            if(isVersion2(lastVersion)){
+                lastVersion.projectInfo.promoCodeId = promo.id;
+                projectData.versions[projectData.versions.length - 1] = lastVersion;
+                
+
+                //update project version with the promocode
+                transaction.update(projectDocumentRef,{versions:projectData.versions});
+
+                //update promocode to reflect that it has been used and include project info(name,id)
+                transaction.update(promoCodeDocumentRef,{
+                    projectInfo:{
+                    projectName:projectData.appName,
+                    projectId:project.id,
+                    versionId: projectData.versions[projectData.versions.length - 1].versionId
+                   },
+                   used:true
+            
+                });
+
+
+                return {
+                    error:false,
+                    message:'',
+                    promoCodeId:promoCode
+                }
+
+
+            }
+
+
+
+            return {
+                error:true,
+                message:'this is an unexpected error,you should not be seeing it,please email us!',
+              
+            }
+          
+
+
+            
+
+            
+
+        
+        })
+
+       
+    
+
+    }catch(e){
+        console.error(`an error happened while trying to update promocode:${e}`)
+        return {
+            error:true,
+            message:'unexpected server error,please reload page and try again',
+            
+        }
+    }
+
+
+   
+
+}
+
+
+
 export const ClientDeleteProject = async(projectId:string,clientId:string):Promise<boolean>=>{
     const projectRef = doc(db, "projects", projectId);
     const clientRef = doc(db, "users", clientId);
@@ -241,7 +352,7 @@ export const ClientDeleteProject = async(projectId:string,clientId:string):Promi
             transaction.delete(projectRef)
 
             transaction.update(clientRef, { projects: updatedProjects.length > 0 ? updatedProjects : deleteField() });
-        })
+        });
 
         console.log(`delete transaction for project with id:${projectId} deleted for client with id:${clientId} was successfull`)
 
@@ -249,9 +360,10 @@ export const ClientDeleteProject = async(projectId:string,clientId:string):Promi
 
     }catch(e){
         console.log('delete transaction failed')
+        return false;
     }
 
-    return false;
+   
 }
 
 

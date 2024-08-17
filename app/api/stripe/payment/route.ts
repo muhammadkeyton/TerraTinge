@@ -35,7 +35,7 @@ const isVersionStage1 = (version:ProjectVersions): version is VersionStage1 =>{
 }
 
 
-const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<customerIdAndAmountToCharge|null> => {
+const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption,promoCode?:string):Promise<customerIdAndAmountToCharge|null> => {
 
    
    const projectDocumentRef = doc(db, "projects", projectId);

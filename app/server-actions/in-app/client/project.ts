@@ -6,7 +6,7 @@ import { NameSchema } from "@/app/lib/data-validation";
 
 import { auth } from "@/auth";
 
-import { addNewProject,getClientProjects,updateNewProject, ClientDeleteProject} from "@/app/firebase/firestore/client/project";
+import { addNewProject,getClientProjects,updateNewProject, ClientDeleteProject,updateClientPromo} from "@/app/firebase/firestore/client/project";
 
 import { revalidatePath } from 'next/cache';
 import { Timestamp } from "firebase/firestore";
@@ -82,6 +82,19 @@ export const updateNewClientProject = async({projectId,appName,appDetail,appBudg
         
     }
     return updated;
+}
+
+
+
+
+interface updatePromoCodeResult{
+    error:boolean,
+    promoCodeId?:string,
+    message:string
+}
+
+export const updateClientProjectPromoCode = async({projectId,promoCode}:{projectId:string,promoCode:string}):Promise<updatePromoCodeResult>=>{
+    return await updateClientPromo({projectId,promoCode})
 }
 
 

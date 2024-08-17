@@ -124,7 +124,7 @@ export default function PartnerTabs({promo}:{promo:string | null}){
 
                                             <div className='flex flex-row items-center space-x-4'>
                                                 <code className="text-xs bg-slate-100 text-black dark:bg-gray-700 dark:text-white p-1 rounded-sm">
-                                                {promoCode}
+                                                {`***${promoCode.substring(10,20)}***....`}
                                                 </code>
                                                 
                                                 <MuiServerProvider>

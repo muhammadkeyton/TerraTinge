@@ -37,9 +37,10 @@ export const generateUniquePromoCode = async ():Promise<generatePromoResultType>
 
     const partnerId = session.user.id as string;
     const partnerName = session.user.name?.substring(0,5) ?? session.user.email?.split('@')[0].substring(0,5);
+    const partnerEmail = session?.user?.email as string;
     const newPromo = `TerraTinge-${partnerName}-${uuidv4()}`;
 
-    const savePromoResult = await savePartnerPromoCode({partnerId:partnerId,promoCode:newPromo})
+    const savePromoResult = await savePartnerPromoCode({partnerId:partnerId,promoCode:newPromo,partnerEmail:partnerEmail})
 
     if(savePromoResult){
         revalidatePath('/dashboard/partner');

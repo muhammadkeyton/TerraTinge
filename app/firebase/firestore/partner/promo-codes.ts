@@ -39,12 +39,13 @@ export const getPartnerPromoCode = async({partnerId}:{partnerId:string}):Promise
 
 
 
-export const savePartnerPromoCode = async ({partnerId,promoCode}:{partnerId:string,promoCode:string}):Promise<boolean>=>{
+export const savePartnerPromoCode = async ({partnerId,promoCode,partnerEmail}:{partnerId:string,promoCode:string,partnerEmail:string}):Promise<boolean>=>{
     
 
     try{
         const partnerRef = doc(db, "users", partnerId);
         const promoCodesCollection = collection(db,'promoCodes');
+        
 
         await runTransaction(db, async (transaction) => {
             const partner = await transaction.get(partnerRef);
@@ -63,18 +64,19 @@ export const savePartnerPromoCode = async ({partnerId,promoCode}:{partnerId:stri
                 }
             }
     
-            // Generate a unique ID for the new promoCode
-            const newPromoId = doc(promoCodesCollection).id;
+            
             
           
             
            
                 
-            // Create the new promocode within the transaction
-            transaction.set(doc(promoCodesCollection, newPromoId), { 
-           
-                promoCode:promoCode,
-                partnerId:partnerId,
+            // Create the new promocode within the transaction and save to db,we are using the promocode itself as document id for fast retrieval later for clients
+            transaction.set(doc(promoCodesCollection,promoCode), {
+
+                partnerInfo:{
+                    partnerId:partnerId,
+                    partnerEmail:partnerEmail
+                },
                 used:false,
                 createdAt:Timestamp.fromDate(new Date()),
 
@@ -84,7 +86,7 @@ export const savePartnerPromoCode = async ({partnerId,promoCode}:{partnerId:stri
                
             });
     
-            promoCodes.push(newPromoId);
+            promoCodes.push(promoCode);
     
             transaction.update(partnerRef, { promoCodes: promoCodes });
 

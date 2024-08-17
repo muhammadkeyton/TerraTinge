@@ -205,7 +205,7 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
 
       projectUpdateResult = await updateProjectStage3({projectId:id,newData:projectUpdate});
    }else if(versionStage && (versionStage === VersionStage.stage4)){
-    console.log('in conditional version stage 4')
+  
      projectUpdate = <ReviewedProjectTypeStage4>{
         appName,
         completed:completed,
