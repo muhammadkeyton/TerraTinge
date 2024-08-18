@@ -28,14 +28,22 @@ type ViewProjectDetails = {
     appName:string,
     appCostAndFee:number,
     appDetail:string,
-    paymentStatus:ProjectPayment
+    paymentStatus:ProjectPayment,
+    promo?:string,
+    discountedAppCost?:number
     
 }
 
-export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paymentStatus}:ViewProjectDetails){
+export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paymentStatus,promo,discountedAppCost}:ViewProjectDetails){
   const {isDesktop,windowWidth} = useWindowWidth();
 
   const cost = (appCostAndFee/100).toLocaleString();
+
+  let discountedCostString = '';
+  if(discountedAppCost) discountedCostString = (discountedAppCost/100).toFixed(2).toLocaleString()
+
+
+  
  
 
   const appDetailLines = appDetail.split('\n');
@@ -71,7 +79,12 @@ export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paym
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                            <div className='flex flex-row space-x-2'>
+                            <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${cost} USD</p>
+                            {promo && <p className="text-md p-1 rounded-sm">${discountedCostString} USD</p>}
+                            </div>
+                            
 
                           </div>
 
@@ -200,7 +213,11 @@ export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paym
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+                            
+                            <div className='flex flex-row space-x-2'>
+                            <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${cost} USD</p>
+                            {promo && <p className="text-md p-1 rounded-sm">${discountedCostString} USD</p>}
+                            </div>
 
                           </div>
 

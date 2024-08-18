@@ -94,6 +94,9 @@ interface updatePromoCodeResult{
 }
 
 export const updateClientProjectPromoCode = async({projectId,promoCode}:{projectId:string,promoCode:string}):Promise<updatePromoCodeResult>=>{
+    const result = await updateClientPromo({projectId,promoCode})
+  
+    revalidatePath('/dashboard/client');
     return await updateClientPromo({projectId,promoCode})
 }
 

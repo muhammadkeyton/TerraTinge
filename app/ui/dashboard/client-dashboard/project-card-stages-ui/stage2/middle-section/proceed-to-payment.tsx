@@ -34,10 +34,18 @@ import confettiSideCannons from "@/app/ui/landing-page/magic-ui/confetti";
 
 
 
-const SelectPlan = ({setOption,cost,thirdCost,promo,discountedCost}:{setOption:Dispatch<SetStateAction<PaymentOption | null>>,cost:string,thirdCost:string,promo:string|undefined,discountedCost:number}) =>{
+type selectPlanProps = {
+  setOption:Dispatch<SetStateAction<PaymentOption | null>>,
+  cost:string,
+  thirdCost:string,
+  promo:string|undefined,
+  discountedThirdCostString:string,
+  discountedCostString:string
+}
+
+const SelectPlan = ({setOption,cost,thirdCost,promo,discountedCostString,discountedThirdCostString}:selectPlanProps) =>{
   
-  const discountedCostString = (discountedCost/100).toFixed(2).toLocaleString()
-  const discountedThirdCostString = ((discountedCost / 100)/3).toFixed(2).toLocaleString();
+ 
   
   
   return (
@@ -208,14 +216,32 @@ const EnterPromoCode = ({promoCode,trackPromoEntered,setSkipPromo,projectId,setP
 }
 
 
-
-export default function ProceedToPayment({appCostAndFee,projectId,appName,promo}:{appCostAndFee:number,projectId:string,appName:string,promo:string | undefined}){
+interface proceedToPaymentProps{
+  appCostAndFee:number,
+  projectId:string,
+  appName:string,
+  promo?:string,
+  discountedAppCost?:number
+}
+export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,discountedAppCost}:proceedToPaymentProps){
     const {isDesktop,windowWidth} = useWindowWidth();
     const cost = (appCostAndFee/100).toLocaleString();
     const thirdCost = ((appCostAndFee / 100)/3).toFixed(2).toLocaleString();
 
 
-    const discountedCost = calculateDiscountedPrice(appCostAndFee)
+    let discountedCostString = '';
+    let discountedThirdCostString = '';
+
+
+    if(discountedAppCost){
+      discountedCostString = (discountedAppCost/100).toFixed(2).toLocaleString()
+      discountedThirdCostString = ((discountedAppCost / 100)/3).toFixed(2).toLocaleString();
+    } 
+   
+
+
+
+    
 
     
 
@@ -243,10 +269,13 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo}
     const descriptionTextCost = (()=>{
       switch(selectedPaymentOption){
         case PaymentOption.third:{
+          if(verifiedPromo) return `${discountedThirdCostString} USD`
           return `${thirdCost} USD`;
         }
 
         case PaymentOption.full:{
+
+          if(verifiedPromo) return `${discountedCostString} USD`
           return `${cost} USD`;
         }
 
@@ -257,13 +286,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo}
 
 
 
-    function calculateDiscountedPrice(originalPrice: number): number {
-      const discountRate = 0.05;
-      const discountAmount = originalPrice * discountRate;
-      const newPrice = originalPrice - discountAmount;
-      return newPrice;
-    }
-
+  
    
     
 
@@ -305,7 +328,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo}
 
                           (
                             skipPromo || verifiedPromo?
-                            <SelectPlan setOption={setOption} cost={cost} thirdCost={thirdCost} promo={verifiedPromo} discountedCost={discountedCost}/>
+                            <SelectPlan setOption={setOption} cost={cost} thirdCost={thirdCost} promo={verifiedPromo} discountedCostString={discountedCostString} discountedThirdCostString={discountedThirdCostString}/>
                             :
                             <EnterPromoCode promoCode={promoCode} trackPromoEntered={trackPromoEntered} setSkipPromo={setSkipPromo} projectId={projectId} setPromo={setPromoCode} setVerifiedPromo={setVerifiedPromo}/>
                           )
@@ -360,53 +383,24 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo}
       
               <div className='overflow-y-auto flex-grow  p-4'>
                         
-                         {
+                        {
                             selectedPaymentOption?
                           
                           <StripePaymentComponent paymentOption={selectedPaymentOption} projectId={projectId}/>
                           
                           :
 
-                          <div className='h-full flex flex-col items-center justify-center space-y-6'>
-                             <h2 className='font-semibold text-large'>Select Your Payment Plan</h2>
-                             
-                            <MuiServerProvider>
-                            <div className='flex flex-row space-x-6'>
 
-                             <Button 
+                          (
+                            skipPromo || verifiedPromo?
+                            <SelectPlan setOption={setOption} cost={cost} thirdCost={thirdCost} promo={verifiedPromo} discountedCostString={discountedCostString} discountedThirdCostString={discountedThirdCostString}/>
+                            :
+                            <EnterPromoCode promoCode={promoCode} trackPromoEntered={trackPromoEntered} setSkipPromo={setSkipPromo} projectId={projectId} setPromo={setPromoCode} setVerifiedPromo={setVerifiedPromo}/>
+                          )
 
-                              onClick={()=>{
-                                setOption(PaymentOption.full);
-                              }}
-                
-                              variant="contained" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col p-4 md:p-6 `}>
-                                <StarIcon className='mb-4 text-3xl sm:text-4xl '/>
-                                <p className='font-semibold mb-4'>Full Payment</p>
-                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{cost} USD</p>
-                              
-                              </Button>
-
-
-                              <Button 
-
-                              onClick={()=>{
-                                setOption(PaymentOption.third);
-                              }}
-                
-                              variant="contained" className={`${montserrat.className} text-slate-700 bg-slate-50 dark:bg-gray-800 dark:text-white shadow-lg flex flex-col  p-4 md:p-6 `}>
-                                <StarHalfIcon className='mb-4 text-3xl sm:text-4xl '/>
-                                <p className='font-semibold mb-4'>Third payment</p>
-                                <p className="text-sm bg-green-500 text-white  p-1 rounded-sm">{thirdCost} USD</p>
-                              
-                              </Button>
-
-
-                             </div>
-                             </MuiServerProvider>
-                          </div>
+                          
 
                           }
-                        
                         
               </div>
               

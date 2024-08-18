@@ -232,6 +232,7 @@ export type VersionStage2 = {
     feePercentage:number,
     appCost:number,
     promoCodeId?:string,
+    discountedAppCost?:number
     appCostAndFee:number,
     paymentAmount:number,
     createdAt:Timestamp | string

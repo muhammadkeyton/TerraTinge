@@ -241,6 +241,15 @@ export const updateClientPromo = async({projectId,promoCode}:{projectId:string,p
         return version.versionStage === VersionStage.stage2;
     }
 
+
+
+    function calculateDiscountedPrice(originalPrice: number): number {
+        const discountRate = 0.05;
+        const discountAmount = originalPrice * discountRate;
+        const newPrice = originalPrice - discountAmount;
+        return newPrice;
+    }
+
     try{
         
 
@@ -270,6 +279,7 @@ export const updateClientPromo = async({projectId,promoCode}:{projectId:string,p
 
             if(isVersion2(lastVersion)){
                 lastVersion.projectInfo.promoCodeId = promo.id;
+                lastVersion.projectInfo.discountedAppCost = calculateDiscountedPrice(lastVersion.projectInfo.appCostAndFee);
                 projectData.versions[projectData.versions.length - 1] = lastVersion;
                 
 
