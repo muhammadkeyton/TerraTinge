@@ -215,7 +215,7 @@ export type VersionStage1 = {
     projectState:ProjectState
     appName:string,
     appDetail:string,
-    appBudget:string,
+    appBudget?:string,
     createdAt:Timestamp | string
   }
 }
@@ -232,8 +232,9 @@ export type VersionStage2 = {
     feePercentage:number,
     appCost:number,
     promoCodeId?:string,
-    discountedAppCost?:number
+    discountedAppCostAndFee?:number
     appCostAndFee:number,
+    paymentDate: Timestamp | string,
     paymentAmount:number,
     createdAt:Timestamp | string
   }
@@ -252,6 +253,8 @@ export type VersionStage3 = {
     appCost:number,
     appCostAndFee:number,
     paymentAmount:number,
+    promoCodeId?:string,
+    discountedAppCostAndFee?:number,
     projectLink:string | null,
     paymentDate: Timestamp | string,
     createdAt:Timestamp | string,

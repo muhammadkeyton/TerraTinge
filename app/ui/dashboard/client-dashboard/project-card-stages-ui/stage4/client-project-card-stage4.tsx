@@ -32,12 +32,14 @@ type ProjectCardProps = {
   maintainance: {
     active:boolean,
     endDate:Timestamp | Date | null
-  }
+  },
+  promo?:string,
+  discountedAppCostAndFee?:number
   
 }
 
 
-export default function ProjectCardStage4({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,paymentAmount,paymentStatus,projectLink,paymentDate,completionDate,maintainance,projectId}:ProjectCardProps){
+export default function ProjectCardStage4({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,paymentAmount,paymentStatus,projectLink,paymentDate,completionDate,maintainance,projectId,promo,discountedAppCostAndFee}:ProjectCardProps){
 
     return (
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
@@ -45,12 +47,39 @@ export default function ProjectCardStage4({appName,clientEmail,clientImage,creat
 
         
                 
-          <AppNameImageDateFeedBackText paymentAmount={paymentAmount} maintainanceEndDate={maintainance.endDate as Date} completionDate={completionDate}    appCostAndFee={appCostAndFee} paymentDate={paymentDate} projectLink={projectLink} appName={appName} createdAt={createdAt}/>
+          <AppNameImageDateFeedBackText promo={promo} discountedAppCostAndFee={discountedAppCostAndFee} paymentAmount={paymentAmount} maintainanceEndDate={maintainance.endDate as Date} completionDate={completionDate}    appCostAndFee={appCostAndFee} paymentDate={paymentDate} projectLink={projectLink} appName={appName} />
 
           <div className='my-4 px-4'>
-            <ViewProjectDetails appCostAndFee={appCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
+            <ViewProjectDetails promo={promo} discountedAppCostAndFee={discountedAppCostAndFee} appCostAndFee={appCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
 
-            {((appCostAndFee - paymentAmount)!==0) && <ProceedToPayment paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>}
+
+            {
+
+
+              (()=>{
+
+
+              if(promo && (discountedAppCostAndFee as number - paymentAmount)!== 0){
+                  return(
+                    <ProceedToPayment promo={promo} discountedAppCostAndFee={discountedAppCostAndFee} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
+                  )
+              }else if(!promo && (appCostAndFee - paymentAmount) !== 0){
+                  return (
+                    <ProceedToPayment paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
+                  )
+              }
+
+
+
+              })()
+
+
+
+
+              
+            }
+
+           
           </div>
 
           <AppFounder clientEmail={clientEmail} clientImage={clientImage} />

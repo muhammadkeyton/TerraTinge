@@ -11,7 +11,7 @@ import PaymentSuccessEmail from '@/emails/payment-receipt';
 import PaymentProcessingEmail from '@/emails/payment-processing-email';
 import PaymentFailedEmail from '@/emails/payment-failed';
 
-import { revalidatePath } from 'next/cache';
+
 const resend = new Resend(process.env.AUTH_RESEND_KEY);
 
 
@@ -46,7 +46,7 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         const project = docSnap.data() as Project;
         let latestVersion = project.versions[project.versions.length - 1];
 
-
+        let remainingBalance:number;
         
 
         
@@ -54,13 +54,24 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
 
         if(isVersionStage1(latestVersion)) return;
 
-        let remainingBalance = latestVersion.projectInfo.appCostAndFee - paymentAmount;
+       
+
+        if('discountedAppCostAndFee' in latestVersion.projectInfo){
+          remainingBalance = latestVersion.projectInfo.discountedAppCostAndFee as number  - paymentAmount;
+        }else{
+          remainingBalance = latestVersion.projectInfo.appCostAndFee - paymentAmount;
+        }
+
+
+
         let firstpaymentAmount = latestVersion.projectInfo.paymentAmount;
 
         let secondPayment = paymentAmount;
 
 
         if(isVersionStage2(latestVersion)){
+
+          
 
           latestVersion.projectInfo = {
             ...latestVersion.projectInfo,
@@ -120,12 +131,31 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         let clientEmail = user?.email;
 
 
-        let balance = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'No Balance':`$${((latestVersion.projectInfo.appCostAndFee - paymentAmount)/100).toLocaleString()}USD`;
-        let paymentStatus = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'Fully Paid!':'Initial Payment';
 
+        let balance:string;
+        let paymentStatus:string;
+        let totalCost:string
 
+        
 
-        let totalCost = `$${((latestVersion.projectInfo.appCostAndFee)/100).toLocaleString()}USD`;
+        if('discountedAppCostAndFee' in latestVersion.projectInfo){
+          balance = (latestVersion.projectInfo.discountedAppCostAndFee as number - (secondPayment+firstpaymentAmount)) === 0?'No Balance':`$${((latestVersion.projectInfo.discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString()}USD`;
+          paymentStatus = (latestVersion.projectInfo.discountedAppCostAndFee as number - (secondPayment+firstpaymentAmount)) === 0?'Fully Paid!':'Initial Payment';
+  
+  
+  
+          totalCost = `$${((latestVersion.projectInfo.discountedAppCostAndFee as number)/100).toLocaleString()}USD`;
+          
+        }else{
+          balance = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'No Balance':`$${((latestVersion.projectInfo.appCostAndFee - paymentAmount)/100).toLocaleString()}USD`;
+          paymentStatus = (latestVersion.projectInfo.appCostAndFee - (secondPayment+firstpaymentAmount)) === 0?'Fully Paid!':'Initial Payment';
+  
+  
+  
+          totalCost = `$${((latestVersion.projectInfo.appCostAndFee)/100).toLocaleString()}USD`;
+        }
+      
+       
         let projectName = project.appName;
         let appId = projectId;
         let amountPaid = `$${(paymentAmount/100).toLocaleString()}USD`;
@@ -166,7 +196,7 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         }
 
 
-        revalidatePath('/dashboard/client');
+        
      
         console.log(`updated project payment success for id:${projectId} successfully`)
         
@@ -220,11 +250,19 @@ export async function handlePaymentProcessing({projectId,paymentAmount}:{project
       
       const user = (await getDoc(clientRef)).data();
 
+      let totalCost:string;
+
+
+      if('discountedAppCostAndFee' in latestVersion.projectInfo){
+        totalCost = `$${((latestVersion.projectInfo.discountedAppCostAndFee as number)/100).toLocaleString()}USD`;
+      }else{
+        totalCost = `$${((latestVersion.projectInfo.appCostAndFee)/100).toLocaleString()}USD`;
+      }
+
 
       let clientName = user?.name ?? user?.email?.split('@')[0];
       let clientEmail = user?.email;
       let paymentStatus = ProjectPayment.processing;
-      let totalCost = `$${((latestVersion.projectInfo.appCostAndFee)/100).toLocaleString()}USD`;
       let projectName = project.appName;
       let appId = projectId;
       let amountPaid = `$${(paymentAmount/100).toLocaleString()}USD`;
@@ -264,7 +302,7 @@ export async function handlePaymentProcessing({projectId,paymentAmount}:{project
       }
 
 
-      revalidatePath('/dashboard/client');
+     
    
       console.log(`updated project payment processing for id:${projectId} successfully`)
       //send confirmation email to client,email should contain project name,client name,and payment amount
@@ -300,13 +338,26 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
       const clientRef = doc(db, "users", project.clientInfo.clientId);
 
       let dynamicPaymentStatus = (()=>{
-        if((latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount) === 0){
+
+        if('discountedAppCostAndFee' in latestVersion.projectInfo){
+          if((latestVersion.projectInfo.discountedAppCostAndFee as number - latestVersion.projectInfo.paymentAmount) === 0){
+            return ProjectPayment.paid
+        }else if ((latestVersion.projectInfo.discountedAppCostAndFee as number - latestVersion.projectInfo.paymentAmount) === latestVersion.projectInfo.discountedAppCostAndFee as number){
+            return ProjectPayment.pending;
+        }else{
+            return ProjectPayment.initial;
+        }
+
+        }else{
+          if((latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount) === 0){
             return ProjectPayment.paid
         }else if ((latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount) === latestVersion.projectInfo.appCostAndFee){
             return ProjectPayment.pending;
         }else{
             return ProjectPayment.initial;
         }
+        }
+        
       })();
 
       latestVersion.projectInfo.paymentStatus = dynamicPaymentStatus;
@@ -366,7 +417,7 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
       }
 
 
-      revalidatePath('/dashboard/client');
+      
    
       console.log(`updated project payment failed for id:${projectId} successfully`)
       //send confirmation email to client,email should contain project name,client name,and payment amount

@@ -15,11 +15,12 @@ type  AppNameImageDateFeedBackTextProps = {
     maintainanceEndDate:Date,
     appCostAndFee:number,
     paymentAmount:number,
-    createdAt:string,
-    projectLink:string | null
+    projectLink:string | null,
+    promo?:string,
+    discountedAppCostAndFee?:number
 }
 
-export default function AppNameImageDateFeedBackText({appName,paymentDate,projectLink,createdAt,appCostAndFee,paymentAmount,completionDate,maintainanceEndDate}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,paymentDate,projectLink,appCostAndFee,paymentAmount,completionDate,maintainanceEndDate,discountedAppCostAndFee,promo}:AppNameImageDateFeedBackTextProps){
     
     const [remainingTime, setRemainingTime] = useState<string>('');
 
@@ -38,11 +39,22 @@ export default function AppNameImageDateFeedBackText({appName,paymentDate,projec
 
 
     const imageToShow = (()=>{
-        if((appCostAndFee - paymentAmount) === 0){
-            return '/handshake.gif'
+
+        if(promo){
+            if((discountedAppCostAndFee as number - paymentAmount) === 0){
+                return '/handshake.gif'
+            }else{
+                return '/secure-payment.gif'
+            }
+
         }else{
-            return '/secure-payment.gif'
+            if((appCostAndFee - paymentAmount) === 0){
+                return '/handshake.gif'
+            }else{
+                return '/secure-payment.gif'
+            }
         }
+        
     })();
 
     const calculateRemainingTime = (endDate: Date) => {
@@ -76,18 +88,54 @@ export default function AppNameImageDateFeedBackText({appName,paymentDate,projec
 
                 <Image  className="rounded-md text-center bg-slate-100 dark:bg-slate-800 my-4" priority={true} unoptimized src={imageToShow} width={250} height={200} alt='project' />
 
-                {
-                    ((appCostAndFee - paymentAmount)!== 0) &&
+                
 
-                   
-                     <p className='mb-4 text-sm'>Balance Due: 
-                        <span className='ml-4'>
-                        <code className="text-xs bg-slate-200 text-black dark:text-white dark:bg-gray-600 p-1 rounded-sm">
-                         {((appCostAndFee - paymentAmount)/100).toLocaleString()} USD
-                        </code>
-                        </span>
-                     </p>
-                    
+
+
+                
+                {
+
+                (()=>{
+
+                    if(promo && (discountedAppCostAndFee as number - paymentAmount)!== 0){
+                        return (
+
+                            <p className='mb-4 text-sm'>Balance Due: 
+                                <span className='ml-4'>
+                                <code className="text-xs bg-slate-200 text-black dark:text-white dark:bg-gray-600 p-1 rounded-sm">
+                                {((discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString()} USD
+                                </code>
+                                </span>
+                            </p>
+
+                        )
+
+                    }else if(!promo && (appCostAndFee - paymentAmount) !== 0){
+
+
+                        return (
+
+                            <p className='mb-4 text-sm'>Balance Due: 
+                                <span className='ml-4'>
+                                <code className="text-xs bg-slate-200 text-black dark:text-white dark:bg-gray-600 p-1 rounded-sm">
+                                {((appCostAndFee - paymentAmount)/100).toLocaleString()} USD
+                                </code>
+                                </span>
+                            </p>
+
+                        )
+
+                        
+
+
+
+
+
+                        
+                    }
+
+                })()
+
 
 
 
@@ -109,12 +157,29 @@ export default function AppNameImageDateFeedBackText({appName,paymentDate,projec
                 
 
                 {
-                     ((appCostAndFee - paymentAmount)!== 0) ?
-                     <p className='text-sm max-w-sm mt-4'>Your project is now complete! We are awaiting the final payment. Once received, we will assist you in deploying it to your domain, hosting, and app stores if applicable. We will also provide the full source code and guide you on which API keys to keep secret.</p>
 
-                     :
 
-                     <p className='text-sm max-w-sm mt-4'>Thank you for your business! Your project is now complete and fully paid up. We will help you deploy it, provide the full source code, and give you full access to your app. You have the freedom to work with other developers or with us. Your app, code, and hosting are fully yours, and we will only access it with your permission. We respect your ownership and value your trust. Additionally, you have 2 months of complimentary maintenance</p>
+                   (()=>{
+
+
+                    if(promo && (discountedAppCostAndFee as number - paymentAmount)!== 0){
+                        return(
+                            <p className='text-sm max-w-sm mt-4'>Your project is now complete! We are awaiting the final payment. Once received, we will assist you in deploying it to your domain, hosting, and app stores if applicable. We will also provide the full source code and guide you on which API keys to keep secret.</p>  
+                        )
+                    }else{
+                        return (
+                            <p className='text-sm max-w-sm mt-4'>Thank you for your business! Your project is now complete and fully paid up. We will help you deploy it, provide the full source code, and give you full access to your app. You have the freedom to work with other developers or with us. Your app, code, and hosting are fully yours, and we will only access it with your permission. We respect your ownership and value your trust. Additionally, you have 2 months of complimentary maintenance</p>
+                        )
+                    }
+
+
+
+                   })()
+
+
+
+
+                    
                 }
 
                

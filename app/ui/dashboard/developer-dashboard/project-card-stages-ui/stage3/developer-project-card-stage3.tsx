@@ -45,7 +45,9 @@ type ProjectCardProps = {
   paymentStatus:ProjectPayment,
   projectLink:string | null,
   paymentDate:string,
-  versionStage:VersionStage
+  versionStage:VersionStage,
+  promo?:string,
+  discountedAppCostAndFee?:number
 
  
   
@@ -109,7 +111,7 @@ function DeveloperDeleteProjectStage3({projectId,clientId}:{projectId:string,cli
 }
 
 
-export default function DeveloperProjectCardStage3({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage}:ProjectCardProps){
+export default function DeveloperProjectCardStage3({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage,discountedAppCostAndFee,promo}:ProjectCardProps){
     
     
 
@@ -119,7 +121,7 @@ export default function DeveloperProjectCardStage3({appName,clientEmail,clientIm
 
         
                 
-      <AppNameDate paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
+      <AppNameDate discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
       
 
      
@@ -127,11 +129,11 @@ export default function DeveloperProjectCardStage3({appName,clientEmail,clientIm
       <div className='flex flex-row my-4 justify-between space-x-4'>
 
         
-        <ViewSubmittedDetails paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
+        <ViewSubmittedDetails discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
         
         
         
-        {paymentStatus !== ProjectPayment.processing && <EditProject versionStage={versionStage} projectLink={projectLink} appCost={`${appCost/100}`} percentage={`${ Math.round(((feePercentage-1)*100))}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>}
+        {paymentStatus !== ProjectPayment.processing && <EditProject versionStage={versionStage} projectLink={projectLink} appCost={`${(appCost/100).toFixed(2)}`} percentage={`${feePercentage}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>}
 
 
 
@@ -141,7 +143,7 @@ export default function DeveloperProjectCardStage3({appName,clientEmail,clientIm
 
       
 
-      <AppFounder clientEmail={clientEmail} clientImage={clientImage} />
+      <AppFounder  clientEmail={clientEmail} clientImage={clientImage} />
                  
                 
 

@@ -35,13 +35,16 @@ const isVersionStage1 = (version:ProjectVersions): version is VersionStage1 =>{
 }
 
 
-const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption,promoCode?:string):Promise<customerIdAndAmountToCharge|null> => {
+const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<customerIdAndAmountToCharge|null> => {
 
    
    const projectDocumentRef = doc(db, "projects", projectId);
 
    let amountToCharge:number;
    let customerId:string;
+
+
+   
    
    try{
     const docSnap = await getDoc(projectDocumentRef);
@@ -51,6 +54,12 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
 
     let latestVersion = project.versions[project.versions.length - 1];
 
+   
+
+
+
+    
+
     amountToCharge = (()=>{
 
         switch (paymentOption) {
@@ -58,7 +67,16 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
                
                 
                 if(!isVersionStage1(latestVersion)){
-                    return Math.round(latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount);
+                  let fullCostNoPromo = Math.round(latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount);
+                  let fullCostWithPromo:number;
+
+                  if('discountedAppCostAndFee' in latestVersion.projectInfo){
+                    fullCostWithPromo = Math.round(latestVersion.projectInfo.discountedAppCostAndFee as number - latestVersion.projectInfo.paymentAmount)
+
+                    return fullCostWithPromo;
+                  }
+
+                  return fullCostNoPromo;
                 }
 
 
@@ -68,9 +86,18 @@ const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOpti
 
 
             case PaymentOption.third:{
-
+                  
                 if(!isVersionStage1(latestVersion)){
-                    return Math.round(latestVersion.projectInfo.appCostAndFee / 3);
+                  let thirdCostNoPromo = Math.round(latestVersion.projectInfo.appCostAndFee / 3);
+                  let thirdCostWithPromo:number;
+
+                  if('discountedAppCostAndFee' in latestVersion.projectInfo){
+                    thirdCostWithPromo = Math.round(latestVersion.projectInfo.discountedAppCostAndFee as number /3)
+
+                    return thirdCostWithPromo;
+                  }
+
+                  return thirdCostNoPromo;
                 }
 
                 return 0;

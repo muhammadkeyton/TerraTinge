@@ -53,7 +53,9 @@ type ProjectCardProps = {
   maintainance: {
     active:boolean,
     endDate:Timestamp | Date | null
-  }
+  },
+  promo?:string,
+  discountedAppCostAndFee?:number
 
  
   
@@ -118,7 +120,7 @@ function DeveloperDeleteProjectStage4({projectId,clientId}:{projectId:string,cli
 }
 
 
-export default function DeveloperProjectCardStage4({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage,maintainance,completionDate}:ProjectCardProps){
+export default function DeveloperProjectCardStage4({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage,maintainance,completionDate,promo,discountedAppCostAndFee}:ProjectCardProps){
     
     
 
@@ -128,7 +130,7 @@ export default function DeveloperProjectCardStage4({appName,clientEmail,clientIm
 
         
                 
-      <AppNameDate maintainanceEndDate={maintainance.endDate as Date} completionDate={completionDate} paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
+      <AppNameDate discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} maintainanceEndDate={maintainance.endDate as Date} completionDate={completionDate} paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
       
 
      
@@ -136,7 +138,7 @@ export default function DeveloperProjectCardStage4({appName,clientEmail,clientIm
       <div className='flex flex-row my-4 justify-between space-x-4'>
 
         
-        <ViewSubmittedDetails paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
+        <ViewSubmittedDetails promo={promo} discountedAppCostAndFee={discountedAppCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
         
         
         

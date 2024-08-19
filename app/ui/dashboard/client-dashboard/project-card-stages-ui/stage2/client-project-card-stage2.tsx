@@ -25,13 +25,14 @@ type ProjectCardProps = {
   projectId:string,
   paymentStatus:ProjectPayment,
   promo?:string,
-  discountedAppCost?:number
+  discountedAppCostAndFee?:number,
+ 
  
   
 }
 
 
-export default function ProjectCardStage2({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,projectId,paymentStatus,promo,discountedAppCost}:ProjectCardProps){
+export default function ProjectCardStage2({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,projectId,paymentStatus,promo,discountedAppCostAndFee}:ProjectCardProps){
 
     return (
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
@@ -39,11 +40,11 @@ export default function ProjectCardStage2({appName,clientEmail,clientImage,creat
 
         
                 
-          <AppNameImageDateFeedBackText discountedAppCost={discountedAppCost} promo={promo} appCostAndFee={appCostAndFee} appName={appName} createdAt={createdAt}/>
+          <AppNameImageDateFeedBackText discountedAppCostAndFee ={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee} appName={appName} createdAt={createdAt}/>
 
           <div className='flex flex-col my-4 gap-4 px-4'>
-           <ViewProjectDetails discountedAppCost={discountedAppCost} promo={promo} appCostAndFee={appCostAndFee}  paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
-           <ProceedToPayment discountedAppCost={discountedAppCost} promo={promo} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
+           <ViewProjectDetails discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee}  paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
+           <ProceedToPayment discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
             
           </div>
 

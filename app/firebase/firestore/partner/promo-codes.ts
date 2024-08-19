@@ -16,22 +16,29 @@ export const getPartnerPromoCode = async({partnerId}:{partnerId:string}):Promise
 
         if(!partner.exists()) return null;
 
-        const promoQuery = query(promoCodesCollectionRef, where("used", "==", false),where('partnerId','==',partnerId),limit(1));
+        
+
+        const promoQuery = query(promoCodesCollectionRef, where("used", "==", false),where('partnerInfo.partnerId','==',partnerId),limit(1));
         const promoQuerySnapshot = (await getDocs(promoQuery)).docs;
 
+       
+
+       
+
         if(promoQuerySnapshot.length > 0){
-            return promoQuerySnapshot[0].data().promoCode;
+            return promoQuerySnapshot[0].id;
         }else{
             return null;
         }
 
         
     }catch(e){
-        console.error('could not fetch partner promocodes')
+        console.error(`could not fetch partner a partner promocode:${e}`)
+        return null;
     }
 
 
-    return null;
+    
 
 
 }

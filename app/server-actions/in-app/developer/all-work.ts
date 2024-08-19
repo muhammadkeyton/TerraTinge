@@ -156,7 +156,6 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
 export const submitUpdateProject = async (id:string,projectData:any):Promise<boolean> =>{
     const {appName,appCost,appDetail,percentage,projectLink,versionStage,completed} = projectData;
 
-    console.log('in submit and version is: ',versionStage)
 
   
 
@@ -175,7 +174,9 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
    
 
     let cost = Number(appCostResult.data?.appCost)*100;
-    let dynamicPercentage = (Number(percentage)/100)+1;
+
+    let numPercentage= Number(percentage)
+   
 
 
 
@@ -189,14 +190,14 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
 
    let projectUpdateResult;
 
-   let totalCharge = calculateTotalCharge(cost,percentage);
+   let totalCharge = calculateTotalCharge(cost,numPercentage);
 
    if(versionStage && (versionStage === VersionStage.stage3)){
       
       projectUpdate = <ReviewedProjectTypeStage3>{
         appName:appNameResult.data?.name,
         appDetail,
-        percentage:dynamicPercentage,
+        percentage:numPercentage,
         appCostAndFee:Math.round(totalCharge),
         appCost:Math.round(cost),
         completed:completed,
@@ -218,7 +219,7 @@ export const submitUpdateProject = async (id:string,projectData:any):Promise<boo
         paymentStatus:ProjectPayment.pending,
         appName,
         appDetail,
-        percentage:dynamicPercentage,
+        percentage:numPercentage,
         appCostAndFee:Math.round(totalCharge),
         appCost:Math.round(cost),
         paymentAmount:0,

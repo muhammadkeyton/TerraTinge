@@ -38,16 +38,20 @@ type ViewSubmittedDetailsPropStage2 = {
   appDetail:string,
   paymentStatus:ProjectPayment,
   paymentAmount:number,
+  promo?:string,
+  discountedAppCostAndFee?:number
 }
 
 
-export default function DeveloperViewSubmittedDetailsStage3({appName,appDetail,appCostAndFee,paymentStatus,paymentAmount}:ViewSubmittedDetailsPropStage2){
+export default function DeveloperViewSubmittedDetailsStage3({appName,appDetail,appCostAndFee,paymentStatus,paymentAmount,discountedAppCostAndFee,promo}:ViewSubmittedDetailsPropStage2){
   const {isDesktop,windowWidth} = useWindowWidth();
 
-  const cost = (appCostAndFee/100).toLocaleString();
-
+  const noPromoCost = (appCostAndFee/100).toLocaleString();
+  const promoCost = (discountedAppCostAndFee as number / 100).toLocaleString();
   const initialPayment = (paymentAmount/100).toLocaleString();
-  const balance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+
+  const noPromobalance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+  const promoBalance = ((discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString();
 
 
 
@@ -85,10 +89,15 @@ if(isDesktop || windowWidth >= 768){
              <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
 
              <div className='flex flex-row space-x-4 items-center'>
-               <p>total cost:</p>
-               <div className="text-md p-1 rounded-sm">${cost} USD</div>
+                <p>total cost:</p>
 
-             </div>
+                <div className='flex flex-row space-x-2'>
+                <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${noPromoCost} USD</p>
+                {promo && <p className="text-md p-1 rounded-sm">${promoCost} USD</p>}
+                </div>
+                
+
+              </div>
 
 
 
@@ -103,14 +112,11 @@ if(isDesktop || windowWidth >= 768){
 
 
                     <div className='flex flex-row space-x-4 items-center'>
-                      <p>remaining balance:</p>
-                      <div className="text-md p-1 rounded-sm">${balance} USD</div>
+                            <p>remaining balance:</p>
+                            <div className="text-md p-1 rounded-sm">${promo?promoBalance:noPromobalance} USD</div>
 
                     </div>
-
                     </>
-
-                    
 
 
               }
@@ -121,11 +127,23 @@ if(isDesktop || windowWidth >= 768){
                      
                         {
                           (()=>{
-                            if((appCostAndFee - paymentAmount)=== 0){
-                              return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+
+                            if(promo){
+
+                              if((discountedAppCostAndFee as number - paymentAmount)=== 0){
+                                return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                              }else{
+                                return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                              }
+
                             }else{
-                              return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                              if((appCostAndFee - paymentAmount)=== 0){
+                                return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                              }else{
+                                return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                              }
                             }
+                            
                           })()
                         }
                      
@@ -255,54 +273,76 @@ if(isDesktop || windowWidth >= 768){
           <div className='overflow-y-auto flex-grow flex flex-col gap-12'>
                     
                      <div className='flex flex-col gap-4'>
-                          <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
+                        <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
 
-                          <div className='flex flex-row space-x-4 items-center'>
-                            <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+                        
+             <div className='flex flex-row space-x-4 items-center'>
+                <p>total cost:</p>
 
-                          </div>
+                <div className='flex flex-row space-x-2'>
+                <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${noPromoCost} USD</p>
+                {promo && <p className="text-md p-1 rounded-sm">${promoCost} USD</p>}
+                </div>
+                
 
-
-                          {
-                           (paymentStatus === ProjectPayment.initial || (appCostAndFee - paymentAmount !== 0)) &&
-                          <>
-                          <div className='flex flex-row space-x-4 items-center'>
-                            <p>initial payment:</p>
-                            <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
-
-                          </div>
+              </div>
 
 
-                          <div className='flex flex-row space-x-4 items-center'>
+
+              {
+                      (paymentStatus === ProjectPayment.initial || (appCostAndFee - paymentAmount !== 0)) &&
+                    <>
+                    <div className='flex flex-row space-x-4 items-center'>
+                      <p>initial payment:</p>
+                      <div className="text-md p-1 rounded-sm">${initialPayment} USD</div>
+
+                    </div>
+
+
+                    <div className='flex flex-row space-x-4 items-center'>
                             <p>remaining balance:</p>
-                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+                            <div className="text-md p-1 rounded-sm">${promo?promoBalance:noPromobalance} USD</div>
 
-                          </div>
-                          </>
-
-
-                         }
+                    </div>
+                    </>
 
 
+              }
 
-                         <div className='flex flex-row space-x-4 items-center'>
-                              <p>Release source code:</p>
+
+              <div className='flex flex-row space-x-4 items-center'>
+                      <p>Release source code:</p>
+                     
+                        {
+                          (()=>{
+
+                            if(promo){
+
+                              if((discountedAppCostAndFee as number - paymentAmount)=== 0){
+                                return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                              }else{
+                                return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                              }
+
+                            }else{
+                              if((appCostAndFee - paymentAmount)=== 0){
+                                return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
+                              }else{
+                                return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
+                              }
+                            }
                             
-                                {
-                                  (()=>{
-                                    if((appCostAndFee - paymentAmount)=== 0){
-                                      return (<code className="text-lg bg-green-700  text-white p-1 rounded-sm">Release✅</code>)
-                                    }else{
-                                      return (<code className="text-lg bg-red-700  text-white p-1 rounded-sm">Not Yet🫸</code>)
-                                    }
-                                  })()
-                                }
-                                  
+                          })()
+                        }
+                     
 
-                          </div>
+                  </div>
+                    
 
 
+
+
+                         
 
                           
 

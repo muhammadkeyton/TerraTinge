@@ -15,6 +15,7 @@ export default async function DeveloperWork(){
 
     const promoCode = await fetchPartnerPromoNotUsed();
 
+   
     return (
      <PartnerTabs promo={promoCode}/>
 

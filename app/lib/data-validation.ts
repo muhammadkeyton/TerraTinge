@@ -38,7 +38,7 @@ export const AppCostSchema = z.object({
     .min(1,{ message: 'app cost is required' })
     .transform(text => {
         // This matches any character that is not a number
-        let regex = /[^0-9]/g;
+        let regex = /[^0-9.]/g;
         let cleanedText = text.replace(regex, '');
 
         // Then return the cleaned app cost as a number

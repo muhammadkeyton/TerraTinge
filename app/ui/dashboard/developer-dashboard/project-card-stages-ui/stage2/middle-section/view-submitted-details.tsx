@@ -37,16 +37,22 @@ type ViewSubmittedDetailsPropStage2 = {
   appCostAndFee:number,
   appDetail:string,
   paymentStatus:ProjectPayment
+  promo?:string,
+  discountedAppCostAndFee?:number
 }
 
 
-export default function DeveloperViewSubmittedDetailsStage2({appName,appDetail,appCostAndFee,paymentStatus}:ViewSubmittedDetailsPropStage2){
+export default function DeveloperViewSubmittedDetailsStage2({appName,appDetail,appCostAndFee,paymentStatus,promo,discountedAppCostAndFee}:ViewSubmittedDetailsPropStage2){
   const {isDesktop,windowWidth} = useWindowWidth();
 
-  const cost = (appCostAndFee/100).toLocaleString();
+  const costAndFee = (appCostAndFee/100).toLocaleString();
  
 
   const appDetailLines = appDetail.split('\n');
+
+
+  let discountedAppCostAndFeeString = '';
+  if(discountedAppCostAndFee) discountedAppCostAndFeeString = (discountedAppCostAndFee/100).toLocaleString();
 
 
 if(isDesktop || windowWidth >= 768){
@@ -77,11 +83,17 @@ if(isDesktop || windowWidth >= 768){
        <div className='flex flex-col gap-4'>
              <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
 
+             
              <div className='flex flex-row space-x-4 items-center'>
-               <p>total cost:</p>
-               <div className="text-md p-1 rounded-sm">${cost} USD</div>
+                <p>total cost:</p>
 
-             </div>
+                <div className='flex flex-row space-x-2'>
+                <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${costAndFee} USD</p>
+                {promo && <p className="text-md p-1 rounded-sm">${discountedAppCostAndFeeString} USD</p>}
+                </div>
+                
+
+              </div>
 
 
 
@@ -207,9 +219,15 @@ if(isDesktop || windowWidth >= 768){
                      <div className='flex flex-col gap-4'>
                           <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
 
+                          
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                            <div className='flex flex-row space-x-2'>
+                            <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${costAndFee} USD</p>
+                            {promo && <p className="text-md p-1 rounded-sm">${discountedAppCostAndFeeString} USD</p>}
+                            </div>
+                            
 
                           </div>
 

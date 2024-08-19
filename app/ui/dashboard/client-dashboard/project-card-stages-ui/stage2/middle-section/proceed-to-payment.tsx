@@ -9,6 +9,9 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarIcon from '@mui/icons-material/Star';
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
+
+
+import { useRouter } from "next/navigation";
 import {
     Dialog,
     DialogContent,
@@ -118,6 +121,7 @@ interface EnterPromoCodeProps {
 
 const EnterPromoCode = ({promoCode,trackPromoEntered,setSkipPromo,projectId,setPromo,setVerifiedPromo}:EnterPromoCodeProps)=>{
   const [loading,setLoading] = useState(false);
+  const router = useRouter();
   return (
     <div className='h-full flex flex-col items-center justify-center space-y-6'>
       <h2 className='font-semibold text-sm'>Have a promo code? Enter it below to save 5% on your project cost</h2>
@@ -164,6 +168,8 @@ const EnterPromoCode = ({promoCode,trackPromoEntered,setSkipPromo,projectId,setP
               )
 
               setVerifiedPromo(promoResult.promoCodeId)
+
+              router.push('/dashboard/client');
 
               confettiSideCannons();
 
@@ -221,9 +227,9 @@ interface proceedToPaymentProps{
   projectId:string,
   appName:string,
   promo?:string,
-  discountedAppCost?:number
+  discountedAppCostAndFee?:number
 }
-export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,discountedAppCost}:proceedToPaymentProps){
+export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,discountedAppCostAndFee}:proceedToPaymentProps){
     const {isDesktop,windowWidth} = useWindowWidth();
     const cost = (appCostAndFee/100).toLocaleString();
     const thirdCost = ((appCostAndFee / 100)/3).toFixed(2).toLocaleString();
@@ -233,9 +239,9 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
     let discountedThirdCostString = '';
 
 
-    if(discountedAppCost){
-      discountedCostString = (discountedAppCost/100).toFixed(2).toLocaleString()
-      discountedThirdCostString = ((discountedAppCost / 100)/3).toFixed(2).toLocaleString();
+    if(discountedAppCostAndFee){
+      discountedCostString = (discountedAppCostAndFee/100).toLocaleString()
+      discountedThirdCostString = ((discountedAppCostAndFee / 100)/3).toFixed(2).toLocaleString();
     } 
    
 

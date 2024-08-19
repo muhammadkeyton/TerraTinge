@@ -29,10 +29,18 @@ import { PaymentOption} from "@/app/lib/definitions";
 
 
 
-
-export default function ProceedToPayment({appCostAndFee,projectId,appName,paymentAmount}:{appCostAndFee:number,projectId:string,appName:string,paymentAmount:number}){
+interface proceedToPaymentProps{
+  appCostAndFee:number,
+  projectId:string,
+  appName:string,
+  paymentAmount:number,
+  promo?:string,
+  discountedAppCostAndFee?:number
+}
+export default function ProceedToPayment({appCostAndFee,projectId,appName,paymentAmount,promo,discountedAppCostAndFee}:proceedToPaymentProps){
     const {isDesktop,windowWidth} = useWindowWidth();
-    const balance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+    const noPromoBalance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+    const promoBalance = ((discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString();
     
 
     
@@ -58,7 +66,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
                         <DialogHeader className='mb-4'>
                           <DialogTitle className='mb-2 text-center'>{appName}</DialogTitle>
                           <DialogDescription className='text-center' >
-                           {balance} USD
+                           {promo?promoBalance:noPromoBalance} USD
                           </DialogDescription>
                         </DialogHeader>
       
@@ -111,7 +119,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
               <SheetHeader className='mb-4 text-center'>
                 <SheetTitle className='mb-2'>{appName}</SheetTitle>
                 <SheetDescription>
-                {balance} USD
+                {promo?promoBalance:noPromoBalance} USD USD
                 </SheetDescription>
               </SheetHeader>
       

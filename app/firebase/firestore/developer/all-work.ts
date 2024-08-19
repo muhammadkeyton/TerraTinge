@@ -159,15 +159,26 @@ export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,
             if(!isVersionStage3(lastVersion)) return false;
           
             dynamicPaymentStatus = (()=>{
-                if((appCostAndFee - lastVersion.projectInfo.paymentAmount) === 0){
-                    return ProjectPayment.paid
-                }else if ((appCostAndFee - lastVersion.projectInfo.paymentAmount) === appCostAndFee){
-                    return ProjectPayment.pending;
-                }else if (lastVersion.projectInfo.paymentAmount > 0 && lastVersion.projectInfo.paymentAmount < appCostAndFee){
-                    return ProjectPayment.initial;
-                }else{
-                    return lastVersion.projectInfo.paymentStatus;
-                }
+
+                if('discountedAppCostAndFee' in lastVersion.projectInfo){
+                    if((lastVersion.projectInfo.discountedAppCostAndFee as number - lastVersion.projectInfo.paymentAmount) === 0){
+                      return ProjectPayment.paid
+                  }else if ((lastVersion.projectInfo.discountedAppCostAndFee as number - lastVersion.projectInfo.paymentAmount) === lastVersion.projectInfo.discountedAppCostAndFee as number){
+                      return ProjectPayment.pending;
+                  }else{
+                      return ProjectPayment.initial;
+                  }
+          
+                  }else{
+                    if((lastVersion.projectInfo.appCostAndFee - lastVersion.projectInfo.paymentAmount) === 0){
+                      return ProjectPayment.paid
+                  }else if ((lastVersion.projectInfo.appCostAndFee - lastVersion.projectInfo.paymentAmount) === lastVersion.projectInfo.appCostAndFee){
+                      return ProjectPayment.pending;
+                  }else{
+                      return ProjectPayment.initial;
+                  }
+                  }
+               
 
                 
             })(); 
@@ -177,19 +188,40 @@ export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,
             docData.appName = appName;
             docData.projectState = completed ? ProjectState.done : docData.projectState;
             lastVersion.versionStage = completed ? VersionStage.stage4 : lastVersion.versionStage;
-            lastVersion.projectInfo = {
-                ...lastVersion.projectInfo,
-                appCost,
-                appDetail,
-                feePercentage:percentage,
-                appCostAndFee,
-                projectLink,
-                paymentStatus:dynamicPaymentStatus,
-                projectState: completed? ProjectState.done : lastVersion.projectInfo.projectState,
-                completionDate:completed? Timestamp.fromDate(new Date()) : null
 
-                
+
+
+            if('discountedAppCostAndFee' in lastVersion.projectInfo){
+                lastVersion.projectInfo = {
+                    ...lastVersion.projectInfo,
+                    appCost,
+                    appDetail,
+                    feePercentage:percentage,
+                    discountedAppCostAndFee:appCostAndFee,
+                    projectLink,
+                    paymentStatus:dynamicPaymentStatus,
+                    projectState: completed? ProjectState.done : lastVersion.projectInfo.projectState,
+                    completionDate:completed? Timestamp.fromDate(new Date()) : null
+    
+                    
+                }
+
+            }else{
+                lastVersion.projectInfo = {
+                    ...lastVersion.projectInfo,
+                    appCost,
+                    appDetail,
+                    feePercentage:percentage,
+                    appCostAndFee,
+                    projectLink,
+                    paymentStatus:dynamicPaymentStatus,
+                    projectState: completed? ProjectState.done : lastVersion.projectInfo.projectState,
+                    completionDate:completed? Timestamp.fromDate(new Date()) : null
+    
+                    
+                }
             }
+           
 
           
 
@@ -238,8 +270,6 @@ export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,
 
 export const updateProjectStage2 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
     
-    
-    
     const {appCost,appDetail,appName,paymentAmount,paymentStatus,percentage,appCostAndFee} = newData;
 
 
@@ -256,22 +286,43 @@ export const updateProjectStage2 = async ({projectId,newData}:{projectId:string,
             lastVersion.versionStage = VersionStage.stage2;
 
             docData.appName = appName;
-            lastVersion.projectInfo = {
-                ...lastVersion.projectInfo,
-                appCost,
-                appDetail,
-                paymentAmount,
-                paymentStatus,
-                feePercentage:percentage,
-                appCostAndFee
-                
-            }
 
-            // Type guard to check if appBudget exists
-            if ('appBudget' in lastVersion.projectInfo) {
+
+             // Type guard to check if appBudget exists
+             if ('appBudget' in lastVersion.projectInfo) {
                 let {appBudget, ...updatedProjectInfo} = lastVersion.projectInfo;
                 lastVersion.projectInfo = updatedProjectInfo;
             }
+
+
+            if('promoCodeId' in lastVersion.projectInfo){
+                lastVersion.projectInfo = {
+                    ...lastVersion.projectInfo,
+                    appCost,
+                    appDetail,
+                    paymentAmount,
+                    paymentStatus,
+                    feePercentage:percentage,
+                    discountedAppCostAndFee:appCostAndFee
+                
+                    
+                }
+            }else{
+                lastVersion.projectInfo = {
+                    ...lastVersion.projectInfo,
+                    appCost,
+                    appDetail,
+                    paymentAmount,
+                    paymentStatus,
+                    feePercentage:percentage,
+                    appCostAndFee:appCostAndFee
+                
+                    
+                }
+            }
+            
+
+           
 
 
             versions[versions.length - 1] = lastVersion;

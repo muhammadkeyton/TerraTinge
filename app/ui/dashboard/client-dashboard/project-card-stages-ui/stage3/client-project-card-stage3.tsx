@@ -24,13 +24,15 @@ type ProjectCardProps = {
   paymentStatus:ProjectPayment
   paymentAmount:number,
   paymentDate:string,
-  projectLink:string | null
+  projectLink:string | null,
+  promo?:string,
+  discountedAppCostAndFee?:number
  
   
 }
 
 
-export default function ProjectCardStage3({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,paymentAmount,paymentStatus,projectLink,paymentDate}:ProjectCardProps){
+export default function ProjectCardStage3({appName,clientEmail,clientImage,createdAt,appCostAndFee,appDetail,paymentAmount,paymentStatus,projectLink,paymentDate,promo,discountedAppCostAndFee}:ProjectCardProps){
 
     return (
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
@@ -41,7 +43,7 @@ export default function ProjectCardStage3({appName,clientEmail,clientImage,creat
           <AppNameImageDateFeedBackText paymentDate={paymentDate} projectLink={projectLink} appName={appName} createdAt={createdAt}/>
 
           <div className='my-4 px-4'>
-           <ViewProjectDetails appCostAndFee={appCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} /> 
+           <ViewProjectDetails promo={promo} discountedAppCostAndFee={discountedAppCostAndFee} appCostAndFee={appCostAndFee} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} /> 
           </div>
 
           <AppFounder clientEmail={clientEmail} clientImage={clientImage} />

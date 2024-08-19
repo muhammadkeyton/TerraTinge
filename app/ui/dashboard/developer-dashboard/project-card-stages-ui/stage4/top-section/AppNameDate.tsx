@@ -7,6 +7,7 @@ import {useState,useEffect} from 'react';
 
 import Divider from '@mui/material/Divider';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
+import { calculateDiscountedCostWithoutFee } from '@/app/lib/utils';
 
 
 type  AppNameImageDateFeedBackTextProps = {
@@ -19,11 +20,16 @@ type  AppNameImageDateFeedBackTextProps = {
     paymentDate:string,
     completionDate:string,
     maintainanceEndDate:Date,
-    projectLink:string | null
+    projectLink:string | null,
+    promo?:string,
+    discountedAppCostAndFee?:number
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate,projectLink,completionDate,maintainanceEndDate}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate,projectLink,completionDate,maintainanceEndDate,promo,discountedAppCostAndFee}:AppNameImageDateFeedBackTextProps){
     const [remainingTime, setRemainingTime] = useState<string>('');
+
+    let discountedAppCostAndFeeString = '';
+    if(discountedAppCostAndFee) discountedAppCostAndFeeString = (discountedAppCostAndFee/100).toLocaleString();
 
     useEffect(() => {
         const endDate = maintainanceEndDate;
@@ -58,25 +64,45 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
     return(
         <>
             <div>
-                <h2 className='text-xl font-bold '>{appName}</h2>
+            <h2 className='text-xl font-bold '>
+                {promo?
+                <>
+
+                {appName}<span className='text-xs ml-2 text-green-500'>PROMO✅</span>
+                </>
+
+
+                :
+
+                <>
+                {appName} <span className='text-xs ml-2 text-green-500'>NO-PROMO✨</span>
+                </>
+
+                
+
+                }
+            </h2>
+
+            <p className='text-sm my-4 font-medium'>Active Maintainance: 
+                <span className='ml-2'><code className="text-lg bg-green-600 text-white p-1 rounded-sm">{remainingTime}</code></span>  
+                </p>
+
                 <p className='text-sm my-4 font-medium'>Submission Date: {createdAt}</p>
                 <p className='text-sm my-4 font-medium'>Start Date: {paymentDate}</p>
                 <p className='text-sm my-4 font-medium'>Completion Date: {completionDate}</p>
 
 
-                <p className='text-sm my-4 font-medium'>Active Maintainance: 
-                <span className='ml-2'><code className="text-lg bg-green-600 text-white p-1 rounded-sm">{remainingTime}</code></span>  
-                </p>
+                
 
 
                 
                 <p className='text-sm my-4 font-medium'>
-                 Total including Fees: <span><code className="text-lg bg-indigo-700  text-white p-1 rounded-sm">{(appCostAndFee/100).toLocaleString()} USD</code></span>
+                 Total including Fees: <span><code className="text-lg bg-indigo-700  text-white p-1 rounded-sm">{promo?`${discountedAppCostAndFeeString}`:(appCostAndFee/100).toLocaleString()} USD</code></span>
                 </p>
 
-                <p className='text-sm my-4 font-medium'>Payment Processing Fee: {Math.round(((feePercentage-1)*100))}%</p>
+                <p className='text-sm my-4 font-medium'>Payment Processing Fee: {feePercentage}%</p>
                 <p className='text-sm my-4 font-medium'>
-                 Total excluding Fees: {(appCost/100).toLocaleString()} USD
+                 Total excluding Fees:  {promo?(calculateDiscountedCostWithoutFee(appCost)/100).toLocaleString() :(appCost/100).toLocaleString() } USD
                 </p>
 
                 <p className='text-sm my-4 font-medium'>Payment Amount: {(paymentAmount/100).toLocaleString()} USD</p>

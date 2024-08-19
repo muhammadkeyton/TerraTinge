@@ -29,16 +29,24 @@ type ViewProjectDetails = {
     appCostAndFee:number,
     paymentAmount:number,
     appDetail:string,
-    paymentStatus:ProjectPayment
+    paymentStatus:ProjectPayment,
+    promo?:string,
+    discountedAppCostAndFee?:number
     
 }
 
-export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,appDetail,paymentStatus}:ViewProjectDetails){
+export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,appDetail,paymentStatus,discountedAppCostAndFee,promo}:ViewProjectDetails){
   const {isDesktop,windowWidth} = useWindowWidth();
 
-  const cost = (appCostAndFee/100).toLocaleString();
+  const noPromoCost = (appCostAndFee/100).toLocaleString();
+  const promoCost = (discountedAppCostAndFee as number / 100).toLocaleString();
   const initialPayment = (paymentAmount/100).toLocaleString();
-  const balance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+
+  const noPromobalance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
+  const promoBalance = ((discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString();
+
+
+  
 
   const appDetailLines = appDetail.split('\n');
   
@@ -73,7 +81,12 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                            <div className='flex flex-row space-x-2'>
+                            <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${noPromoCost} USD</p>
+                            {promo && <p className="text-md p-1 rounded-sm">${promoCost} USD</p>}
+                            </div>
+                            
 
                           </div>
 
@@ -91,7 +104,7 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>remaining balance:</p>
-                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+                            <div className="text-md p-1 rounded-sm">${promo?promoBalance:noPromobalance} USD</div>
 
                           </div>
                           </>
@@ -221,14 +234,18 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            <div className="text-md p-1 rounded-sm">${cost} USD</div>
+
+                            <div className='flex flex-row space-x-2'>
+                            <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${noPromoCost} USD</p>
+                            {promo && <p className="text-md p-1 rounded-sm">${promoCost} USD</p>}
+                            </div>
+                            
 
                           </div>
 
-                         
 
 
-                         {
+                          {
                            paymentStatus !== ProjectPayment.pending &&
                           <>
                           <div className='flex flex-row space-x-4 items-center'>
@@ -240,7 +257,7 @@ export default function ViewProjectDetails({appName,appCostAndFee,paymentAmount,
 
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>remaining balance:</p>
-                            <div className="text-md p-1 rounded-sm">${balance} USD</div>
+                            <div className="text-md p-1 rounded-sm">${promo?promoBalance:noPromobalance} USD</div>
 
                           </div>
                           </>

@@ -10,18 +10,18 @@ type  AppNameImageDateFeedBackTextProps = {
     createdAt:string
     appCostAndFee:number,
     promo?:string
-    discountedAppCost?:number
+    discountedAppCostAndFee?:number
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCostAndFee,promo,discountedAppCost}:AppNameImageDateFeedBackTextProps){
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCostAndFee,promo,discountedAppCostAndFee}:AppNameImageDateFeedBackTextProps){
     
     
 
-    let discountedCostString = '';
+    let discountedAppCostAndFeeString = '';
     
 
 
-    if(discountedAppCost) discountedCostString = (discountedAppCost/100).toFixed(2).toLocaleString()
+    if(discountedAppCostAndFee) discountedAppCostAndFeeString = (discountedAppCostAndFee/100).toFixed(2).toLocaleString()
    
     
     
@@ -38,7 +38,7 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCostA
                 <div className='flex flex-row space-x-4'>
                 <code className={`text-xs ${promo?'line-through decoration-2 decoration-red-500':'bg-slate-100 dark:bg-gray-600'} p-1 rounded-sm`}>{(appCostAndFee/100).toLocaleString()} USD</code>
 
-                {promo  &&  <code className='text-xs bg-slate-100 dark:bg-gray-600 p-1 rounded-sm'>{discountedCostString} USD</code>}
+                {promo  &&  <code className='text-xs bg-slate-100 dark:bg-gray-600 p-1 rounded-sm'>{discountedAppCostAndFeeString} USD</code>}
                 </div>
                
 

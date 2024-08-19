@@ -58,9 +58,9 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
                                     
                                     
                                     if(version && isVersionStage1(version)){
-                                        return <ProjectCardStage1 clientId={inReview.clientInfo.clientId}  projectId={inReview?.projectId} appBudget={version.projectInfo.appBudget} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={inReview?.clientInfo.clientEmail as string} clientImage={inReview?.clientInfo.clientImage as string} createdAt={version.projectInfo.createdAt as string}/>
+                                        return <ProjectCardStage1 clientId={inReview.clientInfo.clientId}  projectId={inReview?.projectId} appBudget={version.projectInfo.appBudget as string} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={inReview?.clientInfo.clientEmail as string} clientImage={inReview?.clientInfo.clientImage as string} createdAt={version.projectInfo.createdAt as string}/>
                                     } else if (version && isVersionStage2(version)){
-                                        return <ProjectCardStage2 discountedAppCost={version.projectInfo.discountedAppCost} promo={version.projectInfo.promoCodeId} appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} appName={inReview.appName} clientEmail={inReview.clientInfo.clientEmail} clientImage={inReview.clientInfo.clientImage}  paymentStatus={version.projectInfo.paymentStatus} createdAt={version.projectInfo.createdAt as string} projectId={inReview.projectId}/>
+                                        return <ProjectCardStage2 discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee} promo={version.projectInfo.promoCodeId} appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} appName={inReview.appName} clientEmail={inReview.clientInfo.clientEmail} clientImage={inReview.clientInfo.clientImage}  paymentStatus={version.projectInfo.paymentStatus} createdAt={version.projectInfo.createdAt as string} projectId={inReview.projectId}/>
                                     }else if(!version && inProgress){
                                         return  <h1 className='font-semibold text-md text-center'>Current project in progress. Can&apos;t create a new project now.</h1>
                                     }
@@ -83,7 +83,7 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
                                    const version = inProgress?.versions[inProgress?.versions.length - 1];
 
                                    if(version && isVersionStage3(version)){
-                                    return <ProjectCardStage3 paymentDate={version.projectInfo.paymentDate as string} appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} projectLink={version.projectInfo.projectLink} appName={inProgress.appName} clientEmail={inProgress.clientInfo.clientEmail} clientImage={inProgress.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus}/>
+                                    return <ProjectCardStage3 promo={version.projectInfo.promoCodeId} discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee} paymentDate={version.projectInfo.paymentDate as string} appCostAndFee={version.projectInfo.appCostAndFee} appDetail={version.projectInfo.appDetail} projectLink={version.projectInfo.projectLink} appName={inProgress.appName} clientEmail={inProgress.clientInfo.clientEmail} clientImage={inProgress.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string} paymentAmount={version.projectInfo.paymentAmount} paymentStatus={version.projectInfo.paymentStatus}/>
                                    }
 
 
@@ -105,6 +105,8 @@ export default function ClientProjectTabs({projects}: { projects:clientProjectsT
 
                                             if(isVersionStage4(version)){
                                                 return <ProjectCardStage4
+                                                discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee}
+                                                promo={version.projectInfo.promoCodeId}
                                                 maintainance={project.maintainance} 
                                                 
                                                 completionDate={version.projectInfo.completionDate as string}   key={i}   appCostAndFee={version.projectInfo.appCostAndFee}  paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink}  projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>

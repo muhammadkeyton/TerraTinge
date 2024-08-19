@@ -30,17 +30,17 @@ type ViewProjectDetails = {
     appDetail:string,
     paymentStatus:ProjectPayment,
     promo?:string,
-    discountedAppCost?:number
+    discountedAppCostAndFee?:number
     
 }
 
-export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paymentStatus,promo,discountedAppCost}:ViewProjectDetails){
+export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paymentStatus,promo,discountedAppCostAndFee}:ViewProjectDetails){
   const {isDesktop,windowWidth} = useWindowWidth();
 
   const cost = (appCostAndFee/100).toLocaleString();
 
-  let discountedCostString = '';
-  if(discountedAppCost) discountedCostString = (discountedAppCost/100).toFixed(2).toLocaleString()
+  let discountedAppCostAndFeeString = '';
+  if(discountedAppCostAndFee) discountedAppCostAndFeeString = (discountedAppCostAndFee/100).toLocaleString()
 
 
   
@@ -82,7 +82,7 @@ export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paym
 
                             <div className='flex flex-row space-x-2'>
                             <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${cost} USD</p>
-                            {promo && <p className="text-md p-1 rounded-sm">${discountedCostString} USD</p>}
+                            {promo && <p className="text-md p-1 rounded-sm">${discountedAppCostAndFeeString} USD</p>}
                             </div>
                             
 
@@ -211,13 +211,15 @@ export default function ViewProjectDetails({appName,appCostAndFee,appDetail,paym
                      <div className='flex flex-col gap-4'>
                           <h2 className='font-bold mb-2 text-sm'>{appName} Payment Status:</h2>
 
+                          
                           <div className='flex flex-row space-x-4 items-center'>
                             <p>total cost:</p>
-                            
+
                             <div className='flex flex-row space-x-2'>
                             <p className={`text-md p-1 ${promo && 'line-through decoration-2 decoration-red-500'} rounded-sm`}>${cost} USD</p>
-                            {promo && <p className="text-md p-1 rounded-sm">${discountedCostString} USD</p>}
+                            {promo && <p className="text-md p-1 rounded-sm">${discountedAppCostAndFeeString} USD</p>}
                             </div>
+                            
 
                           </div>
 
