@@ -383,7 +383,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
               <SheetHeader className='mb-4 text-center'>
                 <SheetTitle className='mb-2'>{appName}</SheetTitle>
                 <SheetDescription>
-                {cost} USD
+                {descriptionTextCost} USD
                 </SheetDescription>
               </SheetHeader>
       
