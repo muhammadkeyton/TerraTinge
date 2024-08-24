@@ -15,10 +15,10 @@ import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
 import { montserrat } from '@/app/ui/fonts';
 import { deleteProject } from '@/app/server-actions/in-app/developer/all-work';
 
+import {useState} from 'react';
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -28,6 +28,9 @@ import {
   AlertDialogTrigger,
 } from '../../../shadcn-components/alert-dialog';
 import { ProjectPayment, VersionStage } from '@/app/lib/definitions';
+import { Dispatch, SetStateAction } from 'react';
+
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 type ProjectCardProps = {
@@ -47,14 +50,15 @@ type ProjectCardProps = {
   paymentDate:string,
   versionStage:VersionStage,
   promo?:string,
-  discountedAppCostAndFee?:number
+  discountedAppCostAndFee?:number,
+  
 
  
   
 }
 
 
-function DeveloperDeleteProjectStage3({projectId,clientId}:{projectId:string,clientId:string}){
+function DeveloperDeleteProjectStage3({projectId,clientId,setLoading}:{projectId:string,clientId:string,setLoading:Dispatch<SetStateAction<boolean>>}){
   const router = useRouter();
   return(
 
@@ -87,13 +91,15 @@ function DeveloperDeleteProjectStage3({projectId,clientId}:{projectId:string,cli
               return;
             }
       
-  
+            setLoading(true);
             const deleteResult = await deleteProject(projectId,clientId)
   
             if(deleteResult){
+              setLoading(false);
               router.push('/dashboard');
             }else{
               alert('hey developer,project could not be deleted!');
+              setLoading(false);
          
             }
           }}
@@ -113,23 +119,24 @@ function DeveloperDeleteProjectStage3({projectId,clientId}:{projectId:string,cli
 
 export default function DeveloperProjectCardStage3({appName,clientEmail,clientImage,paymentStatus,appCost,paymentAmount,feePercentage,createdAt,appDetail,projectId,clientId,appCostAndFee,projectLink,paymentDate,versionStage,discountedAppCostAndFee,promo}:ProjectCardProps){
     
-    
+    const [loading,setLoading] = useState(false);
 
     return (
+
+
+      <>
+      {
+
+      !loading ?
+
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md my-6'>
-
-
-        
-                
+         
       <AppNameDate discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentDate={paymentDate} projectLink={projectLink} paymentAmount={paymentAmount} appCostAndFee={appCostAndFee} feePercentage={feePercentage} appCost={appCost} appName={appName} createdAt={createdAt}/>
-      
 
-     
-        
       <div className='flex flex-row my-4 justify-between space-x-4'>
 
         
-        <ViewSubmittedDetails discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
+        <ViewSubmittedDetails  discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentAmount={paymentAmount} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
         
         
         
@@ -137,19 +144,43 @@ export default function DeveloperProjectCardStage3({appName,clientEmail,clientIm
 
 
 
-        {paymentStatus !== ProjectPayment.processing && <DeveloperDeleteProjectStage3 projectId={projectId} clientId={clientId}/>}
+        {paymentStatus !== ProjectPayment.processing && <DeveloperDeleteProjectStage3 setLoading={setLoading} projectId={projectId} clientId={clientId}/>}
         
       </div>
 
-      
+
 
       <AppFounder  clientEmail={clientEmail} clientImage={clientImage} />
-                 
+                
                 
 
         
         
       </div>
+
+
+
+
+
+      :
+
+
+      <MuiServerProvider>
+        <div className='flex justify-center items-center my-12'>
+        <CircularProgress className='text-indigo-700' size={60}/>
+        </div>
+      </MuiServerProvider>
+
+
+
+
+
+      }
+      
+      
+      
+      </>
+     
     )
    
 }

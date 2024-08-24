@@ -5,6 +5,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import AppNameDate from './top-section/AppNameDate'
 import EditProject from './middle-section/edit-project';
@@ -44,7 +45,7 @@ type ProjectCardProps = {
 }
 
 
-function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,clientId:string}){
+function DeveloperDeleteProjectStage1({projectId,clientId,setLoading}:{projectId:string,clientId:string,setLoading:Dispatch<SetStateAction<boolean>>}){
   const router = useRouter();
   return(
 
@@ -76,14 +77,17 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
               alert('hey developer,please connect your device to the internet,project deletion needs internet connection!');
               return;
             }
-      
+            
+            setLoading(true);
   
             const deleteResult = await deleteProject(projectId,clientId)
   
             if(deleteResult){
-              router.push('/dashboard');
+              setLoading(false);
+              router.push('/dashboard/developer');
             }else{
               alert('hey developer,project could not be deleted!');
+              setLoading(false);
          
             }
           }}
@@ -103,9 +107,18 @@ function DeveloperDeleteProjectStage1({projectId,clientId}:{projectId:string,cli
 
 export default function DeveloperProjectCardStage1({appName,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,clientId}:ProjectCardProps){
     
-    
+    const [loading,setLoading] = useState(false);
 
     return (
+
+     <>
+     
+      {
+        !loading?
+
+
+
+     
       <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
 
 
@@ -124,7 +137,7 @@ export default function DeveloperProjectCardStage1({appName,clientEmail,clientIm
 
 
 
-        <DeveloperDeleteProjectStage1 projectId={projectId} clientId={clientId}/>
+        <DeveloperDeleteProjectStage1 setLoading={setLoading} projectId={projectId} clientId={clientId}/>
         
       </div>
 
@@ -137,6 +150,19 @@ export default function DeveloperProjectCardStage1({appName,clientEmail,clientIm
         
         
       </div>
-    )
+
+      :
+
+      <MuiServerProvider>
+            <div className='flex justify-center items-center my-12'>
+            <CircularProgress className='text-indigo-700' size={60}/>
+              </div>
+            </MuiServerProvider>
+
+
+    }
+
+    </>  
+  )
    
 }

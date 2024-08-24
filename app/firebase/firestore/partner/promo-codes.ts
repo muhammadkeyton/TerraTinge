@@ -1,6 +1,6 @@
 'use server';
 
-import { db} from "@/app/firebase/firebase";
+import { db} from "@/app/firebase/clientFirebase";
 
 import { collection,doc,runTransaction,getDoc, Timestamp, query, where, limit, getDocs} from "firebase/firestore";
 import { generateUniquePromoCode } from "@/app/server-actions/in-app/partner/promo-codes";
@@ -82,7 +82,7 @@ export const savePartnerPromoCode = async ({partnerId,promoCode,partnerEmail}:{p
 
                 partnerInfo:{
                     partnerId:partnerId,
-                    partnerEmail:partnerEmail
+                    partnerEmail:partnerEmail,
                 },
                 used:false,
                 createdAt:Timestamp.fromDate(new Date()),

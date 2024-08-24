@@ -4,7 +4,7 @@ import { NextRequest,NextResponse } from "next/server";
 import { Project,PaymentOption, ProjectVersions, VersionStage, VersionStage1 } from "@/app/lib/definitions";
 
 import { doc,getDoc,updateDoc} from "firebase/firestore";
-import { db } from "@/app/firebase/firebase";
+import { db } from "@/app/firebase/clientFirebase";
 import { auth } from "@/auth";
 
 

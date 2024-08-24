@@ -199,8 +199,11 @@ if(isDesktop || windowWidth >= 768){
                
 
              </div>
+
+
              
-           </div>
+             
+            </div>
 
            <Divider className='dark:bg-slate-300'/>
        
@@ -393,6 +396,8 @@ if(isDesktop || windowWidth >= 768){
                             
 
                           </div>
+
+                       
                           
                         </div>
 

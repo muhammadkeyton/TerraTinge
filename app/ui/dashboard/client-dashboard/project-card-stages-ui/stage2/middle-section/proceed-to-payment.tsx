@@ -155,7 +155,7 @@ const EnterPromoCode = ({promoCode,trackPromoEntered,setSkipPromo,projectId,setP
             if(!navigator.onLine) return alert('hey there,we cannot look up promocodes in our records,you have no internet connection,please connect your device to the internet.')
 
             setLoading(true)
-            let promoResult = await updateClientProjectPromoCode({projectId:projectId,promoCode:promoCode.code});
+            let promoResult = await updateClientProjectPromoCode({projectId:projectId,promoCode:promoCode.code.trim()});
 
             if(!promoResult.error){
               setPromo(
@@ -383,7 +383,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
               <SheetHeader className='mb-4 text-center'>
                 <SheetTitle className='mb-2'>{appName}</SheetTitle>
                 <SheetDescription>
-                {descriptionTextCost} USD
+                {descriptionTextCost}
                 </SheetDescription>
               </SheetHeader>
       

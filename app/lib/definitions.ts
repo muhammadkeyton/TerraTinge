@@ -233,6 +233,12 @@ export type VersionStage2 = {
     appCost:number,
     promoCodeId?:string,
     discountedAppCostAndFee?:number
+    partnerInfo?:{
+      email:string,
+      paymentStatus:ProjectPayment,
+      amountPaid?:number
+    },
+
     appCostAndFee:number,
     paymentDate: Timestamp | string,
     paymentAmount:number,
@@ -255,6 +261,12 @@ export type VersionStage3 = {
     paymentAmount:number,
     promoCodeId?:string,
     discountedAppCostAndFee?:number,
+    partnerInfo?:{
+      email:string,
+      paymentStatus:ProjectPayment,
+      amountPaid?:number
+      paymentDate?: string
+    },
     projectLink:string | null,
     paymentDate: Timestamp | string,
     createdAt:Timestamp | string,

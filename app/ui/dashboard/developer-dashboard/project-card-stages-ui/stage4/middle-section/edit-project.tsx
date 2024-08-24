@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { AppCostSchema, NameSchema,PercentageSchema } from "@/app/lib/data-validation";
+import {NameSchema} from "@/app/lib/data-validation";
 
 import { montserrat } from '@/app/ui/fonts';
 
@@ -44,7 +44,10 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter
-  } from '../../../../shadcn-components/dialog'
+  } from '../../../../shadcn-components/dialog';
+
+
+  
 import { submitUpdateProject } from '@/app/server-actions/in-app/developer/all-work';
 import { VersionStage } from '@/app/lib/definitions';
 

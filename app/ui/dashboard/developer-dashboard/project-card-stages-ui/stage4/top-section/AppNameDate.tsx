@@ -8,8 +8,9 @@ import {useState,useEffect} from 'react';
 import Divider from '@mui/material/Divider';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
 import { calculateDiscountedCostWithoutFee } from '@/app/lib/utils';
+import { ProjectPayment } from '@/app/lib/definitions';
 
-
+import EditPartnerPaymentInfo from './edit-partner-payment-info';
 type  AppNameImageDateFeedBackTextProps = {
     appName:string,
     createdAt:string,
@@ -22,10 +23,25 @@ type  AppNameImageDateFeedBackTextProps = {
     maintainanceEndDate:Date,
     projectLink:string | null,
     promo?:string,
-    discountedAppCostAndFee?:number
+    discountedAppCostAndFee?:number,
+    partnerInfo?:{
+      email:string,
+      paymentStatus:ProjectPayment,
+      amountPaid?:number
+      paymentDate?: string
+    },
+    projectId:string
 }
 
-export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate,projectLink,completionDate,maintainanceEndDate,promo,discountedAppCostAndFee}:AppNameImageDateFeedBackTextProps){
+
+
+
+
+
+
+
+
+export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,feePercentage,appCostAndFee,paymentAmount,paymentDate,projectLink,completionDate,maintainanceEndDate,promo,discountedAppCostAndFee,partnerInfo,projectId}:AppNameImageDateFeedBackTextProps){
     const [remainingTime, setRemainingTime] = useState<string>('');
 
     let discountedAppCostAndFeeString = '';
@@ -106,10 +122,16 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
                 </p>
 
                 <p className='text-sm my-4 font-medium'>Payment Amount: {(paymentAmount/100).toLocaleString()} USD</p>
+                
 
+
+
+                
+
+                
                 {
                     projectLink?
-                    <a className='text-sm underline italic text-blue-600 dark:text-blue-400' href={projectLink} target='_blank'>View WebApp</a>
+                    <a className='text-sm underline italic text-blue-600 dark:text-blue-400 inline-block' href={projectLink} target='_blank'>View WebApp</a>
 
                     :
 
@@ -120,6 +142,11 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
                  }
 
 
+
+
+                 {promo && <EditPartnerPaymentInfo email={partnerInfo?.email as string} paymentStatus={partnerInfo?.paymentStatus as ProjectPayment} projectId={projectId} amountPaid={`${partnerInfo?.amountPaid}`} paymentDate={partnerInfo?.paymentDate} />}
+
+                
                  
 
                 

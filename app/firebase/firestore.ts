@@ -3,7 +3,7 @@
 
 'use server';
 
-import { db} from "@/app/firebase/firebase";
+import { db} from "@/app/firebase/clientFirebase";
 import { collection,addDoc,doc,getDoc,setDoc } from "firebase/firestore";
 
 
@@ -18,7 +18,7 @@ import { uploadDeveloperResume } from "./storage";
 
 
 export const updateUserRole = async (userId:string,role:Role):Promise<void> => {
-    
+    console.log('called this function')
 
     try{
         const docRef = doc(db, "users", userId);
@@ -29,7 +29,7 @@ export const updateUserRole = async (userId:string,role:Role):Promise<void> => {
             return;
         }
     }catch(e){
-        throw e;
+        console.error(e);
     }
     
 

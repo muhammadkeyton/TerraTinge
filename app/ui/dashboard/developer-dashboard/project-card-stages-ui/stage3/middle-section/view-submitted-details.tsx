@@ -39,7 +39,8 @@ type ViewSubmittedDetailsPropStage2 = {
   paymentStatus:ProjectPayment,
   paymentAmount:number,
   promo?:string,
-  discountedAppCostAndFee?:number
+  discountedAppCostAndFee?:number,
+
 }
 
 
@@ -168,6 +169,7 @@ if(isDesktop || windowWidth >= 768){
                
 
              </div>
+            
              
            </div>
 
@@ -326,6 +328,8 @@ if(isDesktop || windowWidth >= 768){
                             
 
                           </div>
+                          
+                          
                           
                         </div>
 

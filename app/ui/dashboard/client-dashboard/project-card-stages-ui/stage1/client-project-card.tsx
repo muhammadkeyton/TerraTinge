@@ -1,6 +1,6 @@
 'use client';
 
-
+import { Dispatch, SetStateAction, useState } from 'react';
 
 
 
@@ -9,7 +9,7 @@ import AppNameImageDateFeedBackText from './top-section/AppNameImageDateFeedBack
 import CreateOrEditProject from './middle-section/create-edit-project';
 import ViewSubmittedDetails from './middle-section/view-submitted-details';
 import AppFounder from './bottom-section/app-founder';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Button from '@mui/material/Button';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
@@ -51,7 +51,7 @@ type ProjectCardProps = {
 
 
 
-function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,clientId:string}){
+function ClientDeleteProjectStage1({projectId,clientId,setLoading}:{projectId:string,clientId:string,setLoading: Dispatch<SetStateAction<boolean>>}){
   const router = useRouter();
   return(
 
@@ -82,14 +82,18 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
               alert('hello,please connect your device to the internet,project deletion needs internet connection!');
               return;
             }
+
+            setLoading(true);
       
   
             const deleteResult = await clientDeleteProject(projectId,clientId)
   
             if(deleteResult){
-              router.push('/dashboard');
+              setLoading(false);
+              router.push('/dashboard/client');
             }else{
               alert('hello,project could not be deleted!,try again');
+              setLoading(false);
          
             }
           }}
@@ -108,28 +112,59 @@ function ClientDeleteProjectStage1({projectId,clientId}:{projectId:string,client
 
 
 export default function ProjectCardStage1({appName,clientEmail,clientImage,createdAt,appBudget,appDetail,projectId,clientId}:ProjectCardProps){
-
+    
+  const [loading,setLoading] = useState(false);
     return (
-      <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
+
+      <>
 
 
+           {
+            !loading?
+
+
+
+          <div className='bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md max-w-sm md:max-w-md '>
+
+            <AppNameImageDateFeedBackText appName={appName} createdAt={createdAt}/>
+
+            <div className='flex flex-row my-4 justify-between'>
+            <ViewSubmittedDetails appBudget={appBudget} appDetail={appDetail} appName={appName} />
+            <CreateOrEditProject appBudget={appBudget} appDetail={appDetail} appName={appName} projectId={projectId}/>
+            <ClientDeleteProjectStage1 setLoading={setLoading} clientId={clientId} projectId={projectId}/>
+            </div>
+
+            <AppFounder clientEmail={clientEmail} clientImage={clientImage} />
+
+  
         
-                
-          <AppNameImageDateFeedBackText appName={appName} createdAt={createdAt}/>
-
-          <div className='flex flex-row my-4 justify-between'>
-           <ViewSubmittedDetails appBudget={appBudget} appDetail={appDetail} appName={appName} />
-          <CreateOrEditProject appBudget={appBudget} appDetail={appDetail} appName={appName} projectId={projectId}/>
-          <ClientDeleteProjectStage1 clientId={clientId} projectId={projectId}/>
+        
           </div>
 
-          <AppFounder clientEmail={clientEmail} clientImage={clientImage} />
-                 
-                
 
-        
-        
-      </div>
+
+
+
+
+
+
+            :
+
+            <MuiServerProvider>
+            <div className='flex justify-center items-center my-12'>
+            <CircularProgress className='text-indigo-700' size={60}/>
+              </div>
+            </MuiServerProvider>
+
+
+          }  
+      
+      
+      
+      
+      
+      </>
+      
     )
    
 }

@@ -3,9 +3,9 @@
 
 'use server';
 
-import { db} from "@/app/firebase/firebase";
+import { db} from "@/app/firebase/clientFirebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField, limit } from "firebase/firestore";
-import { AppDataServer,clientProjectsType,Project, ProjectState,ProjectVersions,VersionStage, VersionStage2 } from "@/app/lib/definitions";
+import { AppDataServer,clientProjectsType,Project, ProjectPayment, ProjectState,ProjectVersions,VersionStage, VersionStage2 } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -278,7 +278,15 @@ export const updateClientPromo = async({projectId,promoCode}:{projectId:string,p
             }
 
             if(isVersion2(lastVersion)){
+                
+               
                 lastVersion.projectInfo.promoCodeId = promo.id;
+                lastVersion.projectInfo.partnerInfo = {
+                    email: promo.data().partnerInfo.partnerEmail,
+                    paymentStatus: ProjectPayment.pending,
+                    amountPaid:0
+                }
+
                 lastVersion.projectInfo.discountedAppCostAndFee = calculateDiscountedPrice(lastVersion.projectInfo.appCostAndFee);
                 lastVersion.projectInfo.appCost = calculateDiscountedPrice(lastVersion.projectInfo.appCostAndFee);
                 lastVersion.projectInfo.feePercentage = 0;
@@ -293,6 +301,8 @@ export const updateClientPromo = async({projectId,promoCode}:{projectId:string,p
                     projectInfo:{
                     projectName:projectData.appName,
                     projectId:project.id,
+                    paymentStatus: ProjectPayment.pending,
+                    amountPaid:0,
                     versionId: projectData.versions[projectData.versions.length - 1].versionId
                    },
                    used:true

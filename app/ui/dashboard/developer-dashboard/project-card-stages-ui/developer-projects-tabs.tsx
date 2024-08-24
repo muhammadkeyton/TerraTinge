@@ -102,7 +102,7 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                                 let version = project.versions[project.versions.length - 1]
 
                                                 if(isVersionStage3(version)){
-                                                    return <DeveloperProjectCardStage3 promo={version.projectInfo.promoCodeId} discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee} key={i} versionStage={version.versionStage} appCost={version.projectInfo.appCost} appCostAndFee={version.projectInfo.appCostAndFee} feePercentage={version.projectInfo.feePercentage} paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink} clientId={project.clientInfo.clientId} projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
+                                                    return <DeveloperProjectCardStage3  promo={version.projectInfo.promoCodeId} discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee} key={i} versionStage={version.versionStage} appCost={version.projectInfo.appCost} appCostAndFee={version.projectInfo.appCostAndFee} feePercentage={version.projectInfo.feePercentage} paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink} clientId={project.clientInfo.clientId} projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
                                                 }
                                             })
                                         }
@@ -129,7 +129,10 @@ export default function DeveloperProjectTabs({projects}: { projects:developerPro
                                                     return <DeveloperProjectCardStage4 
                                                     discountedAppCostAndFee={version.projectInfo.discountedAppCostAndFee}
                                                     promo={version.projectInfo.promoCodeId}
-                                                    maintainance={project.maintainance} 
+                                                    maintainance={project.maintainance}
+                                                    partnerInfo={version.projectInfo.partnerInfo}
+
+                                                  
                                                     
                                                     completionDate={version.projectInfo.completionDate as string}   key={i} versionStage={version.versionStage} appCost={version.projectInfo.appCost} appCostAndFee={version.projectInfo.appCostAndFee} feePercentage={version.projectInfo.feePercentage} paymentAmount={version.projectInfo.paymentAmount} paymentDate={version.projectInfo.paymentDate as string} paymentStatus={version.projectInfo.paymentStatus} projectLink={version.projectInfo.projectLink} clientId={project.clientInfo.clientId} projectId={project.projectId} appName={version.projectInfo.appName} appDetail={version.projectInfo.appDetail} clientEmail={project.clientInfo.clientEmail} clientImage={project.clientInfo.clientImage} createdAt={version.projectInfo.createdAt as string}/>
                                                 }

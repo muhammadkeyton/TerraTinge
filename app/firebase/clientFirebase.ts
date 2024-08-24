@@ -8,6 +8,8 @@ import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 
+
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,13 +26,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 
 
 
-// use in development only by uncommenting the code below and comment it in production!!!!this can take the whole database down only use in development
+
+
+// we need to use emulators to interact with firestore and storage in our local dev
 // and make sure to run in a new terminal 'firebase emulators:start'
-// connectFirestoreEmulator(db, '127.0.0.1', 8080);
-// connectStorageEmulator(storage, "127.0.0.1", 9199);
+
+if (process.env.NODE_ENV === 'development') {
+ connectFirestoreEmulator(db, '127.0.0.1', 8080);
+ connectStorageEmulator(storage, "127.0.0.1", 9199);
+}
+
+export { db, storage };

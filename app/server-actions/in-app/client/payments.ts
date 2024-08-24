@@ -3,7 +3,7 @@
 import { Resend } from 'resend';
 import { Project, ProjectPayment, ProjectState, ProjectVersions, VersionStage, VersionStage1, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
 import { doc,getDoc,Timestamp,updateDoc} from "firebase/firestore";
-import { db } from "@/app/firebase/firebase";
+import { db } from "@/app/firebase/clientFirebase";
 
 
 

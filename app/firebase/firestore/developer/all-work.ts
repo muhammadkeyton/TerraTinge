@@ -2,7 +2,7 @@
 
 
 'use server'
-import { db} from "@/app/firebase/firebase";
+import { db} from "@/app/firebase/clientFirebase";
 
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,setDoc,deleteField, updateDoc, Timestamp} from "firebase/firestore";
 import { Project, ProjectPayment, ProjectState, ProjectVersions, ReviewedProjectType, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4, VersionStage, VersionStage3 } from "@/app/lib/definitions";

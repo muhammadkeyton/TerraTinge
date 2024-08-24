@@ -3,7 +3,7 @@
 'use server';
 
 import { ref,uploadBytes } from "firebase/storage";
-import { storage} from "@/app/firebase/firebase";
+import { storage} from "@/app/firebase/clientFirebase";
 import {v4 as generateId} from 'uuid';
 
 
