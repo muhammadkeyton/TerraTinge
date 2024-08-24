@@ -379,4 +379,94 @@ export const DeleteProject = async(projectId:string,clientId:string):Promise<boo
 
 
 
+export const  UpdatePartnerPayment = async(projectId:string,promoId:string,paymentAmount:number,paid:boolean):Promise<boolean> =>{
+    
+
+    const projectDocumentRef = doc(db, "projects", projectId);
+    const promoCodeDocumentRef = doc(db, "promoCodes",promoId);
+    
+ 
+
+    // //type guard to let us know that this project is stage 4,if project is not stage we cannot do anything with partner data
+    let isVersion4 = (version:ProjectVersions):version is VersionStage3 =>{
+        return version.versionStage === VersionStage.stage4
+    }
+
+
+    try{
+        
+
+
+        return await runTransaction(db, async (transaction) => {
+            
+            const project = await transaction.get(projectDocumentRef);
+            const promo = await transaction.get(promoCodeDocumentRef);
+    
+            if (!promo.exists() || !project.exists()) return false;
+
+           
+
+            let projectData = project.data() as Project;
+            let promoData = promo.data();
+            let lastVersion = projectData.versions[projectData.versions.length - 1];
+
+            
+
+            if(!isVersion4(lastVersion)) return false;
+
+
+            const date = new Date();
+
+     
+            const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+                
+               
+               
+            lastVersion.projectInfo.partnerInfo = {
+                ...(lastVersion.projectInfo.partnerInfo as { email: string }),
+                paymentStatus: paid? ProjectPayment.paid : ProjectPayment.pending,
+                amountPaid:paymentAmount,
+                paymentDate: formattedDate
+            }
+
+            
+  
+
+            //update project version with the promocode
+            transaction.update(projectDocumentRef,{versions:projectData.versions});
+
+            //update promocode to reflect that it has been used and include project info(name,id)
+            transaction.update(promoCodeDocumentRef,{
+                ...promoData,
+                projectInfo:{
+                    ...promoData.projectInfo,
+                    amountPaid:paymentAmount,
+                    paymentStatus:paid? ProjectPayment.paid : ProjectPayment.pending
+
+                }
+
+            });
+
+
+            return true;
+
+        
+        });
+
+       
+    
+
+    }catch(e){
+        console.error(`an error happened while trying to update partner payment:${e}`)
+        return false;
+    }
+
+
+
+
+}
+
+
+
 

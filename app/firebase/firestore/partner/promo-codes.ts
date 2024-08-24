@@ -4,13 +4,18 @@ import { db} from "@/app/firebase/clientFirebase";
 
 import { collection,doc,runTransaction,getDoc, Timestamp, query, where, limit, getDocs} from "firebase/firestore";
 import { generateUniquePromoCode } from "@/app/server-actions/in-app/partner/promo-codes";
+import { ProjectPayment,PromoCode } from "@/app/lib/definitions";
 
 
 
 
-export const getPartnerPromoCode = async({partnerId}:{partnerId:string}):Promise<string|null> =>{
+
+export const getPartnerPromoCode = async({partnerId}:{partnerId:string}):Promise<PromoCode[] | null> =>{
     const partnerRef = doc(db, "users", partnerId);
     const promoCodesCollectionRef = collection(db, "promoCodes");
+
+    let promoCodes:PromoCode[] = []
+
     try{
         const partner = await getDoc(partnerRef)
 
@@ -18,22 +23,31 @@ export const getPartnerPromoCode = async({partnerId}:{partnerId:string}):Promise
 
         
 
-        const promoQuery = query(promoCodesCollectionRef, where("used", "==", false),where('partnerInfo.partnerId','==',partnerId),limit(1));
-        const promoQuerySnapshot = (await getDocs(promoQuery)).docs;
+        const promoQuery = query(promoCodesCollectionRef,where('partnerInfo.partnerId','==',partnerId));
+        const allPromoCodes = (await getDocs(promoQuery)).docs ;
 
-       
 
-       
+        allPromoCodes.forEach((promo)=>{
+            let promoCode = {
+                ...promo.data(),
+                promoCode:promo.id
+            } as PromoCode
 
-        if(promoQuerySnapshot.length > 0){
-            return promoQuerySnapshot[0].id;
-        }else{
-            return null;
+            promoCodes.push(promoCode);
+        })
+        
+
+
+        if(promoCodes.length > 0){
+            return promoCodes;
         }
+
+       return null;
+        
 
         
     }catch(e){
-        console.error(`could not fetch partner a partner promocode:${e}`)
+        console.error(`could not fetch partner promoCodes:${e}`)
         return null;
     }
 

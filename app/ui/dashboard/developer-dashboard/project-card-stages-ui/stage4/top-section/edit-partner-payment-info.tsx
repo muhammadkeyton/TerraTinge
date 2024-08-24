@@ -5,6 +5,11 @@ import {ChangeEvent, useState} from 'react';
 
 import { PartnerPaymentAmountSchema } from '@/app/lib/data-validation';
 
+import { updatePartnerPayment  } from '@/app/server-actions/in-app/developer/all-work';
+
+import { useRouter } from 'next/navigation';
+
+
 import {
     Sheet,
     SheetContent,
@@ -45,12 +50,14 @@ interface EditPartnerPaymentInfoProps{
   email:string,
   paymentStatus:ProjectPayment,
   amountPaid?:string,
-  paymentDate?:string
+  paymentDate?:string,
+  promoId:string
 }
 
 
-export default function EditPartnerPaymentInfo({projectId,email,paymentStatus,amountPaid,paymentDate}:EditPartnerPaymentInfoProps){
-
+export default function EditPartnerPaymentInfo({projectId,email,paymentStatus,amountPaid,paymentDate,promoId}:EditPartnerPaymentInfoProps){
+   
+    const router = useRouter();
     
     const {isDesktop,windowWidth} = useWindowWidth()
   
@@ -165,32 +172,72 @@ export default function EditPartnerPaymentInfo({projectId,email,paymentStatus,am
   
                     const appDataOk = validateAppData(appData);
   
-                   
+                     console.log(appData.paid);
    
                       if(appDataOk){
                            setLoading(true);
-                          //  const responseOk = await submitUpdateProject(projectId,{
-                          //      appName:appData.appName.text,
-                               
-                          //      projectLink:appData.projectLink.text,
-                             
-                          //      completed:appData.completed,
-                              
-                          //      versionStage:versionStage
-                          //  });
+                           const responseOk = await updatePartnerPayment({paymentAmount:Number(appData.amount.text),projectId:projectId,promoId:promoId,paid:appData.paid});
    
-                           console.log(appDataOk)
+                           
    
-                          //  if(!responseOk){
-                          //      setLoading(false);
-                          //      validateAppData(appData);
-                          //      alert('something went wrong while trying to update the project,try again')
-                          //  }else{
-                          //      router.push('/dashboard');
-                          //  }
+                           if(!responseOk){
+                               setLoading(false);
+                               validateAppData(appData);
+                               alert('something went wrong while trying to update the partner payment,try again')
+                           }else{
+                               setLoading(false);
+                               router.push('/dashboard/developer');
+                           }
                       }
                    
                    }}>
+
+                    <div className='mb-6'>
+
+                    
+                        <div className='flex flex-row mb-2 space-x-4 items-center'>
+                            <p>payment status:</p>
+
+                            {(()=>{
+
+                              switch ( paymentStatus) {
+                                case ProjectPayment.pending:{
+                                  return ( <code className="text-md bg-orange-600  text-white p-1 rounded-sm">{ paymentStatus}</code>)
+                                }
+
+                                
+
+                                case ProjectPayment.paid:{
+                                  return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{ paymentStatus}</code>)
+                                }
+
+                          
+                                
+                              }
+
+                            })()
+                            
+                            }
+                            
+
+                          </div>
+                    
+                    {paymentStatus === ProjectPayment.paid && (
+                      
+                      
+                      <>
+                       <p className='text-sm mb-2'>payment Amount: {amountPaid}</p>
+                       <p className='text-sm'>payment Date: {paymentDate}</p>
+                      </>
+                      
+                      
+                      
+                      
+                      )}
+                  </div>
+
+                   
+                          
   
                    
                     <TerraTextField
@@ -297,27 +344,66 @@ export default function EditPartnerPaymentInfo({projectId,email,paymentStatus,am
   
               if(appDataOk){
                 setLoading(true);
-                // const responseOk = await submitUpdateProject(projectId,{
-                //     appName:appData.appName.text,
-                    
-                //     projectLink:appData.projectLink.text,
-                   
-                //     completed:appData.completed,
+                const responseOk = await updatePartnerPayment({paymentAmount:Number(appData.amount.text),projectId:projectId,promoId:promoId,paid:appData.paid});
 
-                //     versionStage:versionStage
-                // });
-  
                 console.log(appDataOk)
-  
-                // if(!responseOk){
-                //     setLoading(false);
-                //     validateAppData(appData);
-                //     alert('something went wrong while trying to update the project,try again')
-                // }else{
-                //     router.push('/dashboard');
-                // }
+
+                if(!responseOk){
+                    setLoading(false);
+                    validateAppData(appData);
+                    alert('something went wrong while trying to update partner payment,try again')
+                }else{
+                    router.push('/dashboard/developer');
+                }
             }
           }}>
+
+
+
+
+          <div className='mb-6'>
+
+                              
+          <div className='flex flex-row mb-2 space-x-4 items-center'>
+              <p>payment status:</p>
+
+              {(()=>{
+
+                switch ( paymentStatus) {
+                  case ProjectPayment.pending:{
+                    return ( <code className="text-md bg-orange-600  text-white p-1 rounded-sm">{ paymentStatus}</code>)
+                  }
+
+                  
+
+                  case ProjectPayment.paid:{
+                    return ( <code className="text-md bg-green-700  text-white p-1 rounded-sm">{ paymentStatus}</code>)
+                  }
+
+            
+                  
+                }
+
+              })()
+              
+              }
+              
+
+            </div>
+
+          {paymentStatus === ProjectPayment.paid && (
+
+
+          <>
+          <p className='text-sm mb-2'>payment Amount: {amountPaid}</p>
+          <p className='text-sm'>payment Date: {paymentDate}</p>
+          </>
+
+
+
+
+          )}
+          </div>
             
             <TerraTextField
                     label='Amount Paid to Partner'

@@ -1,4 +1,4 @@
-
+import 'server-only';
 
 // this file is used by nextauth,our authenticated users are created either in dev or production depending on the environment we are on
 import { cert, initializeApp as initializeAdminApp, getApps } from "firebase-admin/app";

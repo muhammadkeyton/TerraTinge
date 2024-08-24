@@ -199,6 +199,15 @@ export type developerProjectsType = {
 }
 
 
+//partner promoCodes fetch server action mutation response
+
+export type partnerPromoCodesType = {
+  inUse: PromoCode[] | null,
+  earnings: PromoCode[] | null,
+  notUsedYet: PromoCode | null
+}
+
+
 //-----------------client and server definitions end------------------------------------------------------------------
 
 
@@ -206,6 +215,27 @@ export type developerProjectsType = {
 
 //--------------------------data received from database definitions start--------------------------------------------------------------
 
+
+
+export type PromoCode = {
+  //this promocode is the id of the promoCode document which is also the promocode itself
+  promoCode:string,
+
+  createdAt:Timestamp | string,
+  partnerInfo:{
+    partnerEmail:string,
+    partnerId:string
+  },
+  projectInfo?:{
+    amountPaid?:number,
+    paymentStatus:ProjectPayment,
+    projectId:string,
+    projectName:string,
+    versionId:string
+
+  },
+  used:boolean
+}
 
 
 export type VersionStage1 = {

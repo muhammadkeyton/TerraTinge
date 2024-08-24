@@ -5,7 +5,7 @@
 
 import { db} from "@/app/firebase/clientFirebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField, limit } from "firebase/firestore";
-import { AppDataServer,clientProjectsType,Project, ProjectPayment, ProjectState,ProjectVersions,VersionStage, VersionStage2 } from "@/app/lib/definitions";
+import { AppDataServer,clientProjectsType,Project, ProjectPayment, ProjectState,ProjectVersions,VersionStage, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -387,6 +387,10 @@ export const ClientDeleteProject = async(projectId:string,clientId:string):Promi
 
    
 }
+
+
+
+
 
 
 

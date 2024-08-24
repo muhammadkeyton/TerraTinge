@@ -2,8 +2,8 @@ import { Role } from "@/app/lib/definitions";
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation'
 
-import PartnerTabs from "@/app/ui/dashboard/partner-dashboard/partner-tabs";
-import { fetchPartnerPromoNotUsed } from "@/app/server-actions/in-app/partner/promo-codes";
+import PartnerCodes from "@/app/ui/dashboard/partner-dashboard/partner-codes";
+import { fetchPartnerPromoCodes } from "@/app/server-actions/in-app/partner/promo-codes";
 export default async function DeveloperWork(){
     
     const session = await auth()
@@ -13,12 +13,12 @@ export default async function DeveloperWork(){
         return redirect('/dashboard');
     }
 
-    const promoCode = await fetchPartnerPromoNotUsed();
+    const promoCodes = await fetchPartnerPromoCodes();
 
-    console.log(promoCode)
+    
    
     return (
-     <PartnerTabs promo={promoCode}/>
+     <PartnerCodes promoCodes={promoCodes}/>
 
     );
 }

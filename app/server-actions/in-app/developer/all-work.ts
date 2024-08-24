@@ -1,6 +1,6 @@
 'use server';
 
-import { fetchAllProjects, updateProjectStage2,updateProjectStage3,DeleteProject, updateProjectStage4 } from "@/app/firebase/firestore/developer/all-work";
+import { fetchAllProjects, updateProjectStage2,UpdatePartnerPayment,updateProjectStage3,DeleteProject, updateProjectStage4 } from "@/app/firebase/firestore/developer/all-work";
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
 import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4 } from "@/app/lib/definitions";
 import { Timestamp } from "firebase/firestore";
@@ -257,4 +257,16 @@ export const deleteProject = async (projectId:string,clientId:string):Promise<bo
     }
 
     return deleteResult;
+}
+
+
+export const updatePartnerPayment = async({projectId,promoId,paymentAmount,paid}:{projectId:string,promoId:string,paymentAmount:number,paid:boolean}):Promise<boolean> =>{
+    
+    let success = await UpdatePartnerPayment(projectId,promoId,paymentAmount,paid);
+
+    if(success){
+        revalidatePath('/dashboard/developer')
+    }
+
+    return success;
 }

@@ -144,7 +144,7 @@ export default function AppNameImageDateFeedBackText({appName,createdAt,appCost,
 
 
 
-                 {promo && <EditPartnerPaymentInfo email={partnerInfo?.email as string} paymentStatus={partnerInfo?.paymentStatus as ProjectPayment} projectId={projectId} amountPaid={`${partnerInfo?.amountPaid}`} paymentDate={partnerInfo?.paymentDate} />}
+                 {promo && <EditPartnerPaymentInfo promoId={promo} email={partnerInfo?.email as string} paymentStatus={partnerInfo?.paymentStatus as ProjectPayment} projectId={projectId} amountPaid={`${partnerInfo?.amountPaid}`} paymentDate={partnerInfo?.paymentDate} />}
 
                 
                  
