@@ -353,6 +353,7 @@ export default function EditPartnerPaymentInfo({projectId,email,paymentStatus,am
                     validateAppData(appData);
                     alert('something went wrong while trying to update partner payment,try again')
                 }else{
+                   setLoading(false);
                     router.push('/dashboard/developer');
                 }
             }
