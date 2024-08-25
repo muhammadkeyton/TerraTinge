@@ -22,7 +22,7 @@ const stepsData = [
     step: 'Step 2',
     gif: '/discussion.gif',
     heading: 'Design Discussion',
-    text: "After reviewing your project, we'll schedule a virtual meeting. During this meeting, we'll discuss potential designs and the features that should be included in your Minimum Viable Product (MVP).",
+    text: "After reviewing your project, we'll schedule a virtual meeting. During this meeting, we'll discuss potential designs and the features that should be included in your Web/Mobile App.",
   },
   {
     step: 'Step 3',

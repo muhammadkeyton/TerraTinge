@@ -17,7 +17,7 @@ const TermsData = [
     },
     {
       "heading": "Payment Terms and Refund Policy",
-      "text": "Payment for our services is due upon the completion of the project. We require an upfront payment of a third of the total project cost. Refunds are available if requested by you before the commencement of the first feature development. However, once we have started building the first feature, refunds are not available. Despite this, we will strive to ensure your satisfaction throughout the project."
+      "text": "Payment for our services is due before the commencement of development. You have the option to pay either a third of the total project cost upfront or the full amount. The remaining balance, if any, is due upon project completion. Refunds are available if requested before the commencement of the first feature development. However, once we start building the first feature, refunds are not available. We will strive to ensure your satisfaction throughout the project."
     },
     {
       "heading": "Integration with Third-Party Services",
@@ -29,7 +29,7 @@ const TermsData = [
     },
     {
       "heading": "Support After Development",
-      "text": "Upon launch, we offer three months of complimentary maintenance. Following this period, you may opt for our monthly maintenance service at 10% of the total development cost. If issues arise after the three-month period due to your actions, hosting provider downtime, or bugs, and you are not subscribed to our monthly maintenance service, we are not liable for these issues. However, we can assist in resolving them at a charge of 20% of the project cost for the specific issue. Once resolved, you may opt for our monthly maintenance service. If you do not subscribe to our monthly maintenance, you assume full responsibility for your application, including user data and all related aspects."
+      "text": "Upon launch, we offer 1 month of complimentary maintenance. Following this period, you may opt for our monthly maintenance service at 10% of the total development cost. If issues arise after the 1-month period due to your actions, hosting provider downtime, or bugs, and you are not subscribed to our monthly maintenance service, we are not liable for these issues. However, we can assist in resolving them at a charge of 20% of the project cost for the specific issue. Once resolved, you may opt for our monthly maintenance service. If you do not subscribe to our monthly maintenance, you assume full responsibility for your application, including user data and all related aspects."
     }
 ]
 

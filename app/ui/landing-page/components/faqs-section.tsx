@@ -47,7 +47,7 @@ const faqsDataSecondBatch = [
   { 
       "icon": <CodeIcon/>,
       "question": "What kind of support do you offer after the Development?",
-      "answer": "Post-launch, we offer three months of free maintenance. After this period, you can opt for our monthly maintenance service at 10% of the total development cost. Alternatively, you can choose other developers for maintenance since you own the app."
+      "answer": "Post-launch, we offer 1 month of free maintenance. After this period, you can opt for our monthly maintenance service at 10% of the total development cost. Alternatively, you can choose other developers for maintenance since you own the app."
   },
   {   "icon":<LockIcon/>,
       "question": "How do you handle data security and privacy?",
@@ -55,7 +55,7 @@ const faqsDataSecondBatch = [
   },
   {   "icon": <EditNoteIcon/>,
       "question": "Can I make changes to the project once it has started?",
-      "answer": "Yes, we accommodate changes during the development process. However, if these changes necessitate additional development time compared to the original plan, we will charge an additional 5% of the project cost to your remaining balance."
+      "answer": "Yes, we accommodate changes during the development process. However, if these changes necessitate additional development time compared to the original plan, we will add the additional cost of that change to your remaining balance."
   },
   {   "icon":<InsertEmoticonIcon/>,
       "question": "What happens if I'm not satisfied with the final product?",
