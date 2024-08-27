@@ -170,8 +170,8 @@ export async function handlePaymentSuccess({projectId,paymentAmount}:{projectId:
         const formattedDate = date.toLocaleDateString('en-US', options);
 
         const { data, error } = await resend.emails.send({
-          from: 'onboarding@resend.dev',
-          to: 'muhammadkeyton@gmail.com',
+          from: 'payments@terratinge.com',
+          to: clientEmail,
           subject: `TerraTinge Payment Notification`,
           react: PaymentSuccessEmail(
             {clientName:clientName,
@@ -277,8 +277,8 @@ export async function handlePaymentProcessing({projectId,paymentAmount}:{project
       const formattedDate = date.toLocaleDateString('en-US', options);
 
       const { data, error } = await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: 'muhammadkeyton@gmail.com',
+        from: 'payments@terratinge.com',
+        to: clientEmail,
         subject: `TerraTinge Payment Notification`,
         react: PaymentProcessingEmail(
           {clientName:clientName,
@@ -392,8 +392,8 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
       const formattedDate = date.toLocaleDateString('en-US', options);
 
       const { data, error } = await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: 'muhammadkeyton@gmail.com',
+        from: 'payments@terratinge.com',
+        to: clientEmail,
         subject: `TerraTinge Payment Notification`,
         react: PaymentFailedEmail(
           {clientName:clientName,

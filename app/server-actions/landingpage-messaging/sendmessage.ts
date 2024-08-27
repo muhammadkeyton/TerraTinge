@@ -22,7 +22,7 @@ export const sendMessage = async(inquiry:InquiryDataServer):Promise<boolean>=>{
     }
 
     const { data, error } = await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'client-inquiry@terratinge.com',
         to: 'muhammadkeyton@gmail.com',
         subject: `${name} sent a new inquiry message to TerraTinge`,
         react: Email({name,email,message})
