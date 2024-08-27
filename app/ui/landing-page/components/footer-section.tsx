@@ -86,19 +86,19 @@ export default function Footer(){
             <div className="col-span-2 md:col-auto flex flex-col space-y-6">
                 <div>
                 <h4 className="mb-2 text-2xl">Get in touch</h4>
-                <a href="" className="underline decoration-indigo-700 underline-offset-4">talktoteam@TerraTinge.com</a>
+                <a href="mailto:talktoteam@terratinge.com" className="underline decoration-indigo-700 underline-offset-4">talktoteam@terratinge.com</a>
                 </div>
 
                 <div className="flex items-center space-x-6">
                  <div>
-                 <IconButton className="p-3">
+                 <IconButton href="https://www.tiktok.com/@terratinge" target="_blank" className="p-3">
                  <FaTiktok className="text-4xl text-black dark:text-white"/>
                  </IconButton>
                  <p>Our TikTok</p>
                  </div>
                  
                  <div>
-                 <IconButton className="p-3">
+                 <IconButton href="https://www.instagram.com/terratinge" target="_blank" className="p-3">
                     <Image
                     unoptimized
                     src='/instagram.png'
