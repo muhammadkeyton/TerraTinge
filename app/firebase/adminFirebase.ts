@@ -4,6 +4,9 @@ import 'server-only';
 import { cert, initializeApp as initializeAdminApp, getApps } from "firebase-admin/app";
 import { getFirestore as getAdminFirestore } from "firebase-admin/firestore";
 
+
+
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 if (!getApps().length) {
@@ -21,6 +24,11 @@ if (!getApps().length) {
   }
 }
 
+
+// Initialize Firestore
 const adminFirestore = getAdminFirestore();
+
+
+
 
 export { adminFirestore };

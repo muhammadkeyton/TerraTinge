@@ -30,14 +30,9 @@ import { updateUserRole} from '@/app/firebase/firestore';
 
 
 
-
 export const { handlers, signIn, signOut, auth} = NextAuth({
   adapter: FirestoreAdapter({
-    // credential: cert({
-    //   projectId: process.env.AUTH_FIREBASE_PROJECT_ID,
-    //   clientEmail: process.env.AUTH_FIREBASE_CLIENT_EMAIL,
-    //   privateKey: process.env.AUTH_FIREBASE_PRIVATE_KEY
-    // }),
+    
 
     firestore:adminFirestore
 
@@ -62,7 +57,7 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
     }),
 
     Resend({
-      from:'onboarding@resend.dev',
+      from:'login@terratinge.com',
       async sendVerificationRequest({
         identifier,
         url,
@@ -74,7 +69,7 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
         const resend = new LoginEmail(provider.apiKey);
         
         const { data, error } = await resend.emails.send({
-          from: 'onboarding@resend.dev',
+          from: 'login@terratinge.com',
           to: identifier,
           subject:'TerraTinge Secure Login',
           react: Email({url})
@@ -98,6 +93,8 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
 
   callbacks:{
 
+    
+
     async jwt({token,user,trigger,session}){
 
       if(user){
@@ -105,7 +102,12 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
           token.role = Role.unknown as Role;
         }else{
           token.role = user.role;
+          
+          
         }
+
+
+
       }
 
 
@@ -114,24 +116,37 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
         token = {...token,role:session.user.role}
         return token;
       }
+
+
+
+
+
+      
+
+
+      return token;
       
      
 
-      return token;
+     
     },
 
     async session({session,token}){
       
       if(token){
+        console.log(token)
         session.user.id = token.sub as string;
         session.user.role = token.role as Role;
+      
       }
         
      
       
      
       return session;
-    }
+    },
+
+
 
 
 

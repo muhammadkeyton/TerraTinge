@@ -17,6 +17,7 @@ import Diversity1Icon from '@mui/icons-material/Diversity1';
 
 import { logout } from "@/app/server-actions/authentication/logout";
 
+
 export default function NewUser(){
 
 
@@ -134,7 +135,9 @@ function SelectRole(){
 
                 <Button onClick={async()=> {
                         setLoading(true);
+                        
                         await logout()
+                        
                         
                     }
                         

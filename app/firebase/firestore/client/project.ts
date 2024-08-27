@@ -4,8 +4,8 @@
 'use server';
 
 import { db} from "@/app/firebase/clientFirebase";
-import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,Timestamp, updateDoc, deleteField, limit } from "firebase/firestore";
-import { AppDataServer,clientProjectsType,Project, ProjectPayment, ProjectState,ProjectVersions,VersionStage, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
+import { collection,doc,runTransaction,getDoc,query,where,getDocs,Timestamp, updateDoc, deleteField, limit } from "firebase/firestore";
+import { AppDataServer,Project, ProjectPayment, ProjectState,ProjectVersions,VersionStage, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
 
 import { v4 as uuidv4 } from 'uuid';
 
