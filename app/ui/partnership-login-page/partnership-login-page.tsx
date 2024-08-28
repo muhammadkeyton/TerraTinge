@@ -14,10 +14,15 @@ import { PageWrapper } from '@/app/ui/page-animater';
 
 import AuthView from '@/app/ui/reusable-components/login'
 
-import { isWebview } from '@dvlden/is-webview';
+
+import useWebviewDetection from '../reusable-components/useWebviewDetection';
 
 export default function PartnershipLoginPage (){
-   
+    const { isClient, isWebView } = useWebviewDetection();
+
+    if (!isClient) {
+        return null; // meaning we are still in server side and cannot detect webview
+    }
 
     return (
         <div className='relative pt-28 px-4'>
@@ -58,7 +63,7 @@ export default function PartnershipLoginPage (){
                 <div className="my-10 lg:mt-0 max-w-md ">
 
                     {
-                       !isWebview(navigator.userAgent)?
+                       !isWebView?
 
 
                     

@@ -13,14 +13,20 @@ import { PageWrapper } from "@/app/ui/page-animater";
 
 import AuthView from '@/app/ui/reusable-components/login'
 
-import { isWebview } from '@dvlden/is-webview';
+
+import useWebviewDetection from "../reusable-components/useWebviewDetection";
 
 
 export default function LoginPage(){
     
+    const { isClient, isWebView } = useWebviewDetection();
 
     const ExplanationText = 'Accessing Our Services Is Super Easy, Enter Your Email. Click On The Email Link You Receive and You Will Be Logged In!'
+   
 
+    if (!isClient) {
+        return null; // meaning we are still in server side and cannot detect webview
+    }
 
     return (
         <div className='relative pt-16'>
@@ -35,7 +41,7 @@ export default function LoginPage(){
                 </MuiServerProvider>
 
                 {
-                    !isWebview(navigator.userAgent)?
+                    !isWebView?
 
                
                 <>
