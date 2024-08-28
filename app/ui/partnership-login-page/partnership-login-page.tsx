@@ -14,8 +14,11 @@ import { PageWrapper } from '@/app/ui/page-animater';
 
 import AuthView from '@/app/ui/reusable-components/login'
 
+import { isWebview } from '@dvlden/is-webview';
+
 export default function PartnershipLoginPage (){
-    
+    const userAgent = window.navigator.userAgent;
+    const isWebView = isWebview(userAgent);
 
     return (
         <div className='relative pt-28 px-4'>
@@ -55,8 +58,14 @@ export default function PartnershipLoginPage (){
 
                 <div className="my-10 lg:mt-0 max-w-md ">
 
-                     
-                    <h1 className='font-extrabold text-2xl mb-5'>
+                    {
+                        !isWebView?
+
+
+                    
+
+                    <>
+                     <h1 className='font-extrabold text-2xl mb-5'>
                         Want to Partner with us?
                     </h1>
 
@@ -64,6 +73,14 @@ export default function PartnershipLoginPage (){
                    
                     
                      <AuthView/>
+                    </>
+
+                    :
+
+                    <p className="font-extrabold text-2xl mb-5">Hello,for security purpose we do not allow our users to login using social media webviews,please open our webApp in a web browser like safari or chrome in order to securely authenticate with us </p>
+
+                   }
+                   
 
 
                         
