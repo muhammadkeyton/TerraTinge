@@ -17,7 +17,7 @@ import { isWebview } from '@dvlden/is-webview';
 
 
 export default function LoginPage(){
-    const userAgent = window.navigator.userAgent;
+    const userAgent = navigator.userAgent;
    const isWebView = isWebview(userAgent);
 
     const ExplanationText = 'Accessing Our Services Is Super Easy, Enter Your Email. Click On The Email Link You Receive and You Will Be Logged In!'

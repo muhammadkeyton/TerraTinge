@@ -17,7 +17,7 @@ import AuthView from '@/app/ui/reusable-components/login'
 import { isWebview } from '@dvlden/is-webview';
 
 export default function PartnershipLoginPage (){
-    const userAgent = window.navigator.userAgent;
+    const userAgent = navigator.userAgent;
     const isWebView = isWebview(userAgent);
 
     return (
@@ -77,7 +77,7 @@ export default function PartnershipLoginPage (){
 
                     :
 
-                    <p className="font-extrabold text-2xl mb-5">Hello,for security purpose we do not allow our users to login using social media webviews,please open our webApp in a web browser like safari or chrome in order to securely authenticate with us </p>
+                     <p className="font-extrabold text-2xl mb-5">Hello,for security purpose we do not allow our users to login using social media webviews,please open our webApp in a web browser like safari or chrome in order to securely authenticate with us </p>
 
                    }
                    
