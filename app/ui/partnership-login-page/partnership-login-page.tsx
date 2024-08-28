@@ -17,8 +17,7 @@ import AuthView from '@/app/ui/reusable-components/login'
 import { isWebview } from '@dvlden/is-webview';
 
 export default function PartnershipLoginPage (){
-    const userAgent = navigator.userAgent;
-    const isWebView = isWebview(userAgent);
+   
 
     return (
         <div className='relative pt-28 px-4'>
@@ -59,7 +58,7 @@ export default function PartnershipLoginPage (){
                 <div className="my-10 lg:mt-0 max-w-md ">
 
                     {
-                        !isWebView?
+                       !isWebview(navigator.userAgent)?
 
 
                     
