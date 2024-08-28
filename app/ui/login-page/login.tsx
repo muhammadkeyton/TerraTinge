@@ -55,7 +55,10 @@ export default function LoginPage(){
 
                 :
 
-                <p className="font-extrabold text-2xl mb-5">Hello,for security purpose we do not allow our users to login using social media webviews,please open our webApp in a web browser like safari or chrome in order to securely authenticate with us </p>
+                <p className="font-extrabold text-2xl mb-5">
+                For security reasons, we do not allow logins through social media webviews such as TikTok, Instagram, LinkedIn, etc. Please use a web browser like Chrome, Bing, Firefox, Microsoft Edge, or Safari to securely authenticate with us. Thank you for your understanding.
+                </p>
+              
 
 
                 }
