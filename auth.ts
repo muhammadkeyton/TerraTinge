@@ -25,6 +25,21 @@ import { adminFirestore } from './app/firebase/adminFirebase';
 import { updateUserRole} from '@/app/firebase/firestore';
 
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+
+let googleClientId: string | undefined;
+let googleClientSecret:string | undefined;
+
+
+//in local development we use a locally configured google oauth and in production we use the production configured google oauth
+if(isDevelopment){
+  googleClientId = process.env.LOCAL_AUTH_GOOGLE_ID;
+  googleClientSecret = process.env.LOCAL_AUTH_GOOGLE_SECRET;
+}else{
+  googleClientId = process.env.PRODUCTION_AUTH_GOOGLE_ID;
+  googleClientSecret = process.env.PRODUCTION_AUTH_GOOGLE_SECRET;
+}
 
 
 
@@ -53,6 +68,8 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
   providers:[
     
     Google({
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
       allowDangerousEmailAccountLinking:true 
     }),
 
