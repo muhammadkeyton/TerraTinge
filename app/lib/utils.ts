@@ -9,9 +9,18 @@ export function cn(...inputs: ClassValue[]) {
 
 
 
+
+
 export function calculateDiscountedCostWithoutFee(originalPrice: number): number {
   const feeRate = 0.10;
   const estimatedFeeAmount = originalPrice * feeRate;
   const cost = Math.round(originalPrice -  estimatedFeeAmount);
   return cost;
 }
+
+
+export const isProduction = process.env.NODE_ENV === 'production';
+
+
+
+

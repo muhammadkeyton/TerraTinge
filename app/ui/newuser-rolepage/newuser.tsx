@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect,useState } from "react";
 import Button from '@mui/material/Button';
 
-import { useSession } from "next-auth/react";
+import { useSession,getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import MuiServerProvider from "../mui-providers/mui-server-provider";
 
@@ -76,18 +76,36 @@ function SelectRole(){
                 <div className='flex flex-row justify-around items-center my-6 space-x-4 sm:space-y-0 sm:space-x-6'>
 
 
-                <Button onClick={()=>
+                <Button onClick={async()=>
                 
                 {
 
-                  update({...data,
-                    user:{
-                      ...data?.user,
-                      role:Role.client
-                    }
-                  })
+                  const session = await getSession();
 
-                  setLoading(true)
+
+
+                  if(!session?.user){
+                    setLoading(true);
+                    router.push('/authentication')
+                    
+                  }else{
+                    update({...data,
+                      user:{
+                        ...data?.user,
+                        role:Role.client
+                      }
+                    })
+
+                    setLoading(true);
+
+                  }
+
+                 
+                   
+                   
+                  
+
+                  
 
                 }
 
@@ -108,17 +126,37 @@ function SelectRole(){
 
                 
 
-                <Button onClick={ ()=>
+                <Button onClick={ async()=>
                 
                 {
-                  update({...data,
-                    user:{
-                      ...data?.user,
-                      role:Role.partner
-                    }
-                  })
+                  const session = await getSession();
 
-                  setLoading(true)
+
+
+
+
+                  if(!session?.user){
+                    setLoading(true);
+                    router.push('/authentication')
+                    
+                  }else{
+                    update({...data,
+                      user:{
+                        ...data?.user,
+                        role:Role.partner
+                      }
+                    })
+
+                    setLoading(true);
+
+                  }
+
+
+
+                  
+                    
+               
+                  
                 }
 
                 }
@@ -134,9 +172,17 @@ function SelectRole(){
 
 
                 <Button onClick={async()=> {
-                        setLoading(true);
+                        const session = await getSession();
+
+
+                        if(!session?.user){
+                          setLoading(true);
+                          router.push('/authentication')
+                        }else{
+                          setLoading(true);
+                          await logout()
+                        }
                         
-                        await logout()
                         
                         
                     }

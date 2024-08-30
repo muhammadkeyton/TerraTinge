@@ -11,14 +11,24 @@ import { collection,addDoc,doc,getDoc,setDoc } from "firebase/firestore";
 import { ApplicationDataServer, Role } from "@/app/lib/definitions";
 import { uploadDeveloperResume } from "./storage";
 
-
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 
 
 
 
 export const updateUserRole = async (userId:string,role:Role):Promise<void> => {
-    console.log('called this function')
+
+   const session = await auth()
+
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
+
+   
 
     try{
         const docRef = doc(db, "users", userId);

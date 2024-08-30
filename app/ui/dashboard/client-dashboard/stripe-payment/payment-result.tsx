@@ -12,11 +12,21 @@ import { useRouter } from "next/navigation";
 import { montserrat } from '@/app/ui/fonts';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
+import { isProduction } from "@/app/lib/utils";
 
 
-if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) throw new Error('stripe public key must be defined!');
+let stripePublicKey;
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+
+
+
+
+stripePublicKey = isProduction ? process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY : process.env.NEXT_PUBLIC_LOCAL_STRIPE_PUBLISHABLE_KEY;
+
+if(!stripePublicKey) throw new Error('stripe public key must be defined! in both development and production');
+
+const stripePromise = loadStripe(stripePublicKey);
 
 
 

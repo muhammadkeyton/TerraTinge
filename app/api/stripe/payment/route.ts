@@ -6,11 +6,20 @@ import { Project,PaymentOption, ProjectVersions, VersionStage, VersionStage1 } f
 import { doc,getDoc,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/clientFirebase";
 import { auth } from "@/auth";
+import { isProduction } from "@/app/lib/utils";
 
 
+
+let stripeSecretKey;
+
+if(isProduction){
+  stripeSecretKey = process.env.PRODUCTION_STRIPE_SECRET_KEY
+}else{
+  stripeSecretKey = process.env.LOCAL_STRIPE_SECRET_KEY
+}
 
 // This is your test secret API key.
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(stripeSecretKey);
 
 
 
@@ -203,3 +212,10 @@ try{
 
 
 }
+
+
+// stripe trigger payment_intent.succeeded  `
+//   --override payment_intent:amount=611111 `
+//   --override payment_intent:currency=eur `
+//   --override payment_intent:"metadata[projectId]"=AukmC6yngBNq22LwHlvQ
+

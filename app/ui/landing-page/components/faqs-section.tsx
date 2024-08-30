@@ -38,7 +38,7 @@ const faqsDataFirstBatch = [
     {
         "icon":<CreditCardIcon/>,
         "question": "What is your pricing model? Are there any hidden costs?",
-        "answer": "Our pricing model is flexible and is determined by the complexity and scope of your project. Typically, projects range from $4000 to $15000 + tax. We believe in transparency and assure you that there are no hidden costs. We charge a third of the project cost upfront, with the balance due upon your satisfaction with the completed project."
+        "answer": "Our pricing model is flexible and is determined by the complexity and scope of your project. Typically, projects range from $5000 to $150,000. We believe in transparency and assure you that there are no hidden costs. We charge a third of the project cost upfront, with the balance due upon your satisfaction with the completed project."
     },
     
 ]

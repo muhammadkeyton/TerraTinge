@@ -19,6 +19,7 @@ import { Timestamp } from "firebase/firestore";
 
 
 
+
 /**
  * This function validates the project data and calls our database transaction  
  * @param {AppDataServer} data  - The data received from the client when submitting project for review.
@@ -29,6 +30,8 @@ export const createNewProject = async (data:AppDataServer):Promise<boolean>=>{
    
 
     const session = await auth();
+
+    
     
 
     const appNameResult = NameSchema.safeParse({name:data.appName});

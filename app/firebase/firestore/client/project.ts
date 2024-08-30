@@ -9,11 +9,17 @@ import { AppDataServer,Project, ProjectPayment, ProjectState,ProjectVersions,Ver
 
 import { v4 as uuidv4 } from 'uuid';
 
-
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const getClientProjects = async(clientId:string):Promise<null | Project[]>  => {
+    const session = await auth();
 
-    console.log('data fetching new request');
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
+    
     let clientProjects: Project[] = [];
     const userRef = doc(db, "users", clientId);
     
@@ -68,7 +74,11 @@ export const getClientProjects = async(clientId:string):Promise<null | Project[]
 
 
 export const addNewProject = async (projectState:ProjectState,userProfileImage:string,email:string,id:string,data:AppDataServer):Promise<boolean> => {
+    const session = await auth();
 
+    if(!session?.user){
+        return redirect('/authentication')
+    }
   
 
     try {
@@ -168,6 +178,13 @@ export const addNewProject = async (projectState:ProjectState,userProfileImage:s
 
 
 export const updateNewProject = async (projectId:string,appName:string,appDetail:string,appBudget:string):Promise<boolean> =>{
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+    
+    
     const projectDocumentRef = doc(db, "projects", projectId);
 
     try{
@@ -233,6 +250,13 @@ interface UpdateClientPromoResponseType{
 
 
 export const updateClientPromo = async({projectId,promoCode}:{projectId:string,promoCode:string}):Promise<UpdateClientPromoResponseType> =>{
+    
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+    
     const projectDocumentRef = doc(db, "projects", projectId);
     const promoCodeDocumentRef = doc(db, "promoCodes",promoCode);
   
@@ -356,6 +380,15 @@ export const updateClientPromo = async({projectId,promoCode}:{projectId:string,p
 
 
 export const ClientDeleteProject = async(projectId:string,clientId:string):Promise<boolean>=>{
+
+
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
+    
     const projectRef = doc(db, "projects", projectId);
     const clientRef = doc(db, "users", clientId);
 

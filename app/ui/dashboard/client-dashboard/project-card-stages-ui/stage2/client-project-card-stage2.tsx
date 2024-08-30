@@ -44,7 +44,7 @@ export default function ProjectCardStage2({appName,clientEmail,clientImage,creat
 
           <div className='flex flex-col my-4 gap-4 px-4'>
            <ViewProjectDetails discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee}  paymentStatus={paymentStatus} appDetail={appDetail} appName={appName} />
-           <ProceedToPayment discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>
+           {paymentStatus === ProjectPayment.pending && <ProceedToPayment discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} appCostAndFee={appCostAndFee} appName={appName} projectId={projectId}/>}
             
           </div>
 

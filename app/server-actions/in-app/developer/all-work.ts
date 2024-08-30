@@ -2,7 +2,7 @@
 
 import { fetchAllProjects, updateProjectStage2,UpdatePartnerPayment,updateProjectStage3,DeleteProject, updateProjectStage4 } from "@/app/firebase/firestore/developer/all-work";
 import { AppCostSchema, NameSchema } from "@/app/lib/data-validation";
-import {ReviewedProjectType,ProjectPayment, Project, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4 } from "@/app/lib/definitions";
+import {ReviewedProjectType,ProjectPayment, ProjectState, developerProjectsType, ProjectVersions, VersionStage3, VersionStage, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4 } from "@/app/lib/definitions";
 import { Timestamp } from "firebase/firestore";
 
 import { revalidatePath } from "next/cache";

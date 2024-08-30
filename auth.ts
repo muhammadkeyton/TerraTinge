@@ -23,6 +23,7 @@ import { adminFirestore } from './app/firebase/adminFirebase';
 
 
 import { updateUserRole} from '@/app/firebase/firestore';
+import { redirect } from 'next/navigation';
 
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -129,7 +130,14 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
 
 
       if(trigger === 'update' && session){
-        await updateUserRole(session.user.id,session.user.role);
+        
+
+        try{
+          await updateUserRole(session.user.id,session.user.role);
+        }catch(e){
+          throw e
+        }
+        
         token = {...token,role:session.user.role}
         return token;
       }
@@ -151,7 +159,6 @@ export const { handlers, signIn, signOut, auth} = NextAuth({
     async session({session,token}){
       
       if(token){
-        console.log(token)
         session.user.id = token.sub as string;
         session.user.role = token.role as Role;
       

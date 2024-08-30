@@ -41,14 +41,14 @@ function PromoCard({projectName,projectId,versionId,paymentStatus,amountPaid}:Pr
 
             <p>Your paymentStatus:
                 <span className='ml-2'>
-                <code className={`text-xs bg-slate-100 ${paymentStatus === ProjectPayment.pending ? 'text-black':'text-green-500'} dark:bg-gray-700  p-1 rounded-sm`}>
+                <code className={`text-xs bg-slate-100 ${paymentStatus === ProjectPayment.paid ? 'text-green-500':'text-black dark:text-white'} dark:bg-gray-700  p-1 rounded-sm`}>
                     {paymentStatus}
                 </code>
                 </span>
             </p>
 
 
-            <p>your earnings:<span className='ml-2 text-sm font-bold'>{`${amountPaid} USD` ?? 'will be calculated after project is paid up'}</span></p>
+            <p>your earnings:<span className='ml-2 text-sm font-bold'>{(amountPaid && amountPaid > 0)? `${amountPaid}USD` : `${amountPaid} USD For Now,We are still building this project and we will pay you immediately after we get paid😊` } </span></p>
 
 
 

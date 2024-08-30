@@ -7,8 +7,21 @@ import { db} from "@/app/firebase/clientFirebase";
 import { collection,doc,runTransaction,getDoc,query,where,getDocs, DocumentData,setDoc,deleteField, updateDoc, Timestamp} from "firebase/firestore";
 import { Project, ProjectPayment, ProjectState, ProjectVersions, ReviewedProjectType, ReviewedProjectTypeStage3, ReviewedProjectTypeStage4, VersionStage, VersionStage3 } from "@/app/lib/definitions";
 
+
+import { auth } from "@/auth";
+
+import { redirect } from "next/navigation";
+
 //we are trying to fetch all data for developer to view,we have to make this better this is just a starting function
 export const fetchAllProjects = async():Promise<null| Project[]> => {
+
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
+
     let Projects: Project[] = [];
     const projectsCollectionRef = collection(db, "projects");
     const allProjects = (await getDocs(projectsCollectionRef)).docs
@@ -42,7 +55,14 @@ export const fetchAllProjects = async():Promise<null| Project[]> => {
 
 
 export const updateProjectStage4 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectTypeStage4}):Promise<boolean> =>{
-    console.log('in function update stage 4')
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
+
+
     const {appName,projectLink,completed} = newData;
 
     try{
@@ -128,7 +148,12 @@ export const updateProjectStage4 = async ({projectId,newData}:{projectId:string,
 
 
 export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectTypeStage3}):Promise<boolean> =>{
-    console.log('in function update stage 3')
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
+
     const {appCost,appDetail,appName,percentage,appCostAndFee,projectLink,completed} = newData;
 
 
@@ -266,7 +291,11 @@ export const updateProjectStage3 = async ({projectId,newData}:{projectId:string,
 
 
 export const updateProjectStage2 = async ({projectId,newData}:{projectId:string,newData:ReviewedProjectType}):Promise<boolean> =>{
-    
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
     const {appCost,appDetail,appName,paymentAmount,paymentStatus,percentage,appCostAndFee} = newData;
 
 
@@ -343,6 +372,11 @@ export const updateProjectStage2 = async ({projectId,newData}:{projectId:string,
 
 
 export const DeleteProject = async(projectId:string,clientId:string):Promise<boolean>=>{
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
     const projectRef = doc(db, "projects", projectId);
     const clientRef = doc(db, "users", clientId);
 
@@ -377,7 +411,11 @@ export const DeleteProject = async(projectId:string,clientId:string):Promise<boo
 
 
 export const  UpdatePartnerPayment = async(projectId:string,promoId:string,paymentAmount:number,paid:boolean):Promise<boolean> =>{
-    
+    const session = await auth();
+
+    if(!session?.user){
+        return redirect('/authentication')
+    }
 
     const projectDocumentRef = doc(db, "projects", projectId);
     const promoCodeDocumentRef = doc(db, "promoCodes",promoId);

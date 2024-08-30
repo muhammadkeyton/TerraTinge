@@ -6,13 +6,30 @@ import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 import { handlePaymentProcessing,handlePaymentSuccess,handlePaymentFailed } from '@/app/server-actions/in-app/client/payments';
+import { isProduction } from '@/app/lib/utils';
 
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+let stripeSecretKey:string | undefined;
 
 //this secret verifies if the request is really from stripe,only stripe knows about this secret key
-const endpointSecret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET;
+let stripeEndPointSecret:string | undefined;
+
+if(isProduction){
+  stripeSecretKey = process.env.PRODUCTION_STRIPE_SECRET_KEY
+  stripeEndPointSecret = process.env.PRODUCTION_STRIPE_WEBHOOK_SIGNING_SECRET
+}else{
+  stripeSecretKey = process.env.LOCAL_STRIPE_SECRET_KEY
+  stripeEndPointSecret = process.env.LOCAL_STRIPE_WEBHOOK_SIGNING_SECRET
+}
+
+
+
+
+const stripe = require("stripe")(stripeSecretKey);
+
+
+
+
 
 
 
@@ -23,7 +40,7 @@ export async function POST(req: NextRequest) {
   let event;
 
 
-    if(endpointSecret){
+    if(stripeEndPointSecret){
         // Get the signature sent by Stripe
         const headersList = headers()
         const signature = headersList.get('stripe-signature');
@@ -35,7 +52,7 @@ export async function POST(req: NextRequest) {
             event = stripe.webhooks.constructEvent(
               rawBody,
               signature,
-              endpointSecret
+              stripeEndPointSecret
             );
         } catch (err:any) {
          console.log(`⚠️ Webhook signature verification failed.`, err.message);

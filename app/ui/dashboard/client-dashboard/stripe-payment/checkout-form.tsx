@@ -14,14 +14,15 @@ import { montserrat } from "@/app/ui/fonts";
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
-import { useRouter } from "next/navigation";
+
+import { isProduction } from "@/app/lib/utils";
 
 
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
-  const router = useRouter();
+ 
 
   const [message, setMessage] = useState({
     error:false,
@@ -85,7 +86,7 @@ export default function CheckoutForm() {
         
         
         // Make sure to change this to your payment completion page
-        return_url: "https://terratinge.com/dashboard/client/payment",
+        return_url: isProduction? "https://terratinge.com/dashboard/client/payment" :'http://localhost:3000/dashboard/client/payment',
         
       },
 
