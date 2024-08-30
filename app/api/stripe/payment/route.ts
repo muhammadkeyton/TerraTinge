@@ -10,16 +10,10 @@ import { isProduction } from "@/app/lib/utils";
 
 
 
-let stripeSecretKey;
 
-if(isProduction){
-  stripeSecretKey = process.env.PRODUCTION_STRIPE_SECRET_KEY
-}else{
-  stripeSecretKey = process.env.LOCAL_STRIPE_SECRET_KEY
-}
 
 // This is your test secret API key.
-const stripe = require("stripe")(stripeSecretKey);
+const stripe = require("stripe")(process.env.PRODUCTION_STRIPE_SECRET_KEY);
 
 
 

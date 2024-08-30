@@ -9,23 +9,20 @@ import { handlePaymentProcessing,handlePaymentSuccess,handlePaymentFailed } from
 import { isProduction } from '@/app/lib/utils';
 
 
-let stripeSecretKey:string | undefined;
+
+
+
+
+
+
+
+
+
+
+const stripe = require("stripe")(process.env.PRODUCTION_STRIPE_SECRET_KEY);
 
 //this secret verifies if the request is really from stripe,only stripe knows about this secret key
-let stripeEndPointSecret:string | undefined;
-
-if(isProduction){
-  stripeSecretKey = process.env.PRODUCTION_STRIPE_SECRET_KEY
-  stripeEndPointSecret = process.env.PRODUCTION_STRIPE_WEBHOOK_SIGNING_SECRET
-}else{
-  stripeSecretKey = process.env.LOCAL_STRIPE_SECRET_KEY
-  stripeEndPointSecret = process.env.LOCAL_STRIPE_WEBHOOK_SIGNING_SECRET
-}
-
-
-
-
-const stripe = require("stripe")(stripeSecretKey);
+const stripeEndPointSecret = process.env.PRODUCTION_STRIPE_WEBHOOK_SIGNING_SECRET
 
 
 

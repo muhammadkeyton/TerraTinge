@@ -15,18 +15,10 @@ import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
 import { isProduction } from "@/app/lib/utils";
 
 
-let stripePublicKey;
+if (!process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY) throw new Error('stripe public production key must be defined!');
 
 
-
-
-
-
-stripePublicKey = isProduction ? process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY : process.env.NEXT_PUBLIC_LOCAL_STRIPE_PUBLISHABLE_KEY;
-
-if(!stripePublicKey) throw new Error('stripe public key must be defined! in both development and production');
-
-const stripePromise = loadStripe(stripePublicKey);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
 
 
 
