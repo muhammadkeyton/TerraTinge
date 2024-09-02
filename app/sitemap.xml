@@ -5,12 +5,12 @@
       <priority>1.00</priority>
     </url>
     <url>
-      <loc>https://terratinge.com/login</loc>
+      <loc>https://terratinge.com/authentication</loc>
       <lastmod>2024-09-01</lastmod>
       <priority>0.80</priority>
     </url>
     <url>
-      <loc>https://terratinge.com/partner</loc>
+      <loc>https://terratinge.com/partnership</loc>
       <lastmod>2024-09-01</lastmod>
       <priority>0.80</priority>
     </url>
