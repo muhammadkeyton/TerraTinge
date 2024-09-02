@@ -3,7 +3,7 @@ import PartnershipLoginPage from "@/app/ui/partnership-login-page/partnership-lo
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "TerraTinge Partnership",
+    title: "Partner Login",
     description: "Become our partner,create a partner account and start earning with us",
 };
 
