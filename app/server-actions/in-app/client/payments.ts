@@ -548,7 +548,7 @@ export async function handlePaymentFailed({projectId,paymentAmount,message}:{pro
       
    
       console.log(`updated project payment failed for id:${projectId} successfully`)
-      //send confirmation email to client,email should contain project name,client name,and payment amount
+      //send confirmatio email to client,email should contain project name,client name,and payment amount
   } else {
       return;
   }
