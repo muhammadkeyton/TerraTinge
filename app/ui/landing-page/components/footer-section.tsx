@@ -1,3 +1,6 @@
+
+'use client';
+import { useEffect, useState } from "react";
 import { FaTiktok } from "react-icons/fa6";
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import WorkIcon from '@mui/icons-material/Work';
@@ -60,11 +63,17 @@ function PCPT({icon,text,link}:PCPTType){
 
 
 export default function Footer(){
-    const date = new Date().getFullYear()
+    
+    const [year, setYear] = useState<number>(new Date().getFullYear());
+
+    useEffect(() => {
+        setYear(new Date().getFullYear());
+    }, []);
+    
     return (
         <footer className="grid grid-cols-2 gap-16 md:grid-cols-3 md:gap-0 place-items-center font-bold dark:text-white  my-20 xl:mx-24">
             <div>
-            <h4 className="max-w-sm">© {date} TerraTinge Canada, All Rights Reserved</h4>
+            <h4 className="max-w-sm">© {year} TerraTinge Canada, All Rights Reserved</h4>
             </div>
 
 

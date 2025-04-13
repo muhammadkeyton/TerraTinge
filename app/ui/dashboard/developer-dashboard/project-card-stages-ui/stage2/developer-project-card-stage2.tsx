@@ -137,7 +137,7 @@ export default function DeveloperProjectCardStage2({appName,clientEmail,clientIm
     
             
             <ViewSubmittedDetails discountedAppCostAndFee={discountedAppCostAndFee} promo={promo} paymentStatus={paymentStatus} appCostAndFee={appCostAndFee}  appDetail={appDetail} appName={appName} />
-            <EditProject appCost={`${(appCost/100).toFixed(2)}`} percentage={`${feePercentage}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>
+            <EditProject appCost={`${(appCost/100).toFixed(0)}`} percentage={`${feePercentage}`}  appDetail={appDetail} appName={appName} projectId={projectId}/>
     
     
     

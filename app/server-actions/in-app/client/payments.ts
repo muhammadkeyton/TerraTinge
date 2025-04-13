@@ -1,10 +1,10 @@
 'use server';
 
 import { Resend } from 'resend';
-import { Project, ProjectPayment, ProjectState, ProjectVersions, VersionStage, VersionStage1, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
+import { Project, ProjectPayment,PaymentOption, ProjectState, ProjectVersions, VersionStage, VersionStage1, VersionStage2, VersionStage3 } from "@/app/lib/definitions";
 import { doc,getDoc,Timestamp,updateDoc} from "firebase/firestore";
 import { db } from "@/app/firebase/clientFirebase";
-
+import { stripe } from '@/app/lib/stripe';
 
 
 import PaymentSuccessEmail from '@/emails/payment-receipt';
@@ -29,6 +29,134 @@ const isVersionStage2 = (version:ProjectVersions): version is VersionStage2 =>{
 const isVersionStage4 = (version:ProjectVersions): version is VersionStage3 =>{
   return version.versionStage === VersionStage.stage4;
 }
+
+
+type customerIdAndAmountToCharge = {
+  amountToCharge:number;
+  customerId:string;
+  projectName:string;
+}
+/**
+ * This function calculates the appropriate cost to charge the client
+ * @param {string} projectId  - The projectId,this can be used to look up the cost of that project and calculate the appropriate amount.
+ * @param {PaymentOption} paymentOption  - the option our client chose to pay with,whether full payment or a third of the total cost
+ 
+ */
+export const getProjectPaymentAmount = async(projectId:string,paymentOption:PaymentOption):Promise<customerIdAndAmountToCharge|null> => {
+
+   
+   const projectDocumentRef = doc(db, "projects", projectId);
+
+   let amountToCharge:number;
+   let customerId:string;
+
+
+   
+   
+   try{
+    const docSnap = await getDoc(projectDocumentRef);
+    if (!docSnap.exists()) return null;
+    
+    const project = docSnap.data() as Project;
+
+    let latestVersion = project.versions[project.versions.length - 1];
+
+   
+
+
+
+    
+
+    amountToCharge = (()=>{
+
+        switch (paymentOption) {
+            case PaymentOption.full:{
+               
+                
+                if(!isVersionStage1(latestVersion)){
+                  let fullCostNoPromo = Math.round(latestVersion.projectInfo.appCostAndFee - latestVersion.projectInfo.paymentAmount);
+                  let fullCostWithPromo:number;
+
+                  if('discountedAppCostAndFee' in latestVersion.projectInfo){
+                    fullCostWithPromo = Math.round(latestVersion.projectInfo.discountedAppCostAndFee as number - latestVersion.projectInfo.paymentAmount)
+
+                    return fullCostWithPromo;
+                  }
+
+                  return fullCostNoPromo;
+                }
+
+
+                return 0;
+                
+            }
+
+
+            case PaymentOption.third:{
+                  
+                if(!isVersionStage1(latestVersion)){
+                  let thirdCostNoPromo = Math.round(latestVersion.projectInfo.appCostAndFee / 3);
+                  let thirdCostWithPromo:number;
+
+                  if('discountedAppCostAndFee' in latestVersion.projectInfo){
+                    thirdCostWithPromo = Math.round(latestVersion.projectInfo.discountedAppCostAndFee as number /3)
+
+                    return thirdCostWithPromo;
+                  }
+
+                  return thirdCostNoPromo;
+                }
+
+                return 0;
+                
+            }
+            
+        }
+
+    })();
+
+    const terraTingeUserRef = doc(db, "users", project.clientInfo.clientId);
+    const userdocSnap = await getDoc(terraTingeUserRef);
+
+    //if user doesn't exist return null
+    if (!userdocSnap.exists()) return null;
+    const user = userdocSnap.data();
+    const stripeCustomerId = user?.stripeCustomerId;
+    
+    //if user doesn't have a stripe customer id,create a new stripe customer
+    if(!stripeCustomerId){
+
+      const stripeCustomer = await stripe.customers.create({
+        name: user?.name ?? user?.email?.split('@')[0],
+        email: user?.email
+      });
+
+      await updateDoc(terraTingeUserRef,{stripeCustomerId:stripeCustomer.id});
+
+      customerId = stripeCustomer.id;
+    }else{
+      customerId = stripeCustomerId;
+    }
+
+    
+
+    
+    return <customerIdAndAmountToCharge>{
+      customerId,
+      amountToCharge,
+      projectName:project.appName
+    }
+    
+
+   }catch(e){
+    console.log(e)
+   }
+
+
+   return null;
+   
+  
+};
 
 
 

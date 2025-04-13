@@ -82,6 +82,7 @@ export const getAllProjects = async ():Promise<null | developerProjectsType> => 
                     ...version,
                     projectInfo: {
                         ...version.projectInfo,
+                        
                         createdAt: formatTimestamp(version.projectInfo.createdAt as Timestamp),
                         paymentDate: formatTimestamp(version.projectInfo.paymentDate as Timestamp),
                         completionDate: formatTimestamp(version.projectInfo.completionDate as Timestamp)

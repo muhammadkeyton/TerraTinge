@@ -19,6 +19,7 @@ if (!getApps().length) {
   });
 
   if (isDevelopment) {
+    //firebase admin sdk checks for these env variables to connect to the emulators when development environment
     process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
     process.env.FIREBASE_STORAGE_EMULATOR_HOST = '127.0.0.1:9199';
   }

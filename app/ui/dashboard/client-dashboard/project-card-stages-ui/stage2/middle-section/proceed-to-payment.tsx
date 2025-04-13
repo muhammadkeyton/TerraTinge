@@ -4,12 +4,13 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import useWindowWidth from "@/app/ui/dashboard/reuseable-components/hooks/detect-window-width";
 import Button from '@mui/material/Button';
 import { montserrat } from "@/app/ui/fonts";
-import StripePaymentComponent from "../../../stripe-payment/stripe-element";
+// import StripePaymentComponent from "../../../stripe-payment/stripe-element";
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarIcon from '@mui/icons-material/Star';
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 import CircularProgress from '@mui/material/CircularProgress';
 
+//import StripePaymentIntentPage from "@/app/ui/dashboard/client-dashboard/stripe-payment/stripePaymentIntent";
 
 import { useRouter } from "next/navigation";
 import {
@@ -33,6 +34,7 @@ import { PaymentOption } from "@/app/lib/definitions";
 import TerraTextField from "@/app/ui/reusable-components/terra-textfield";
 import { updateClientProjectPromoCode } from "@/app/server-actions/in-app/client/project";
 import confettiSideCannons from "@/app/ui/landing-page/magic-ui/confetti";
+import { useGenerateStripePaymentRoute } from "@/app/ui/reusable-components/generateStripePaymentRoute";
 
 
 
@@ -293,7 +295,10 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
 
 
   
-   
+    useGenerateStripePaymentRoute({
+      projectId:projectId,
+      paymentOption:selectedPaymentOption 
+    })
     
 
 
@@ -307,7 +312,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
                        <MuiServerProvider>
                         <DialogTrigger asChild>
                          
-                        <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+                        <Button  variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
                           proceed to payment
                         </Button>
                           
@@ -325,9 +330,12 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
                         <div className='overflow-y-auto flex-grow  p-4'>
                            
                            {
-                            selectedPaymentOption?
-                          
-                          <StripePaymentComponent paymentOption={selectedPaymentOption} projectId={projectId}/>
+                            selectedPaymentOption? 
+                            <MuiServerProvider>
+                            <div className='flex justify-center items-center'>
+                            <CircularProgress className='text-indigo-700' size={60}/>
+                            </div>
+                           </MuiServerProvider>
                           
                           :
 
@@ -389,10 +397,13 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,promo,
       
               <div className='overflow-y-auto flex-grow  p-4'>
                         
-                        {
-                            selectedPaymentOption?
-                          
-                          <StripePaymentComponent paymentOption={selectedPaymentOption} projectId={projectId}/>
+                         {
+                            selectedPaymentOption? 
+                            <MuiServerProvider>
+                            <div className='flex justify-center items-center'>
+                            <CircularProgress className='text-indigo-700' size={60}/>
+                            </div>
+                           </MuiServerProvider>
                           
                           :
 

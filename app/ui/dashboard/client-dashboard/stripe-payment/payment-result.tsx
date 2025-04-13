@@ -4,37 +4,40 @@
 import { useEffect, useState } from "react";
 import Link from 'next/link'
 import confettiSideCannons from "@/app/ui/landing-page/magic-ui/confetti";
-import { useStripe} from "@stripe/react-stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js";
-import { useRouter } from "next/navigation";
+// import { useStripe} from "@stripe/react-stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
+// import {loadStripe} from "@stripe/stripe-js";
+// import { useRouter } from "next/navigation";
 
 import { montserrat } from '@/app/ui/fonts';
 import Button from '@mui/material/Button';
 import MuiServerProvider from '@/app/ui/mui-providers/mui-server-provider';
-import { isProduction } from "@/app/lib/utils";
+// import { isProduction } from "@/app/lib/utils";
+import Stripe from "stripe";
 
 
-if (!process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY) throw new Error('stripe public production key must be defined!');
+// if (!process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY) throw new Error('stripe public production key must be defined!');
 
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
 
 
 
 
-export default function PaymentResult() {
-    return(
-        <Elements stripe={stripePromise} >
-            <PaymentDetails/>
-        </Elements>
-    )
-}
+// export default function PaymentResult() {
+//     return(
+//         <Elements stripe={stripePromise} >
+//             <PaymentDetails/>
+//         </Elements>
+//     )
+// }
 
 
-function PaymentDetails() {
-    const stripe = useStripe();
-    const router = useRouter();
+export default function PaymentResult({status,amount}:{status:string,amount:number}) {
+    // const stripe = useStripe();
+    // const router = useRouter();
+
+   
    
 
     const [message, setMessage] = useState({
@@ -42,45 +45,96 @@ function PaymentDetails() {
       message:''
     });
 
-    let clientSecret = new URLSearchParams(window.location.search).get(
-        "payment_intent_client_secret"
-    );
+    // let clientSecret = new URLSearchParams(window.location.search).get(
+    //     "payment_intent_client_secret"
+    // );
+
+
+    // (()=>{
+    //   switch (status) {
+    //     case "succeeded":
+    //       setMessage({error:false,message:`🎊Your Payment of $${(amount/100).toFixed(2).toLocaleString()}USD was processed successfully🎊`});
+    //       confettiSideCannons();
+    //       break;
+    //     case "processing":
+    //       setMessage({error:false,message:`Your Payment of $${(amount/100).toFixed(2).toLocaleString()}USD is currently being processed!`});
+    //       break;
+    //     case "requires_payment_method":
+    //       setMessage({error:true,message:"Your payment was not successful, please try again."});
+    //       break;
+    //     default:
+    //       setMessage({error:true,message:"Something went wrong while trying to process your payment,please try again"});
+    //       break;
+    //   }
+    // })
+
+
+    useEffect(() => {
+      switch (status) {
+        case "succeeded":
+          setMessage({
+            error: false,
+            message: `🎊Your Payment of $${(amount / 100).toFixed(2).toLocaleString()} USD was processed successfully🎊`
+          });
+          confettiSideCannons();
+          break;
+        case "processing":
+          setMessage({
+            error: false,
+            message: `Your Payment of $${(amount / 100).toFixed(2).toLocaleString()} USD is currently being processed!`
+          });
+          break;
+        case "requires_payment_method":
+          setMessage({
+            error: true,
+            message: "Your payment was not successful, please try again."
+          });
+          break;
+        default:
+          setMessage({
+            error: true,
+            message: "Something went wrong while trying to process your payment, please try again."
+          });
+          break;
+      }
+    }, [status, amount]); // 👈 run this effect when status or amount changes
+    
   
    
-    useEffect(() => {
+    // useEffect(() => {
 
     
-        if (!stripe) {
-          return;
-        }
+    //     if (!stripe) {
+    //       return;
+    //     }
     
-        clientSecret = new URLSearchParams(window.location.search).get(
-          "payment_intent_client_secret"
-        );
+    //     clientSecret = new URLSearchParams(window.location.search).get(
+    //       "payment_intent_client_secret"
+    //     );
     
-        if (!clientSecret) {
+    //     if (!clientSecret) {
         
-          return router.push('/dashboard/client');
-        }
+    //       return router.push('/dashboard/client');
+    //     }
     
-        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-          switch (paymentIntent?.status) {
-            case "succeeded":
-              setMessage({error:false,message:`🎊Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD was processed successfully🎊`});
-              confettiSideCannons();
-              break;
-            case "processing":
-              setMessage({error:false,message:`Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD is currently being processed!`});
-              break;
-            case "requires_payment_method":
-              setMessage({error:true,message:"Your payment was not successful, please try again."});
-              break;
-            default:
-              setMessage({error:true,message:"Something went wrong while trying to process your payment,please try again"});
-              break;
-          }
-        });
-      }, [stripe]);
+    //     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+    //       switch (paymentIntent?.status) {
+    //         case "succeeded":
+    //           setMessage({error:false,message:`🎊Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD was processed successfully🎊`});
+    //           confettiSideCannons();
+    //           break;
+    //         case "processing":
+    //           setMessage({error:false,message:`Your Payment of $${(paymentIntent?.amount/100).toFixed(2).toLocaleString()}USD is currently being processed!`});
+    //           break;
+    //         case "requires_payment_method":
+    //           setMessage({error:true,message:"Your payment was not successful, please try again."});
+    //           break;
+    //         default:
+    //           setMessage({error:true,message:"Something went wrong while trying to process your payment,please try again"});
+    //           break;
+    //       }
+    //     });
+    //   }, [stripe]);
     
    
    
@@ -97,8 +151,8 @@ function PaymentDetails() {
         <div className="flex flex-col items-center justify-center h-full">
 
 
-         {
-            clientSecret &&
+         {/* {
+            clientSecret && */}
          
         <div
           
@@ -121,7 +175,7 @@ function PaymentDetails() {
 
         </div>
 
-         }
+         {/* } */}
 
        
       

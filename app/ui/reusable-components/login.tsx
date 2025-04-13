@@ -187,7 +187,7 @@ export default function AuthView({text}:AuthViewPropType){
 
                     
                    <MuiServerProvider>
-                    <Button disabled={email.text.length < 1 || loading.state} type='submit' variant="contained"  startIcon={email.text.length < 1 || loading?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
+                    <Button disabled={email.text.length < 1 || loading.state} type='submit' variant="contained"  startIcon={email.text.length < 1 || loading.state?<LockIcon className='text-2xl'/> :<LockOpenIcon className='text-2xl'/>} 
                       className={
                         clsx(
                             `my-4 ${montserrat.className} w-full h-10   rounded-full  text-base text-center`,

@@ -1,10 +1,13 @@
 
 
+'use client'
 
+import { useState } from "react";
 import useWindowWidth from "@/app/ui/dashboard/reuseable-components/hooks/detect-window-width";
 import Button from '@mui/material/Button';
 import { montserrat } from "@/app/ui/fonts";
-import StripePaymentComponent from "../../../stripe-payment/stripe-element";
+// import StripePaymentComponent from "../../../stripe-payment/stripe-element";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import MuiServerProvider from "@/app/ui/mui-providers/mui-server-provider";
 
@@ -26,7 +29,7 @@ import {
     SheetTrigger
   } from "../../../../shadcn-components/sheet"
 import { PaymentOption} from "@/app/lib/definitions";
-
+import { useGenerateStripePaymentRoute } from "@/app/ui/reusable-components/generateStripePaymentRoute";
 
 
 interface proceedToPaymentProps{
@@ -41,9 +44,12 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
     const {isDesktop,windowWidth} = useWindowWidth();
     const noPromoBalance = ((appCostAndFee - paymentAmount)/100).toLocaleString();
     const promoBalance = ((discountedAppCostAndFee as number - paymentAmount)/100).toLocaleString();
-    
+    const [proceedToPayment, setProceedToPayment] = useState(false);
 
-    
+    useGenerateStripePaymentRoute({
+      projectId:projectId,
+      paymentOption:proceedToPayment? PaymentOption.full : null
+    });
 
 
   
@@ -56,7 +62,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
                        <MuiServerProvider>
                         <DialogTrigger asChild>
                          
-                        <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+                        <Button onClick={()=> setProceedToPayment(true)}  variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
                           pay balance
                         </Button>
                           
@@ -75,10 +81,14 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
                            
                            
                           
-                          <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/>
+                               <MuiServerProvider>
+                                   <div className='flex justify-center items-center my-12'>
+                                   <CircularProgress className='text-indigo-700' size={60}/>
+                                   </div>
+                               </MuiServerProvider>
                           
                           
-                        
+                         
                         
                         </div>
       
@@ -127,7 +137,9 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
                         
                        
                           
-                <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/>
+                {/* <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/> */}
+
+                <h1>enable stripe</h1>
                           
                           
                         

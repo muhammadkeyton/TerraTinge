@@ -18,7 +18,7 @@ export enum Role {
 export enum ProjectPayment {
   initial = 'initial',
   pending = 'pending',
-  paid = 'paid!',
+  paid = 'paid',
   processing = 'processing'
 }
 

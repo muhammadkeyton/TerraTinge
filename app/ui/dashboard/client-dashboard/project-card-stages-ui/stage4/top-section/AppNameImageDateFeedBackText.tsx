@@ -162,13 +162,16 @@ export default function AppNameImageDateFeedBackText({appName,paymentDate,projec
                    (()=>{
 
 
-                    if(promo && (discountedAppCostAndFee as number - paymentAmount)!== 0){
+                    if((promo && (discountedAppCostAndFee as number - paymentAmount)!== 0) || (!promo && (appCostAndFee  - paymentAmount) !== 0)){
                         return(
-                            <p className='text-sm max-w-sm mt-4'>Your project is now complete! We are awaiting the final payment. Once received, we will assist you in deploying it to your domain, hosting, and app stores if applicable. We will also provide the full source code and guide you on which API keys to keep secret.</p>  
+                            <p className='text-sm max-w-sm mt-4'>Your project is now complete! We are awaiting the final payment. Once received, we will assist you in deploying it to your domain, hosting, and app stores if applicable.</p>  
                         )
-                    }else{
+                    }
+                    
+                    
+                    else{
                         return (
-                            <p className='text-sm max-w-sm mt-4'>Thank you for your business! Your project is now complete and fully paid up. We will help you deploy it, provide the full source code, and give you full access to your app. You have the freedom to work with other developers or with us. Your app, code, and hosting are fully yours, and we will only access it with your permission. We respect your ownership and value your trust. Additionally, you have 2 months of complimentary maintenance</p>
+                            <p className='text-sm max-w-sm mt-4'>Thank you for your business! Your project is now complete and fully paid up. We will help you deploy it, provide the full source code, and give you full access to your app. You have the freedom to work with other developers or with us. Your app, code, and hosting are fully yours, and we will only access it with your permission. We respect your ownership and value your trust. Additionally, you have 1 months of complimentary maintenance</p>
                         )
                     }
 
