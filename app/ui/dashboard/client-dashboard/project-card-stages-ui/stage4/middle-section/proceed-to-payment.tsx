@@ -120,7 +120,7 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
           <Sheet key='bottom'>
           <MuiServerProvider>
             <SheetTrigger asChild>
-            <Button variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
+            <Button onClick={()=> setProceedToPayment(true)} variant='contained' className={`${montserrat.className} p-3 w-full rounded-full bg-black text-white dark:bg-violet-700`}>
               pay balance
             </Button>
             </SheetTrigger>
@@ -137,9 +137,11 @@ export default function ProceedToPayment({appCostAndFee,projectId,appName,paymen
                         
                        
                           
-                {/* <StripePaymentComponent paymentOption={PaymentOption.full} projectId={projectId}/> */}
-
-                <h1>enable stripe</h1>
+                <MuiServerProvider>
+                      <div className='flex justify-center items-center my-12'>
+                      <CircularProgress className='text-indigo-700' size={60}/>
+                      </div>
+                  </MuiServerProvider>
                           
                           
                         
