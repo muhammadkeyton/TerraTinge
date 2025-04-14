@@ -58,9 +58,9 @@ function PaymentForm({projectName,cost}:{projectName:string | undefined,cost:str
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
 
-    if (error.type === "card_error" || error.type === "validation_error") {
+    if (error.type === "card_error") {
         setMessage({error:true,message:error.message as string});
-    } else{
+    } else if(error.type !== "validation_error"){
         setMessage({error:true,message:"something went wrong! please try again"});
     }
     
